@@ -1,7 +1,7 @@
 grammar Grammar_v1;
 
 
-prog: declarations+ commands+ ;
+prog: declarations commands ;
 
 declarations: declaration SEMI declarations
     | ;
@@ -12,7 +12,8 @@ vardcl: vdcl
 funcdcl: ID LPAR params RPAR LBRACE block RBRACE;
 params: (vardcl COMMA)* vardcl
     | ;
-block: LBRACE commands* RBRACE
+block: declarations
+    |  commands*
     | ;
 vdcl: NUMDCL
     | CHARDCL
@@ -22,14 +23,17 @@ vdclAssign: numDclAssign
     | charDclAssign
     | stringDclAssign
     | boolDclAssign;
+
 numDcl: NUMDCL ID;
 charDcl: CHARDCL ID;
 stringDcl: STRDCL ID;
 boolDcl: BOOLDCL ID;
+
 numDclAssign: NUMDCL ASSIGN aExpr;
 charDclAssign: CHARDCL ASSIGN SINGLEQOUTE CHARVAL SINGLEQOUTE;
 stringDclAssign: STRDCL ASSIGN DOUBLEQOUTE STRVAL DOUBLEQOUTE;
 boolDclAssign: BOOLDCL ASSIGN bExpr;
+
 aExpr: aExpr aOp aExpr
     | NUMVAL;
 bExpr: bExpr bOp bExpr
@@ -60,7 +64,7 @@ ctrlStruct: selective
 funcCalls: ID LPAR callparams RPAR SEMI;
 callparams: (vals COMMA)* vals
     | ID
-    | ;
+    | ;w
 vals: NUMVAL
     | CHARVAL
     | STRVAL
@@ -139,10 +143,3 @@ AND: '&&';
 OR: '||';
 ID: STRVAL;
 BLANK: (' ')+;
-
-
-
-
-
-
-
