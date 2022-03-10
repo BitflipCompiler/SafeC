@@ -59,11 +59,11 @@ defcase:
 forparams:
       numdclassign (BLANK)* SEMI (BLANK)* bexpr (BLANK)* SEMI (BLANK)* ID numassignment;
 boolassignment:
-      (BLANK)* ASSIGN (BLANK)* bexpr;
+      ID(BLANK)* ASSIGN (BLANK)* bexpr;
 booldclassign:
       booldecl boolassignment;
 booldecl:
-      BOOLDCL BLANK ID (BLANK)*;
+      BOOLDCL BLANK (BLANK)*;
 numassignment:
      (BLANK)* ASSIGN (BLANK)* aexpr;
 numdclassign:
@@ -170,5 +170,4 @@ NOT: '!';
 AND: '&&';
 OR: '||';
 HASHTAG: '#';
-
 WS : [ \t\r\n\f]+ -> channel(HIDDEN);
