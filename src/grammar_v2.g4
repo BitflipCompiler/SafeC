@@ -56,7 +56,7 @@ iterative:
       | WHILESTMT LPAR bexpr RPAR block  ;
 
 selective:
-        IFSTMT iflogic
+        IFSTMT iflogic block
       | SWITCHSTMT LPAR ID RPAR LBRACE (case)* defcase RBRACE;
 iflogic:
         LPAR bexpr RPAR;
@@ -65,7 +65,7 @@ case:
 defcase:
         DEFAULT COLON caseblock;
 forparams:
-      numdclassign (BLANK)* SEMI (BLANK)* bexpr (BLANK)* SEMI (BLANK)* ID numassignment;
+      numdclassign (BLANK)* SEMI (BLANK)* bexpr (BLANK)* SEMI (BLANK)* numassignment;
 boolassignment:
       ID(BLANK)* ASSIGN (BLANK)* bexpr;
 booldclassign:
@@ -73,19 +73,19 @@ booldclassign:
 booldecl:
       BOOLDCL BLANK (BLANK)*;
 numassignment:
-     (BLANK)* ASSIGN (BLANK)* aexpr;
+     ID(BLANK)* ASSIGN (BLANK)* aexpr;
 numdclassign:
-      numdecl numassignment;
+      NUMDCL BLANK numassignment;
 numdecl:
       NUMDCL BLANK ID (BLANK)*;
 charassignment:
-     (BLANK)* ASSIGN (BLANK)* CHARVAL;
+     ID(BLANK)* ASSIGN (BLANK)* CHARVAL;
 chardclassign:
       chardecl charassignment;
 chardecl:
       CHARDCL BLANK ID (BLANK)*;
 stringassignment:
-      (BLANK)* ASSIGN (BLANK)* STRVAL;
+      ID(BLANK)* ASSIGN (BLANK)* STRVAL;
 stringdclassign:
       stringdecl stringassignment;
 stringdecl:
@@ -128,6 +128,9 @@ relop :
     | LESS
     | GREATER ;
 
+//Fragments
+fragment LOWERCASE: [a-z];
+fragment UPPERCASE: [A-Z];
 
 
 // Token specification
@@ -144,13 +147,13 @@ BOOLDCL: 'boolean';
 BREAK: 'break'SEMI;
 BLANK: (' ')+;
 BOOLVAL: 'true' | 'false';
-ID: ([a-z]([a-zA-Z]('0'..'9'))*)*;
+ID: (LOWERCASE(LOWERCASE | UPPERCASE | ('0'..'9'))*)*;
 SAFETY: HASHTAG('1'..'9')('0'..'9')*;
 NUMVAL: ('0'..'9')+(DOT('0'..'9')+)?;
 CHARVAL: SINGLEQOUTE[a-zA-Z0-9]SINGLEQOUTE;
 STRVAL: DOUBLEQOUTE[a-zA-Z0-9]+DOUBLEQOUTE;
 PLUS: '+';
-MINUS: '−';
+MINUS: '-';
 TIMES: '*';
 DIVISION: '/';
 POW: 'pow';
