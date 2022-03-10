@@ -11,14 +11,17 @@ commands:
     | ;
 
 declaration:
-      (safedeclaration)
+     (safedeclaration)
+    | reassign
     | funcdcl;
+
 safedeclaration:
-      SAFETY (BLANK)* (vdcl | vassign) SEMI;
+      SAFETY (BLANK)* (vdcl | vdclassign) SEMI;
+reassign: (BLANK)* vassign SEMI;
 params:
       vdcl (BLANK)*(COMMA (BLANK)* vdcl)*;
 block:
-      LBRACE (safedeclaration | command)* RBRACE;
+      LBRACE (safedeclaration | reassign | command )* RBRACE;
 caseblock:
       (safedeclaration | command)*(BREAK)?;
 vdcl:
@@ -27,6 +30,11 @@ vdcl:
     | stringdecl
     | booldecl;
 vassign:
+      numassignment
+    | charassignment
+    | stringassignment
+    | boolassignment;
+vdclassign:
       numdclassign
     | chardclassign
     | stringdclassign
