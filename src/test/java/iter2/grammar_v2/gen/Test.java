@@ -1,4 +1,4 @@
-package iter2.grammar_v2;
+package iter2.grammar_v2.gen;
 
 import iter2.expr.gen.ExprLexer;
 import iter2.expr.gen.ExprParser;
@@ -8,9 +8,9 @@ import org.antlr.v4.runtime.*;
 public class Test {
     public static void main(String[] args) throws Exception {
         CharStream input = CharStreams.fromFileName("src/main/resources/iter2/grammar_v2/test1.txt");
-        ExprLexer lexer = new ExprLexer(input);
+        Grammar_v2Lexer lexer = new Grammar_v2Lexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        ExprParser parser = new ExprParser(tokens);
+        Grammar_v2Parser parser = new Grammar_v2Parser(tokens);
 
         parser.prog(); // parse the input stream!
     };

@@ -1,6 +1,6 @@
 // Generated from /home/jona/Documents/GitHub/ANTLR/src/main/java/Expr.g4 by ANTLR 4.9.2
 
-package iter2.expr;
+package iter2.expr.gen;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

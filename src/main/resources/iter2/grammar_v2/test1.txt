@@ -1,0 +1,58 @@
+#10 boolean on = true;
+#7 number x;
+#7 number y;
+#7 number z;
+#7 string power;
+
+start(){
+    on = true;
+}
+stop(){
+    on = false;
+}
+
+pitch(number a){
+    x = x - a;
+    if(x<0){
+        x = 360 - x;
+    }
+}
+
+yaw(number b){
+    x=x + b % 360;
+}
+
+roll(){
+    for(number i = 0; i < 100; i = i + 1){
+        y= y + 1;
+    }
+}
+
+sendMessage(){
+    #7 char a = 'e';
+    #7 char b = 'k';
+    #7 string abe = "abe";
+}
+
+whileInAtmosphere(){
+    #6 number i;
+    i = 0;
+    while(on == true){
+    calcCenterOfPressure();
+    i=i+1;
+    if(i==10){
+        on = false;
+    }
+    }
+}
+
+sendMessageToEarth(string power){
+       switch(power){
+            case "solar":
+                break;
+            case "battery":
+                break;
+            default:
+                break;
+       }
+}

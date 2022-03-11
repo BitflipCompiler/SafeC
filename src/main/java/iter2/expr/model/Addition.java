@@ -1,4 +1,4 @@
-package iter2.expr;
+package iter2.expr.model;
 
 public class Addition extends Expression{
     Expression left;

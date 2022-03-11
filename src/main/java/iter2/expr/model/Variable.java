@@ -1,4 +1,4 @@
-package iter2.expr;
+package iter2.expr.model;
 
 public class Variable extends Expression{
     String id;

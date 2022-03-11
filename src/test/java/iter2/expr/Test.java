@@ -1,4 +1,4 @@
-package iter2;
+package iter2.expr;
 
 import iter2.expr.gen.ExprLexer;
 import iter2.expr.gen.ExprParser;
