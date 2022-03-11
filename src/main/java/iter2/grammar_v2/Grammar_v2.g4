@@ -1,4 +1,4 @@
-grammar grammar_v2;
+grammar Grammar_v2;
 
 prog: declarations commands;
 

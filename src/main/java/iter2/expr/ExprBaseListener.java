@@ -1,39 +1,54 @@
-// Generated from /Users/karlos/Downloads/caccode/ANTLRTEST/src/Grammar_v1.g4 by ANTLR 4.9.2
+// Generated from /home/jona/Documents/GitHub/ANTLR/src/main/java/Expr.g4 by ANTLR 4.9.2
+
+package iter2.expr;
+
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * This class provides an empty implementation of {@link testListener},
+ * This class provides an empty implementation of {@link ExprListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-public class testBaseListener implements testListener {
+public class ExprBaseListener implements ExprListener {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMain(testParser.MainContext ctx) { }
+	@Override public void enterProg(ExprParser.ProgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMain(testParser.MainContext ctx) { }
+	@Override public void exitProg(ExprParser.ProgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterName(testParser.NameContext ctx) { }
+	@Override public void enterDecl(ExprParser.DeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitName(testParser.NameContext ctx) { }
+	@Override public void exitDecl(ExprParser.DeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpr(ExprParser.ExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpr(ExprParser.ExprContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
