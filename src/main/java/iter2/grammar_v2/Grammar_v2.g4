@@ -5,16 +5,13 @@ prog: declarations commands;
 declarations:
        declaration declarations
       | ;
-
 commands:
       command commands
     | ;
-
 declaration:
      safedeclaration
     | reassign
     | funcdcl;
-
 safedeclaration:
       SAFETY (BLANK)* (vdcl | vdclassign) SEMI;
 reassign: (BLANK)* vassign SEMI;
@@ -47,7 +44,7 @@ funccalls:
 funcdcl:
       ID LPAR (params)? RPAR block;
 callparams:
-      vals (BLANK)*(COMMA (BLANK)* vals)*;
+      vals (BLANK)* (COMMA (BLANK)* vals)*;
 ctrlstruct:
         selective
       | iterative;
@@ -57,13 +54,13 @@ iterative:
 
 selective:
         IFSTMT iflogic block
-      | SWITCHSTMT LPAR ID RPAR LBRACE (case)* defcase RBRACE;
+      | SWITCHSTMT LPAR ID RPAR LBRACE (scase)* defcase RBRACE;
 iflogic:
-        LPAR bexpr RPAR;
-case:
-        CASE (BLANK) vals (BLANK)* COLON caseblock;
+      LPAR bexpr RPAR;
+scase:
+      CASE BLANK vals (BLANK)* COLON caseblock;
 defcase:
-        DEFAULT COLON caseblock;
+      DEFAULT COLON caseblock;
 forparams:
       numdclassign (BLANK)* SEMI (BLANK)* bexpr (BLANK)* SEMI (BLANK)* numassignment;
 boolassignment:
@@ -95,22 +92,20 @@ bexpr:
       bexpr (BLANK)* bop (BLANK)* bexpr
     | BOOLVAL
     | NOT (BLANK)* bexpr
-    | (aexpr | BOOLVAL) (BLANK)* relop (BLANK)*  (aexpr | BOOLVAL);
+    | (aexpr | BOOLVAL) (BLANK)* relop (BLANK)*  (aexpr | BOOLVAL)
+    | LPAR bexpr RPAR;
 
 aexpr:
-      aexpr (BLANK)* aop (BLANK)* aexpr
-    | numberval
-    | ID
-    | LPAR aexpr RPAR;
+    term (BLANK)* ((PLUS | MINUS) (BLANK)* term)*;
+term:
+    part (BLANK)* ((TIMES | DIVISION | MOD) (BLANK)* part)*;
+part:
+    LPAR (BLANK)* aexpr (BLANK)* RPAR | ID | NUMVAL;
+
 bop:
       AND
     | OR;
-aop:
-      PLUS
-    | MINUS
-    | TIMES
-    | DIVISION
-    | MOD;
+
 vals:
       numberval
     | CHARVAL
@@ -132,7 +127,7 @@ relop :
 //Fragments
 fragment LOWERCASE: [a-z];
 fragment UPPERCASE: [A-Z];
-
+fragment NUMBER: ('0'..'9');
 
 // Token specification
 WHILESTMT: 'while';
@@ -148,9 +143,9 @@ BOOLDCL: 'boolean';
 BREAK: 'break'SEMI;
 BLANK: (' ')+;
 BOOLVAL: 'true' | 'false';
-ID: (LOWERCASE(LOWERCASE | UPPERCASE | ('0'..'9'))*)*;
-SAFETY: HASHTAG('1'..'9')('0'..'9')*;
-NUMVAL: ('0'..'9')+(DOT('0'..'9')+)?;
+ID: LOWERCASE(LOWERCASE | UPPERCASE | NUMBER)*;
+SAFETY: HASHTAG('1'..'9')NUMBER*;
+NUMVAL: NUMBER+(DOT NUMBER+)?;
 CHARVAL: SINGLEQOUTE[a-zA-Z0-9]SINGLEQOUTE;
 STRVAL: DOUBLEQOUTE[a-zA-Z0-9]+DOUBLEQOUTE;
 PLUS: '+';
