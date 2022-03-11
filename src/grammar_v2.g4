@@ -100,7 +100,8 @@ bexpr:
 aexpr:
       aexpr (BLANK)* aop (BLANK)* aexpr
     | numberval
-    | ID;
+    | ID
+    | LPAR aexpr RPAR;
 bop:
       AND
     | OR;
