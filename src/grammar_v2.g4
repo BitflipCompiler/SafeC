@@ -11,7 +11,7 @@ commands:
     | ;
 
 declaration:
-     (safedeclaration)
+     safedeclaration
     | reassign
     | funcdcl;
 
@@ -69,25 +69,25 @@ forparams:
 boolassignment:
       ID(BLANK)* ASSIGN (BLANK)* bexpr;
 booldclassign:
-      booldecl boolassignment;
+      BOOLDCL BLANK ID (BLANK)* ASSIGN (BLANK)* bexpr;
 booldecl:
-      BOOLDCL BLANK (BLANK)*;
+      BOOLDCL BLANK ID (BLANK)*;
 numassignment:
      ID(BLANK)* ASSIGN (BLANK)* aexpr;
 numdclassign:
-      NUMDCL BLANK numassignment;
+      NUMDCL BLANK ID (BLANK)* ASSIGN (BLANK)* aexpr;
 numdecl:
-      NUMDCL BLANK ID (BLANK)*;
+      NUMDCL BLANK ID(BLANK)*;
 charassignment:
      ID(BLANK)* ASSIGN (BLANK)* CHARVAL;
 chardclassign:
-      chardecl charassignment;
+      CHARDCL BLANK ID (BLANK)* ASSIGN (BLANK)* CHARVAL;
 chardecl:
       CHARDCL BLANK ID (BLANK)*;
 stringassignment:
       ID(BLANK)* ASSIGN (BLANK)* STRVAL;
 stringdclassign:
-      stringdecl stringassignment;
+      STRDCL BLANK ID (BLANK)* ASSIGN (BLANK)* STRVAL;
 stringdecl:
       STRDCL BLANK ID (BLANK)*;
 
@@ -95,7 +95,7 @@ bexpr:
       bexpr (BLANK)* bop (BLANK)* bexpr
     | BOOLVAL
     | NOT (BLANK)* bexpr
-    | aexpr (BLANK)* relop (BLANK)*  aexpr;
+    | (aexpr | BOOLVAL) (BLANK)* relop (BLANK)*  (aexpr | BOOLVAL);
 
 aexpr:
       aexpr (BLANK)* aop (BLANK)* aexpr
