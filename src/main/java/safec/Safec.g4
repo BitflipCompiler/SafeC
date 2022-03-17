@@ -1,4 +1,4 @@
-grammar Grammar_v2;
+grammar Safec;
 prog: declarations commands ;
 
 declarations:
