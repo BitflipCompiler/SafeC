@@ -2,7 +2,7 @@ package iter2.expr.app;
 
 import iter2.expr.gen.ExprLexer;
 import iter2.expr.gen.ExprParser;
-import iter2.expr.model.ExpressionProcessor;
+import iter2.expr.service.ExpressionProcessor;
 import iter2.expr.service.AntlrToProgram;
 import iter2.expr.model.Program;
 import org.antlr.v4.runtime.CharStream;

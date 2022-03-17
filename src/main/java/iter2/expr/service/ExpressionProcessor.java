@@ -1,9 +1,7 @@
-package iter2.expr.model;
+package iter2.expr.service;
 
-import iter2.expr.model.Expression;
+import iter2.expr.model.*;
 import iter2.expr.model.Number;
-import iter2.expr.model.Variable;
-import iter2.expr.model.VariableDeclaration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +13,7 @@ import java.util.Map;
  */
 //TODO move this file out of model, cant be done right now since its accesing files out of scope
 public class ExpressionProcessor {
-    List<Expression> list;
+    public List<Expression> list;
     public Map<String, Integer> values; //Symbol table for storing the symbol variables
 
     public ExpressionProcessor(List<Expression> list){
