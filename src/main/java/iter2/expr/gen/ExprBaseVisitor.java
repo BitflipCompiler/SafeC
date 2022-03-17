@@ -1,6 +1,6 @@
-// Generated from /home/jona/Documents/GitHub/ANTLR/src/main/java/Expr.g4 by ANTLR 4.9.2
-
+// Generated from C:/Users/winros/Documents/GitHub/ANTLR/src/main/java/iter2/expr\Expr.g4 by ANTLR 4.9.2
 package iter2.expr.gen;
+
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -19,19 +19,40 @@ public class ExprBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements E
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProg(ExprParser.ProgContext ctx) { return visitChildren(ctx); }
+	@Override public T visitProgram(ExprParser.ProgramContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDecl(ExprParser.DeclContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDeclaration(ExprParser.DeclarationContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExpr(ExprParser.ExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMultiplication(ExprParser.MultiplicationContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAddition(ExprParser.AdditionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitVariable(ExprParser.VariableContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNumber(ExprParser.NumberContext ctx) { return visitChildren(ctx); }
 }

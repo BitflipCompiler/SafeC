@@ -1,7 +1,5 @@
 package iter2.grammar_v2.gen;
 
-import iter2.expr.gen.ExprLexer;
-import iter2.expr.gen.ExprParser;
 import org.antlr.v4.runtime.*;
 
 /*Code from slides 14: https://gfx.cse.taylor.edu/courses/cos382/slides/04_ANTLR.md.html?scale*/
