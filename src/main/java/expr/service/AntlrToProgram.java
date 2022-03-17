@@ -2,7 +2,7 @@ package expr.service;
 
 import expr.gen.ExprBaseVisitor;
 import expr.gen.ExprParser;
-import expr.model.Program;
+import expr.ast.Program;
 
 import java.util.ArrayList;
 import java.util.List;

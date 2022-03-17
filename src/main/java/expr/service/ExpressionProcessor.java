@@ -1,7 +1,7 @@
 package expr.service;
 
-import expr.model.*;
-import expr.model.Number;
+import expr.ast.*;
+import expr.ast.Number;
 
 import java.util.ArrayList;
 import java.util.HashMap;
