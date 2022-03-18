@@ -46,7 +46,6 @@ public class ExpressionApp {
     //parser will be of type from grammar Expr.g4
     private static ExprParser getParser(String fileName){
         ExprParser parser = null;
-
         try {
             CharStream input = CharStreams.fromFileName(fileName);
             ExprLexer lexer = new ExprLexer(input);
