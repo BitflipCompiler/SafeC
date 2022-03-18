@@ -1,7 +1,7 @@
 package expr.service;
 
-import expr.ast.*;
-import expr.ast.Number;
+import expr.nodes.*;
+import expr.nodes.Number;
 
 import java.util.ArrayList;
 import java.util.HashMap;

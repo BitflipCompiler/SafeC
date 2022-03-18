@@ -4,7 +4,7 @@ import expr.gen.ExprLexer;
 import expr.gen.ExprParser;
 import expr.service.ExpressionProcessor;
 import expr.service.AntlrToProgram;
-import expr.ast.Program;
+import expr.nodes.Program;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

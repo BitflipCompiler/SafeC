@@ -1,9 +1,9 @@
 package expr.service;
 
-import expr.ast.*;
+import expr.nodes.*;
 import expr.gen.ExprBaseVisitor;
 import expr.gen.ExprParser;
-import expr.ast.Number;
+import expr.nodes.Number;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
