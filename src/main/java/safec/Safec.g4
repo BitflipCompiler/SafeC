@@ -9,7 +9,13 @@ commands:
       | ;
 declaration:
       dclassignsemi
+    | structdcl
     | funcdcl;
+
+structdcl: DOLLAR ID structblock;
+
+structblock: LBRACE (safedeclaration SEMI)+ RBRACE;
+
 dclassignsemi:
      (safedeclaration | vassign) SEMI;
 dclassignsemicommand:
@@ -249,6 +255,7 @@ NOT: '!';
 AND: '&&';
 OR: '||';
 HASHTAG: '#';
+DOLLAR: '$';
 
 //SKIPS
 WS : [ \t\r\n\f]+ -> skip;
