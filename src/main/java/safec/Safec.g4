@@ -42,13 +42,13 @@ datatype:
     | BOOLDCL
     | VOIDDCL;
 
-atypes: aexpr | bexpr | CHARVAL | STRVAL;
+atypes: aexpr | bexpr | CHARVAL | STRVAL | funccalls;
 
 command:
       ctrlstruct
-    | funccalls ;
+    | funccalls SEMI;
 funccalls:
-      ID LPAR (callparams)? RPAR SEMI;
+      ID LPAR (callparams)? RPAR;
 
 funcdcl:
      datatype ID LPAR (params)? RPAR funcblock;
