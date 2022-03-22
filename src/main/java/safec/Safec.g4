@@ -1,12 +1,10 @@
 grammar Safec;
-prog: declarations commands ;
+prog: declarations;
 
 declarations:
       declaration declarations
       | ;
-commands:
-      command commands
-      | ;
+
 declaration:
       dclassignsemi
     | structdcl
