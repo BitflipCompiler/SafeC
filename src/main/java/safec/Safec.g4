@@ -26,7 +26,16 @@ vdcl:
       numdecl
     | chardecl
     | stringdecl
-    | booldecl;
+    | booldecl
+    | arraydecl;
+
+arraydecl: LBRACK arrdcltype RBRACK ID;
+
+arrdcltype:
+      NUMDCL
+    | CHARDCL
+    | STRDCL
+    | BOOLDCL;
 
 vassign: ID ASSIGN atypes;
 
@@ -34,7 +43,23 @@ vdclassign:
       numdclassign
     | chardclassign
     | stringdclassign
-    | booldclassign;
+    | booldclassign
+    | arraydclassign;
+
+arraydclassign:
+      numarraydclassign
+    | chararraydclassign
+    | stringarraydclassign
+    | boolarraydclassign;
+
+numarraydclassign: LBRACK NUMDCL RBRACK ID ASSIGN LBRACK numarray RBRACK;
+
+chararraydclassign: LBRACK CHARDCL RBRACK ID ASSIGN LBRACK chararray RBRACK;
+
+stringarraydclassign: LBRACK STRDCL RBRACK ID ASSIGN LBRACK strarray RBRACK;
+
+boolarraydclassign: LBRACK BOOLDCL RBRACK ID ASSIGN LBRACK boolarray RBRACK;
+
 datatype:
       NUMDCL
     | CHARDCL
@@ -42,13 +67,29 @@ datatype:
     | BOOLDCL
     | VOIDDCL;
 
-atypes: aexpr | bexpr | CHARVAL | STRVAL;
+atypes: aexpr | bexpr | CHARVAL | STRVAL | funccalls | arrayassign;
+
+arrayassign: LBRACK arraydata RBRACK;
+
+arraydata:
+      numarray
+    | chararray
+    | strarray
+    | boolarray;
+
+numarray: numberval (COMMA numberval)*;
+
+chararray: CHARVAL (COMMA CHARVAL)*;
+
+strarray: STRVAL (COMMA STRVAL)*;
+
+boolarray: BOOLVAL (COMMA BOOLVAL)*;
 
 command:
       ctrlstruct
-    | funccalls ;
+    | funccalls SEMI;
 funccalls:
-      ID LPAR (callparams)? RPAR SEMI;
+      ID LPAR (callparams)? RPAR;
 
 funcdcl:
      datatype ID LPAR (params)? RPAR funcblock;
@@ -184,7 +225,9 @@ DIVISION: '/';
 POW: 'pow';
 SQUARE: 'sqrt';
 MOD: '%';
-PI: 'pi';
+PI: 'PI';
+LBRACK: '[';
+RBRACK: ']';
 LPAR: '(';
 RPAR: ')';
 LBRACE: '{';
