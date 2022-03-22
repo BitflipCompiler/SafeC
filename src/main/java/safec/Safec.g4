@@ -1,9 +1,5 @@
 grammar Safec;
-prog: declarations;
-
-declarations:
-      declaration declarations
-      | ;
+prog: (declaration)* ;
 
 declaration:
       dclassignsemi
