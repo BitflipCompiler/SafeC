@@ -1,7 +1,5 @@
-package Safedeclaration.node;
+package SafeCTwo.node;
 
 public class PartBoolNode extends AST {
-    PartAexprNode;
-    IdPartNode;
-    NumberValNode;
+
 }

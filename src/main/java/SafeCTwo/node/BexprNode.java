@@ -1,6 +1,4 @@
-package Safedeclaration.node;
+package SafeCTwo.node;
 
 public class BexprNode extends AST {
-    BoolValNode;
-    BTermNode;
 }

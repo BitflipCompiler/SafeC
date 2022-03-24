@@ -1,4 +1,4 @@
-package Safedeclaration.node;
+package SafeCTwo.node;
 
 public class BTermNode extends AST {
     PartBoolNode;

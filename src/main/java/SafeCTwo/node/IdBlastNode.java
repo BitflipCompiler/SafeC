@@ -1,4 +1,4 @@
-package Safedeclaration.node;
+package SafeCTwo.node;
 
 public class IdBlastNode extends AST {
 

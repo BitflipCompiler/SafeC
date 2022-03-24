@@ -1,6 +1,5 @@
-package Safedeclaration.node;
+package SafeCTwo.node;
 
 public class ParExprNode extends AST {
-    BoolValNode;
-    BexprNode;
+
 }

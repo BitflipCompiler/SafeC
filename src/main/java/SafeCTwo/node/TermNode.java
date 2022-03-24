@@ -1,5 +1,5 @@
-package Safedeclaration.node;
+package SafeCTwo.node;
 
 public class TermNode extends AST {
-    PartNode;
+
 }
