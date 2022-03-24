@@ -1,28 +1,28 @@
 grammar SafeCTwo;
 
-prog: (declaration)* ;
+prog: (declaration)* #DeclarationNode ;
 
 declaration:
-      dclassignsemi
-    | structdcl
-    | funcdcl;
+      dclassignsemi #DclAssignSemiNode
+    | structdcl #StructDclNode
+    | funcdcl #FuncDclNode;
 
-structdcl: DOLLAR ID structblock;
+structdcl: DOLLAR ID structblock #StructDclBlockNode;
 
-structblock: LBRACE (safedeclaration SEMI)+ RBRACE;
+structblock: LBRACE (safedeclaration SEMI)+ RBRACE #StructBlockNode;
 
 dclassignsemi:
-     (safedeclaration | vassign) SEMI;
+     (safedeclaration | vassign) SEMI #SafeDeclVAssignNode;
 dclassignsemicommand:
-     (dclassignsemi | command)*;
+     (dclassignsemi | command)* #DclAssignSemiCommandNode;
 safedeclaration:
       SAFETY (vdcl | vdclassign) #SafeDeclNode;
 params:
-      vdcl (COMMA vdcl)*;
+      vdcl (COMMA vdcl)* #ParamsNode;
 block:
-      LBRACE dclassignsemicommand RBRACE;
+      LBRACE dclassignsemicommand RBRACE #BlockNode;
 caseblock:
-      dclassignsemicommand (BREAK)?;
+      dclassignsemicommand (BREAK)? #CaseBlockNode;
 vdcl:
       numdecl #NumVDclNode
     | chardecl #CharVDclNode
@@ -30,15 +30,15 @@ vdcl:
     | booldecl #BoolVDclNode
     | arraydecl #ArrayDclNode;
 
-arraydecl: LBRACK arrdcltype RBRACK ID;
+arraydecl: LBRACK arrdcltype RBRACK ID #ArrayDeclNode;
 
 arrdcltype:
-      NUMDCL
-    | CHARDCL
-    | STRDCL
-    | BOOLDCL;
+      NUMDCL #ArrayDclTypeNumDclNode
+    | CHARDCL #ArrayDclTypeCharDclNode
+    | STRDCL #ArrayDclTypeStringDclNode
+    | BOOLDCL #ArrayDclTypeBoolDclNode;
 
-vassign: ID ASSIGN atypes;
+vassign: ID ASSIGN atypes #VAssignNode;
 
 vdclassign:
       numdclassign #NumVDclAssignNode
@@ -48,29 +48,35 @@ vdclassign:
     | arraydclassign #ArrayDclAssignNode;
 
 arraydclassign:
-      numarraydclassign
-    | chararraydclassign
-    | stringarraydclassign
-    | boolarraydclassign;
+      numarraydclassign #NumArrayDclAssignNode
+    | chararraydclassign #CharArrayDclAssignNode
+    | stringarraydclassign #StringArrayDclAssignNode
+    | boolarraydclassign #BoolArrayDclAssignNode;
 
-numarraydclassign: LBRACK NUMDCL RBRACK ID ASSIGN LBRACK numarray RBRACK;
+numarraydclassign: LBRACK NUMDCL RBRACK ID ASSIGN LBRACK numarray RBRACK #NumArrayDclAssignNumArrayNode;
 
-chararraydclassign: LBRACK CHARDCL RBRACK ID ASSIGN LBRACK chararray RBRACK;
+chararraydclassign: LBRACK CHARDCL RBRACK ID ASSIGN LBRACK chararray RBRACK #CharArrayDclAssignCharArrayNode;
 
-stringarraydclassign: LBRACK STRDCL RBRACK ID ASSIGN LBRACK strarray RBRACK;
+stringarraydclassign: LBRACK STRDCL RBRACK ID ASSIGN LBRACK strarray RBRACK #StringArrayDclAssignStringArrayNode;
 
-boolarraydclassign: LBRACK BOOLDCL RBRACK ID ASSIGN LBRACK boolarray RBRACK;
+boolarraydclassign: LBRACK BOOLDCL RBRACK ID ASSIGN LBRACK boolarray RBRACK #BoolArrayDclAssignBoolArrayNode;
 
 datatype:
-      NUMDCL
-    | CHARDCL
-    | STRDCL
-    | BOOLDCL
-    | VOIDDCL;
+      NUMDCL #NumDclDatatypeNode
+    | CHARDCL #CharDclDatatypeNode
+    | STRDCL #StringDclDatatypeNode
+    | BOOLDCL #BoolDclDatatypeNode
+    | VOIDDCL #VoidDclDatatypeNode;
 
-atypes: aexpr | bexpr | CHARVAL | STRVAL | funccalls | arrayassign;
+atypes:
+    aexpr #ATypeAexprNode
+   | bexpr #ATypeBexprNode
+   | CHARVAL #ATypeCharValNode
+   | STRVAL #ATypeStrValNode
+   | funccalls #ATypeFuncCallsNode
+   | arrayassign #ATypeArrayAssignNode;
 
-arrayassign: LBRACK arraydata RBRACK;
+arrayassign: LBRACK arraydata RBRACK #ArrayAssignNode;
 
 arraydata:
       numarray #NumArrayDataNode
@@ -93,10 +99,10 @@ funccalls:
       ID LPAR (callparams)? RPAR #CallParametersNode;
 
 funcdcl:
-     datatype ID LPAR (params)? RPAR funcblock #FuncBlockNode;
+     datatype ID LPAR (params)? RPAR funcblock #FuncDclBlockNode;
 
 funcblock:
-     LBRACE dclassignsemicommand RETURN vals SEMI RBRACE #DclAssignSemiCommandNode;
+     LBRACE dclassignsemicommand RETURN vals SEMI RBRACE #FuncBlockNode;
 
 callparams:
      vals (COMMA vals)* #CallParamsValsNode;
@@ -171,11 +177,11 @@ bop:
 
 //VALUES
 vals:
-      numberval
-    | CHARVAL
-    | STRVAL
-    | BOOLVAL
-    | ID;
+      numberval #ValsNumberValsNode
+    | CHARVAL #ValsCharValsNode
+    | STRVAL #ValsStrValsNode
+    | BOOLVAL #ValsBoolValsNode
+    | ID #ValsIdValsNode;
 
 
 //NUMBER VALUE
