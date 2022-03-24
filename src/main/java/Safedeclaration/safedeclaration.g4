@@ -1,38 +1,38 @@
 grammar safedeclaration;
 
 safedeclaration:
-      SAFETY (vdcl | vdclassign);
+      SAFETY (vdcl | vdclassign) #SafeDeclNode;
 vdcl:
-      numdecl #NumVDcl
-    | chardecl #CharVDcl
-    | stringdecl #StringVDcl
-    | booldecl #BoolVDcl;
+      numdecl #NumVDclNode
+    | chardecl #CharVDclNode
+    | stringdecl #StringVDclNode
+    | booldecl #BoolVDclNode;
 
 vdclassign:
-      numdclassign #NumVDclAssign
-    | chardclassign #CharVDclAssign
-    | stringdclassign #StringVDclAssign
-    | booldclassign #BoolVDclAssign;
+      numdclassign #NumVDclAssignNode
+    | chardclassign #CharVDclAssignNode
+    | stringdclassign #StringVDclAssignNode
+    | booldclassign #BoolVDclAssignNode;
 
 //DECLARATIONS
 numdecl:
-      NUMDCL ID #NumDecl;
+      NUMDCL ID #NumDeclNode;
 booldecl:
-      BOOLDCL ID #BoolDecl;
+      BOOLDCL ID #BoolDeclNode;
 chardecl:
-      CHARDCL ID #CharDecl;
+      CHARDCL ID #CharDeclNode;
 stringdecl:
-      STRDCL ID #StringDecl;
+      STRDCL ID #StringDeclNode;
 
 //DCL + ASSIGN
 numdclassign:
-      numdecl ASSIGN aexpr #NumDclAssign;
+      numdecl ASSIGN aexpr #NumDclAssignNode;
 chardclassign:
-      chardecl ASSIGN CHARVAL #CharDclAssign;
+      chardecl ASSIGN CHARVAL #CharDclAssignNode;
 stringdclassign:
-      stringdecl ASSIGN STRVAL #StringDclAssign;
+      stringdecl ASSIGN STRVAL #StringDclAssignNode;
 booldclassign:
-      booldecl ASSIGN bexpr #BoolDclAssign;
+      booldecl ASSIGN bexpr #BoolDclAssignNode;
 
 bexpr: BOOLVAL #BoolValNode| bterm #BexprNode;
 
