@@ -3,11 +3,13 @@ grammar Aexpr2;
 
 
 aexpr:
-    term ((PLUS | MINUS)  term)* ;
+    term ((PLUS | MINUS)  term)* #AexprNode;
 term:
     part ((TIMES | DIVISION | MOD) part)* ;
 part:
-    LPAR aexpr RPAR | ID | numberval ;
+     LPAR aexpr RPAR
+    | ID
+    | numberval ;
 
 numberval:
     NUMVAL

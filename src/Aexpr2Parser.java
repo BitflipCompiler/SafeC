@@ -107,35 +107,57 @@ public class Aexpr2Parser extends Parser {
 	}
 
 	public static class AexprContext extends ParserRuleContext {
+		public AexprContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_aexpr; }
+	 
+		public AexprContext() { }
+		public void copyFrom(AexprContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class AexprAddSubNodeContext extends AexprContext {
+		public Token op;
 		public List<TermContext> term() {
 			return getRuleContexts(TermContext.class);
 		}
 		public TermContext term(int i) {
 			return getRuleContext(TermContext.class,i);
 		}
-		public List<TerminalNode> PLUS() { return getTokens(Aexpr2Parser.PLUS); }
-		public TerminalNode PLUS(int i) {
-			return getToken(Aexpr2Parser.PLUS, i);
-		}
-		public List<TerminalNode> MINUS() { return getTokens(Aexpr2Parser.MINUS); }
-		public TerminalNode MINUS(int i) {
-			return getToken(Aexpr2Parser.MINUS, i);
-		}
-		public AexprContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_aexpr; }
+		public TerminalNode PLUS() { return getToken(Aexpr2Parser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(Aexpr2Parser.MINUS, 0); }
+		public AexprAddSubNodeContext(AexprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexpr(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprAddSubNode(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexpr(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprAddSubNode(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexpr(this);
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprAddSubNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AexprTermNodeContext extends AexprContext {
+		public TermContext term() {
+			return getRuleContext(TermContext.class,0);
+		}
+		public AexprTermNodeContext(AexprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprTermNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprTermNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprTermNode(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -145,34 +167,38 @@ public class Aexpr2Parser extends Parser {
 		enterRule(_localctx, 0, RULE_aexpr);
 		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(8);
-			term();
 			setState(13);
 			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==PLUS || _la==MINUS) {
+			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
+			case 1:
+				_localctx = new AexprTermNodeContext(_localctx);
+				enterOuterAlt(_localctx, 1);
 				{
+				setState(8);
+				term();
+				}
+				break;
+			case 2:
+				_localctx = new AexprAddSubNodeContext(_localctx);
+				enterOuterAlt(_localctx, 2);
 				{
 				setState(9);
+				term();
+				setState(10);
+				((AexprAddSubNodeContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==PLUS || _la==MINUS) ) {
-				_errHandler.recoverInline(this);
+					((AexprAddSubNodeContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(10);
+				setState(11);
 				term();
 				}
-				}
-				setState(15);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -187,39 +213,58 @@ public class Aexpr2Parser extends Parser {
 	}
 
 	public static class TermContext extends ParserRuleContext {
+		public TermContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_term; }
+	 
+		public TermContext() { }
+		public void copyFrom(TermContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class AexprTimesDivModNodeContext extends TermContext {
+		public Token op;
 		public List<PartContext> part() {
 			return getRuleContexts(PartContext.class);
 		}
 		public PartContext part(int i) {
 			return getRuleContext(PartContext.class,i);
 		}
-		public List<TerminalNode> TIMES() { return getTokens(Aexpr2Parser.TIMES); }
-		public TerminalNode TIMES(int i) {
-			return getToken(Aexpr2Parser.TIMES, i);
-		}
-		public List<TerminalNode> DIVISION() { return getTokens(Aexpr2Parser.DIVISION); }
-		public TerminalNode DIVISION(int i) {
-			return getToken(Aexpr2Parser.DIVISION, i);
-		}
-		public List<TerminalNode> MOD() { return getTokens(Aexpr2Parser.MOD); }
-		public TerminalNode MOD(int i) {
-			return getToken(Aexpr2Parser.MOD, i);
-		}
-		public TermContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_term; }
+		public TerminalNode TIMES() { return getToken(Aexpr2Parser.TIMES, 0); }
+		public TerminalNode DIVISION() { return getToken(Aexpr2Parser.DIVISION, 0); }
+		public TerminalNode MOD() { return getToken(Aexpr2Parser.MOD, 0); }
+		public AexprTimesDivModNodeContext(TermContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterTerm(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprTimesDivModNode(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitTerm(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprTimesDivModNode(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitTerm(this);
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprTimesDivModNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AexprPartNodeContext extends TermContext {
+		public PartContext part() {
+			return getRuleContext(PartContext.class,0);
+		}
+		public AexprPartNodeContext(TermContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprPartNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprPartNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprPartNode(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -229,20 +274,28 @@ public class Aexpr2Parser extends Parser {
 		enterRule(_localctx, 2, RULE_term);
 		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(16);
-			part();
-			setState(21);
+			setState(20);
 			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TIMES) | (1L << DIVISION) | (1L << MOD))) != 0)) {
+			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+			case 1:
+				_localctx = new AexprPartNodeContext(_localctx);
+				enterOuterAlt(_localctx, 1);
 				{
+				setState(15);
+				part();
+				}
+				break;
+			case 2:
+				_localctx = new AexprTimesDivModNodeContext(_localctx);
+				enterOuterAlt(_localctx, 2);
 				{
+				setState(16);
+				part();
 				setState(17);
+				((AexprTimesDivModNodeContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TIMES) | (1L << DIVISION) | (1L << MOD))) != 0)) ) {
-				_errHandler.recoverInline(this);
+					((AexprTimesDivModNodeContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -252,11 +305,7 @@ public class Aexpr2Parser extends Parser {
 				setState(18);
 				part();
 				}
-				}
-				setState(23);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -271,30 +320,70 @@ public class Aexpr2Parser extends Parser {
 	}
 
 	public static class PartContext extends ParserRuleContext {
+		public PartContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_part; }
+	 
+		public PartContext() { }
+		public void copyFrom(PartContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class AexprIdNodeContext extends PartContext {
+		public TerminalNode ID() { return getToken(Aexpr2Parser.ID, 0); }
+		public AexprIdNodeContext(PartContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprIdNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprIdNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprIdNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AexprNumberValNodeContext extends PartContext {
+		public NumbervalContext numberval() {
+			return getRuleContext(NumbervalContext.class,0);
+		}
+		public AexprNumberValNodeContext(PartContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprNumberValNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprNumberValNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprNumberValNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AexprParensNodeContext extends PartContext {
 		public TerminalNode LPAR() { return getToken(Aexpr2Parser.LPAR, 0); }
 		public AexprContext aexpr() {
 			return getRuleContext(AexprContext.class,0);
 		}
 		public TerminalNode RPAR() { return getToken(Aexpr2Parser.RPAR, 0); }
-		public TerminalNode ID() { return getToken(Aexpr2Parser.ID, 0); }
-		public NumbervalContext numberval() {
-			return getRuleContext(NumbervalContext.class,0);
-		}
-		public PartContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_part; }
+		public AexprParensNodeContext(PartContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterPart(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprParensNode(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitPart(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprParensNode(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitPart(this);
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprParensNode(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -303,32 +392,35 @@ public class Aexpr2Parser extends Parser {
 		PartContext _localctx = new PartContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_part);
 		try {
-			setState(30);
+			setState(28);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LPAR:
+				_localctx = new AexprParensNodeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(24);
+				setState(22);
 				match(LPAR);
-				setState(25);
+				setState(23);
 				aexpr();
-				setState(26);
+				setState(24);
 				match(RPAR);
 				}
 				break;
 			case ID:
+				_localctx = new AexprIdNodeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(28);
+				setState(26);
 				match(ID);
 				}
 				break;
 			case NUMVAL:
 			case PI:
+				_localctx = new AexprNumberValNodeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(29);
+				setState(27);
 				numberval();
 				}
 				break;
@@ -348,23 +440,47 @@ public class Aexpr2Parser extends Parser {
 	}
 
 	public static class NumbervalContext extends ParserRuleContext {
-		public TerminalNode NUMVAL() { return getToken(Aexpr2Parser.NUMVAL, 0); }
-		public TerminalNode PI() { return getToken(Aexpr2Parser.PI, 0); }
 		public NumbervalContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_numberval; }
+	 
+		public NumbervalContext() { }
+		public void copyFrom(NumbervalContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class AexprPiNodeContext extends NumbervalContext {
+		public TerminalNode PI() { return getToken(Aexpr2Parser.PI, 0); }
+		public AexprPiNodeContext(NumbervalContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterNumberval(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprPiNode(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitNumberval(this);
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprPiNode(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitNumberval(this);
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprPiNode(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AexprNumValNodeContext extends NumbervalContext {
+		public TerminalNode NUMVAL() { return getToken(Aexpr2Parser.NUMVAL, 0); }
+		public AexprNumValNodeContext(NumbervalContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).enterAexprNumValNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof Aexpr2Listener ) ((Aexpr2Listener)listener).exitAexprNumValNode(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Aexpr2Visitor ) return ((Aexpr2Visitor<? extends T>)visitor).visitAexprNumValNode(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -372,20 +488,28 @@ public class Aexpr2Parser extends Parser {
 	public final NumbervalContext numberval() throws RecognitionException {
 		NumbervalContext _localctx = new NumbervalContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_numberval);
-		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
 			setState(32);
-			_la = _input.LA(1);
-			if ( !(_la==NUMVAL || _la==PI) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case NUMVAL:
+				_localctx = new AexprNumValNodeContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(30);
+				match(NUMVAL);
+				}
+				break;
+			case PI:
+				_localctx = new AexprPiNodeContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(31);
+				match(PI);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -401,16 +525,16 @@ public class Aexpr2Parser extends Parser {
 
 	public static final String _serializedATN =
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\38%\4\2\t\2\4\3\t\3"+
-		"\4\4\t\4\4\5\t\5\3\2\3\2\3\2\7\2\16\n\2\f\2\16\2\21\13\2\3\3\3\3\3\3\7"+
-		"\3\26\n\3\f\3\16\3\31\13\3\3\4\3\4\3\4\3\4\3\4\3\4\5\4!\n\4\3\5\3\5\3"+
-		"\5\2\2\6\2\4\6\b\2\5\3\2\27\30\4\2\31\32\35\35\4\2\22\22\36\36\2$\2\n"+
-		"\3\2\2\2\4\22\3\2\2\2\6 \3\2\2\2\b\"\3\2\2\2\n\17\5\4\3\2\13\f\t\2\2\2"+
-		"\f\16\5\4\3\2\r\13\3\2\2\2\16\21\3\2\2\2\17\r\3\2\2\2\17\20\3\2\2\2\20"+
-		"\3\3\2\2\2\21\17\3\2\2\2\22\27\5\6\4\2\23\24\t\3\2\2\24\26\5\6\4\2\25"+
-		"\23\3\2\2\2\26\31\3\2\2\2\27\25\3\2\2\2\27\30\3\2\2\2\30\5\3\2\2\2\31"+
-		"\27\3\2\2\2\32\33\7!\2\2\33\34\5\2\2\2\34\35\7\"\2\2\35!\3\2\2\2\36!\7"+
-		"\25\2\2\37!\5\b\5\2 \32\3\2\2\2 \36\3\2\2\2 \37\3\2\2\2!\7\3\2\2\2\"#"+
-		"\t\4\2\2#\t\3\2\2\2\5\17\27 ";
+		"\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2\3\2\5\2\20\n\2\3\3\3\3\3\3\3\3\3\3\5"+
+		"\3\27\n\3\3\4\3\4\3\4\3\4\3\4\3\4\5\4\37\n\4\3\5\3\5\5\5#\n\5\3\5\2\2"+
+		"\6\2\4\6\b\2\4\3\2\27\30\4\2\31\32\35\35\2%\2\17\3\2\2\2\4\26\3\2\2\2"+
+		"\6\36\3\2\2\2\b\"\3\2\2\2\n\20\5\4\3\2\13\f\5\4\3\2\f\r\t\2\2\2\r\16\5"+
+		"\4\3\2\16\20\3\2\2\2\17\n\3\2\2\2\17\13\3\2\2\2\20\3\3\2\2\2\21\27\5\6"+
+		"\4\2\22\23\5\6\4\2\23\24\t\3\2\2\24\25\5\6\4\2\25\27\3\2\2\2\26\21\3\2"+
+		"\2\2\26\22\3\2\2\2\27\5\3\2\2\2\30\31\7!\2\2\31\32\5\2\2\2\32\33\7\"\2"+
+		"\2\33\37\3\2\2\2\34\37\7\25\2\2\35\37\5\b\5\2\36\30\3\2\2\2\36\34\3\2"+
+		"\2\2\36\35\3\2\2\2\37\7\3\2\2\2 #\7\22\2\2!#\7\36\2\2\" \3\2\2\2\"!\3"+
+		"\2\2\2#\t\3\2\2\2\6\17\26\36\"";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
