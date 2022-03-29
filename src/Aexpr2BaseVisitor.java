@@ -16,26 +16,61 @@ public class Aexpr2BaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAexpr(Aexpr2Parser.AexprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAexprTermNode(Aexpr2Parser.AexprTermNodeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTerm(Aexpr2Parser.TermContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAexprAddSubNode(Aexpr2Parser.AexprAddSubNodeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPart(Aexpr2Parser.PartContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAexprPartNode(Aexpr2Parser.AexprPartNodeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNumberval(Aexpr2Parser.NumbervalContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAexprTimesDivModNode(Aexpr2Parser.AexprTimesDivModNodeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAexprParensNode(Aexpr2Parser.AexprParensNodeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAexprIdNode(Aexpr2Parser.AexprIdNodeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAexprNumberValNode(Aexpr2Parser.AexprNumberValNodeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAexprNumValNode(Aexpr2Parser.AexprNumValNodeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAexprPiNode(Aexpr2Parser.AexprPiNodeContext ctx) { return visitChildren(ctx); }
 }
