@@ -18,5 +18,6 @@ public class AntlrParser {
 
         MyVisitor myVisitor = new MyVisitor();
         myVisitor.visit(parseTree);
+        //System.out.println(parseTree.toStringTree());
     }
 }
