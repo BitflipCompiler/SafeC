@@ -1,6 +1,6 @@
 public class ASTPlusNode extends ASTNode{
-    ASTNode leftChild;
-    ASTNode rightChild;
+    public ASTNode leftChild;
+    public ASTNode rightChild;
 
     public ASTPlusNode(ASTNode leftChild, ASTNode rightChild) {
         this.leftChild = leftChild;

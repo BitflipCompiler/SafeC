@@ -1,6 +1,6 @@
 public class ASTModNode extends ASTNode{
-    ASTNode leftChild;
-    ASTNode rightChild;
+    public ASTNode leftChild;
+    public ASTNode rightChild;
 
     public ASTModNode(ASTNode leftChild, ASTNode rightChild) {
         this.leftChild = leftChild;

@@ -1,8 +1,8 @@
 public class ASTDivisionNode extends ASTNode{
-    ASTNode leftChild;
-    ASTNode rightChild;
+    public ASTNode leftChild;
+    public ASTNode rightChild;
 
-    ASTDivisionNode(ASTNode leftChild, ASTNode rightChild) {
+    public ASTDivisionNode(ASTNode leftChild, ASTNode rightChild) {
         this.leftChild = leftChild;
         this.rightChild = rightChild;
     }

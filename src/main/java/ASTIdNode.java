@@ -1,5 +1,5 @@
 public class ASTIdNode extends ASTNode{
-    String id;
+    public String id;
 
     public ASTIdNode(String id) {
         this.id = id;

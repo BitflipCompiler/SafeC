@@ -1,6 +1,6 @@
 public class ASTTimesNode extends ASTNode{
-    ASTNode leftChild;
-    ASTNode rightChild;
+    public ASTNode leftChild;
+    public ASTNode rightChild;
 
     public ASTTimesNode(ASTNode leftChild, ASTNode rightChild) {
         this.leftChild = leftChild;
@@ -9,6 +9,7 @@ public class ASTTimesNode extends ASTNode{
 
     @Override
     public void accept(ASTVisitor v) {
+
         v.visit(this);
     }
 }

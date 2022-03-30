@@ -1,4 +1,4 @@
-public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode>{
+public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
 
     @Override
@@ -28,7 +28,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode>{
     
     @Override 
     public ASTNode visitAexprIdNode(Aexpr2Parser.AexprIdNodeContext ctx) {
-        return new ASTIdNode(ctx.ID().getText()); 
+        return new ASTIdNode(ctx.ID().getText());
     }
     
     @Override 
