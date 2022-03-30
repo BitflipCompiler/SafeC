@@ -16,8 +16,8 @@ public class AntlrParser {
 
         ParseTree parseTree = aexpr2Parser.aexpr();
 
-        MyVisitor myVisitor = new MyVisitor();
-        myVisitor.visit(parseTree);
-        //System.out.println(parseTree.toStringTree());
+        CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
+        ASTNode ASTTree = cstToASTVisitor.visit(parseTree);
+
     }
 }

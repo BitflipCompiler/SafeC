@@ -3,17 +3,17 @@ grammar Aexpr2;
 
 
 aexpr:
-    term ((PLUS | MINUS)  term)* #AexprNode;
-term:
-    part ((TIMES | DIVISION | MOD) part)* ;
-part:
-     LPAR aexpr RPAR
-    | ID
-    | numberval ;
+      aexpr op=(TIMES | DIVISION | MOD) aexpr #AexprTimesDivNode
+    | aexpr op =(PLUS | MINUS) aexpr          #AexprAddSubNode
+    | ID                                      #AexprIdNode
+    | numberval                               #AexprNumbervalNode
+    | LPAR aexpr RPAR                         #AexprParensNode
+    ;
 
 numberval:
-    NUMVAL
-    | PI ;
+    NUMVAL  #AexprNumvalNode
+    | PI    #AexprPiNode
+    ;
 
 
 
