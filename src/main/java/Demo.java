@@ -25,5 +25,12 @@ public class Demo {
         //PRETTY PRINT
         ASTTree.accept(new PrettyPrint());
 
+        SymbolTable symbolTable = new SymbolTable();
+        Attributes x = new Attributes("x");
+        symbolTable.openScope();
+        symbolTable.enterSymbol(x);
+        symbolTable.closeScope();
+        System.out.println(symbolTable);
+
     }
 }
