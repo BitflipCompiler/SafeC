@@ -6,6 +6,8 @@ public class SymbolTableFill extends ASTVisitor{
         this.symbolTable = symbolTable;
     }
 
+
+
     @Override
     public void visit(ASTDivisionNode ctx) {
         visit(ctx.leftChild);

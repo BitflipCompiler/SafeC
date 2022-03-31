@@ -3,5 +3,6 @@ public enum Type {
     Boolean,
     String,
     Char,
-    Void
+    Void,
+    Struct
 }

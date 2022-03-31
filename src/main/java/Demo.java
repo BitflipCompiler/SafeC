@@ -16,21 +16,20 @@ public class Demo {
 
         //PARSER
         Aexpr2Parser aexpr2Parser = new Aexpr2Parser(commonTokenStream);
-        ParseTree parseTree = aexpr2Parser.aexpr();
+        ParseTree parseTree = aexpr2Parser.prog();
 
         //FROM CST TO AST
         CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
         ASTNode ASTTree = cstToASTVisitor.visit(parseTree);
 
         //PRETTY PRINT
-        // ASTTree.accept(new PrettyPrint());
+        //ASTTree.accept(new PrettyPrint());
 
         //SYMBOL TABLE FILLING
-        SymbolTable symbolTable = new SymbolTable();
+        /*SymbolTable symbolTable = new SymbolTable();
         ASTTree.accept(new SymbolTableFill(symbolTable));
 
-        System.out.println(symbolTable);
-
+        System.out.println(symbolTable);*/
 
     }
 }
