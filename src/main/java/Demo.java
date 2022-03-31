@@ -23,14 +23,14 @@ public class Demo {
         ASTNode ASTTree = cstToASTVisitor.visit(parseTree);
 
         //PRETTY PRINT
-        ASTTree.accept(new PrettyPrint());
+        // ASTTree.accept(new PrettyPrint());
 
+        //SYMBOL TABLE FILLING
         SymbolTable symbolTable = new SymbolTable();
-        Attributes x = new Attributes("x");
-        symbolTable.openScope();
-        symbolTable.enterSymbol(x);
-        symbolTable.closeScope();
+        ASTTree.accept(new SymbolTableFill(symbolTable));
+
         System.out.println(symbolTable);
+
 
     }
 }
