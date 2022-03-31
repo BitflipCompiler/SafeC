@@ -16,14 +16,14 @@ public class Demo {
 
         //PARSER
         Aexpr2Parser aexpr2Parser = new Aexpr2Parser(commonTokenStream);
-        ParseTree parseTree = aexpr2Parser.prog();
+        ParseTree parseTree = aexpr2Parser.iflogic();
 
         //FROM CST TO AST
         CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
         ASTNode ASTTree = cstToASTVisitor.visit(parseTree);
 
         //PRETTY PRINT
-        //ASTTree.accept(new PrettyPrint());
+        ASTTree.accept(new PrettyPrint());
 
         //SYMBOL TABLE FILLING
         /*SymbolTable symbolTable = new SymbolTable();

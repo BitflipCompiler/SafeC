@@ -4,6 +4,26 @@ public abstract class ASTVisitor {
         ctx.accept(this);
     }
 
+    public abstract void visit(ASTNotNode ctx);
+
+    public abstract void visit(ASTAndNode ctx);
+
+    public abstract void visit(ASTRelopEqualNode ctx);
+
+    public abstract void visit(ASTRelopNotEqualNode ctx);
+
+    public abstract void visit(ASTRelopLeqNode ctx);
+
+    public abstract void visit(ASTRelopGeqNode ctx);
+
+    public abstract void visit(ASTRelopLessNode ctx);
+
+    public abstract void visit(ASTRelopGreaterNode ctx);
+
+    public abstract void visit(ASTIdBoolValNode ctx);
+
+    public abstract void visit(ASTBoolValNode ctx);
+
     public abstract void visit(ASTDivisionNode ctx);
 
     public abstract void visit(ASTIdNode ctx);

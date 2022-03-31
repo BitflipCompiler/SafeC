@@ -33,15 +33,13 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitSafedeclaration(Aexpr2Parser.SafedeclarationContext ctx) {
-        ASTNode rightChild;
+        /*ASTNode rightChild;
         System.out.println(ctx.children.get(1).getChild(0).getChild(0).getChild(0));
         if(ctx.vdcl() != null){
             rightChild = visit(ctx.vdcl());
         } else if(ctx.vdclassign() != null) {
             rightChild = visit(ctx.vdclassign());
-        }
-
-
+        }*/
         return visitChildren(ctx);
         //throw new RuntimeException("SafeDeclaration error");
     }
@@ -193,7 +191,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitIflogic(Aexpr2Parser.IflogicContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.bexpr());
     }
 
     @Override
@@ -253,32 +251,58 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitBexprRelop(Aexpr2Parser.BexprRelopContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.relop().EQ() != null){
+            return new ASTRelopEqualNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
+        } else if(ctx.relop().NEQ() != null){
+            return new ASTRelopNotEqualNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
+        } else if(ctx.relop().LEQ() != null){
+            return new ASTRelopLeqNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
+        } else if(ctx.relop().GEQ() != null){
+            return new ASTRelopGeqNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
+        } else if(ctx.relop().LESS() != null){
+            return new ASTRelopLessNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
+        } else if(ctx.relop().GREATER() != null){
+            return new ASTRelopGreaterNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
+        } else {
+            throw new RuntimeException("BexprBop bop not valid.");
+        }
     }
 
     @Override
     public ASTNode visitNOTBexpr(Aexpr2Parser.NOTBexprContext ctx) {
-        return visitChildren(ctx);
+        return new ASTNotNode(visit(ctx.bexpr()));
     }
 
     @Override
     public ASTNode visitBexprIDBoolval(Aexpr2Parser.BexprIDBoolvalContext ctx) {
-        return visitChildren(ctx);
+        return new ASTIdBoolValNode(ctx.ID().getText(), ctx.BOOLVAL().getText());
     }
 
     @Override
     public ASTNode visitBexprBop(Aexpr2Parser.BexprBopContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.bop().AND() != null){
+            return new ASTAndNode(visit(ctx.bexpr(0)), visit(ctx.bexpr(1)));
+        } else if(ctx.bop().OR() != null){
+            return new ASTOrNode(visit(ctx.bexpr(0)), visit(ctx.bexpr(1)));
+        } else {
+            throw new RuntimeException("BexprBop bop not valid.");
+        }
     }
 
     @Override
     public ASTNode visitBexprParens(Aexpr2Parser.BexprParensContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.bexpr());
     }
 
     @Override
     public ASTNode visitBexprBoolval(Aexpr2Parser.BexprBoolvalContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.BOOLVAL().toString() == "true"){
+            return new ASTBoolValNode(true);
+        } else if(ctx.BOOLVAL().toString() == "false"){
+            return new ASTBoolValNode(false);
+        } else {
+            throw new RuntimeException("BexprBoolVal not valid input.");
+        }
     }
 
     @Override
@@ -293,7 +317,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitRelop(Aexpr2Parser.RelopContext ctx) {
-        return visitChildren(ctx);
+      return visitChildren(ctx);
     }
 
     @Override

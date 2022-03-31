@@ -144,7 +144,8 @@ stringdclassign:
 booldclassign:
       booldecl ASSIGN bexpr;
 
-bexpr:   BOOLVAL                      # BexprBoolval
+bexpr:
+         BOOLVAL                      # BexprBoolval
     |    ID '==' BOOLVAL              # BexprIDBoolval
     |    aexpr relop aexpr            # BexprRelop
     |    bexpr bop bexpr              # BexprBop
