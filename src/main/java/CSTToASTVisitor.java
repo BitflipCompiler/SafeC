@@ -23,7 +23,13 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitDclassignsemi(Aexpr2Parser.DclassignsemiContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.vassign() != null){
+            return visit(ctx.vassign());
+        } else if ( ctx.safedeclaration() != null){
+            return visit(ctx.safedeclaration());
+        } else{
+            throw new RuntimeException("Dclassignsemi not valid.");
+        }
     }
 
     @Override
@@ -33,15 +39,12 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitSafedeclaration(Aexpr2Parser.SafedeclarationContext ctx) {
-        /*ASTNode rightChild;
-        System.out.println(ctx.children.get(1).getChild(0).getChild(0).getChild(0));
-        if(ctx.vdcl() != null){
-            rightChild = visit(ctx.vdcl());
-        } else if(ctx.vdclassign() != null) {
-            rightChild = visit(ctx.vdclassign());
-        }*/
+        if(ctx.vdclassign() != null){
+            return new ASTSafeDclNode(ctx.SAFETY().toString(), visit(ctx.vdclassign()));
+        } else if(ctx.vdcl() != null){
+            return new ASTSafeDclNode(ctx.SAFETY().toString(), visit(ctx.vdcl()));
+        }
         return visitChildren(ctx);
-        //throw new RuntimeException("SafeDeclaration error");
     }
 
     @Override
@@ -76,7 +79,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVassign(Aexpr2Parser.VassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTAssignNode(ctx.ID().toString(), visit(ctx.atypes()));
     }
 
     @Override
@@ -116,7 +119,13 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitAtypes(Aexpr2Parser.AtypesContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.CHARVAL() != null){
+            return new ASTCharValNode(ctx.CHARVAL().toString());
+        } else if(ctx.STRVAL() != null){
+            return new ASTStringValNode(ctx.STRVAL().toString());
+        } else {
+            return visitChildren(ctx);
+        }
     }
 
     @Override
@@ -211,42 +220,42 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitNumdecl(Aexpr2Parser.NumdeclContext ctx) {
-        return visitChildren(ctx);
+        return new ASTNumNode(ctx.ID().toString());
     }
 
     @Override
     public ASTNode visitBooldecl(Aexpr2Parser.BooldeclContext ctx) {
-        return visitChildren(ctx);
+        return new ASTBoolNode(ctx.ID().toString());
     }
 
     @Override
     public ASTNode visitChardecl(Aexpr2Parser.ChardeclContext ctx) {
-        return visitChildren(ctx);
+        return new ASTCharNode(ctx.ID().toString());
     }
 
     @Override
     public ASTNode visitStringdecl(Aexpr2Parser.StringdeclContext ctx) {
-        return visitChildren(ctx);
+        return new ASTStringNode(visit(ctx.ID()).toString());
     }
 
     @Override
     public ASTNode visitNumdclassign(Aexpr2Parser.NumdclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTNumNode(visit(ctx.numdecl().ID()).toString(), visit(ctx.aexpr()));
     }
 
     @Override
     public ASTNode visitChardclassign(Aexpr2Parser.ChardclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTCharNode(visit(ctx.chardecl().ID()).toString(), new ASTCharValNode(visit(ctx.CHARVAL()).toString()));
     }
 
     @Override
     public ASTNode visitStringdclassign(Aexpr2Parser.StringdclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTStringNode(visit(ctx.stringdecl().ID()).toString(), new ASTStringValNode(visit(ctx.STRVAL()).toString()));
     }
 
     @Override
     public ASTNode visitBooldclassign(Aexpr2Parser.BooldclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTBoolNode(visit(ctx.booldecl().ID()).toString(), visit(ctx.bexpr()));
     }
 
     @Override
@@ -296,10 +305,8 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitBexprBoolval(Aexpr2Parser.BexprBoolvalContext ctx) {
-        if(ctx.BOOLVAL().toString() == "true"){
-            return new ASTBoolValNode(true);
-        } else if(ctx.BOOLVAL().toString() == "false"){
-            return new ASTBoolValNode(false);
+        if(ctx.BOOLVAL().getSymbol().getType() == Aexpr2Parser.BOOLVAL){
+            return new ASTBoolValNode(ctx.BOOLVAL().toString());
         } else {
             throw new RuntimeException("BexprBoolVal not valid input.");
         }
@@ -352,7 +359,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
     
     @Override 
     public ASTNode visitAexprNumbervalNode(Aexpr2Parser.AexprNumbervalNodeContext ctx) {
-        return visitChildren(ctx); 
+        return visitChildren(ctx);
     }
 
     @Override

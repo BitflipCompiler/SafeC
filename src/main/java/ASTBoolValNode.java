@@ -1,7 +1,7 @@
 public class ASTBoolValNode extends ASTBexpr{
-    boolean value;
+    String value;
 
-    public ASTBoolValNode(boolean value) {
+    public ASTBoolValNode(String value) {
         this.value = value;
     }
 }

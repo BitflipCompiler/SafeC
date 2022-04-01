@@ -1,9 +1,5 @@
 public class PrettyPrint extends ASTVisitor {
 
-    public void visit(ASTBexpr ctx) {
-        System.out.println("tis");
-    }
-
     @Override
     public void visit(ASTNotNode ctx) {
         System.out.print("!");
