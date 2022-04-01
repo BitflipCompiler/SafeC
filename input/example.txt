@@ -1,1 +1,5 @@
-x = true;
+$ x {
+#7 number x;
+}
+
+#7 number x;

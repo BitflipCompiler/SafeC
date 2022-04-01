@@ -16,7 +16,7 @@ public class Demo {
 
         //PARSER
         Aexpr2Parser aexpr2Parser = new Aexpr2Parser(commonTokenStream);
-        ParseTree parseTree = aexpr2Parser.dclassignsemi();
+        ParseTree parseTree = aexpr2Parser.prog();
 
         //FROM CST TO AST
         CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();

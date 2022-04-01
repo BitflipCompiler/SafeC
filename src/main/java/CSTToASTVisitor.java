@@ -3,22 +3,37 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitProg(Aexpr2Parser.ProgContext ctx) {
-        return visitChildren(ctx);
+        ASTProgNode progNode = new ASTProgNode();
+        for(int i = 0; i < ctx.declaration().size(); i++){
+            progNode.nodes.add(visit(ctx.declaration().get(i)));
+        }
+        return progNode;
     }
 
     @Override
     public ASTNode visitDeclaration(Aexpr2Parser.DeclarationContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.dclassignsemi() != null){
+            return visit(ctx.dclassignsemi());
+        } else if(ctx.structdcl() != null){
+            return visit(ctx.structdcl());
+        } else if (ctx.funcdcl() != null){
+            return visit(ctx.funcdcl());
+        }
+        throw new RuntimeException("declaration not valid.");
     }
 
     @Override
     public ASTNode visitStructdcl(Aexpr2Parser.StructdclContext ctx) {
-        return visitChildren(ctx);
+        return new ASTStructNode(ctx.ID().toString(), visit(ctx.structblock()));
     }
 
     @Override
     public ASTNode visitStructblock(Aexpr2Parser.StructblockContext ctx) {
-        return visitChildren(ctx);
+        ASTStructBlockNode structBlocknode = new ASTStructBlockNode();
+        for(int i = 0; i < ctx.safedeclaration().size(); i++){
+            structBlocknode.safeDclNodes.add(visit(ctx.safedeclaration().get(i)));
+        }
+        return structBlocknode;
     }
 
     @Override
@@ -54,12 +69,16 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitBlock(Aexpr2Parser.BlockContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.dclassignsemicommand());
     }
 
     @Override
     public ASTNode visitCaseblock(Aexpr2Parser.CaseblockContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.BREAK() != null){
+            return new ASTCaseBlockNode(visit(ctx.dclassignsemicommand()), ctx.BREAK().toString());
+        } else {
+            return new ASTCaseBlockNode(visit(ctx.dclassignsemicommand()));
+        }
     }
 
     @Override
@@ -114,7 +133,18 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitDatatype(Aexpr2Parser.DatatypeContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.NUMDCL() != null){
+            return new ASTNumberLitteralNode();
+        } else if (ctx.CHARDCL() != null){
+            return new ASTCharLitteralNode();
+        } else if(ctx.STRDCL() != null){
+            return new ASTStringLitteralNode();
+        } else if (ctx.BOOLDCL() != null){
+            return new ASTBoolLitteralNode();
+        } else if (ctx.VOIDDCL() != null){
+            return new ASTVoidNode();
+        }
+        throw new RuntimeException("Datatype not valid exception.");
     }
 
     @Override
@@ -170,12 +200,13 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitFuncdcl(Aexpr2Parser.FuncdclContext ctx) {
+
         return visitChildren(ctx);
     }
 
     @Override
     public ASTNode visitFuncblock(Aexpr2Parser.FuncblockContext ctx) {
-        return visitChildren(ctx);
+        return new ASTFuncBlockNode(visit(ctx.dclassignsemicommand()), visit(ctx.vals()));
     }
 
     @Override
@@ -210,11 +241,12 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitScase(Aexpr2Parser.ScaseContext ctx) {
-        return visitChildren(ctx);
+        return new ASTScaseNode(visit(ctx.vals()), visit(ctx.caseblock()));
     }
 
     @Override
     public ASTNode visitDefcase(Aexpr2Parser.DefcaseContext ctx) {
+
         return visitChildren(ctx);
     }
 
@@ -319,7 +351,18 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVals(Aexpr2Parser.ValsContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.CHARVAL() != null){
+            return new ASTCharValNode(ctx.CHARVAL().toString());
+        } else if (ctx.STRVAL() != null){
+            return new ASTStringValNode(ctx.STRVAL().toString());
+        } else if (ctx.BOOLVAL() != null){
+            return new ASTBoolValNode(ctx.BOOLVAL().toString());
+        } else if (ctx.ID() != null){
+            return new ASTIdNode(ctx.ID().toString());
+        } else if(visit(ctx.numberval()) != null) {
+            return visit(ctx.numberval());
+        }
+        throw new RuntimeException("Vals undefined.");
     }
 
     @Override
