@@ -1,4 +1,4 @@
-// Generated from C:/Users/mymay/Dropbox/AAU/Programmering/P4/ANTLR/grammar\Aexpr2.g4 by ANTLR 4.9.2
+// Generated from /Users/karlos/Desktop/ANTLR/grammar/Aexpr2.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -34,11 +34,12 @@ public interface Aexpr2Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStructblock(Aexpr2Parser.StructblockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Aexpr2Parser#dclassignsemi}.
+	 * Visit a parse tree produced by the {@code DclassignSemi}
+	 * labeled alternative in {@link Aexpr2Parser#dclassignsemi}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDclassignsemi(Aexpr2Parser.DclassignsemiContext ctx);
+	T visitDclassignSemi(Aexpr2Parser.DclassignSemiContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Aexpr2Parser#dclassignsemicommand}.
 	 * @param ctx the parse tree
@@ -214,17 +215,33 @@ public interface Aexpr2Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCtrlstruct(Aexpr2Parser.CtrlstructContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Aexpr2Parser#iterative}.
+	 * Visit a parse tree produced by the {@code ForLoop}
+	 * labeled alternative in {@link Aexpr2Parser#iterative}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIterative(Aexpr2Parser.IterativeContext ctx);
+	T visitForLoop(Aexpr2Parser.ForLoopContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Aexpr2Parser#selective}.
+	 * Visit a parse tree produced by the {@code WhileLoop}
+	 * labeled alternative in {@link Aexpr2Parser#iterative}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSelective(Aexpr2Parser.SelectiveContext ctx);
+	T visitWhileLoop(Aexpr2Parser.WhileLoopContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IfStatement}
+	 * labeled alternative in {@link Aexpr2Parser#selective}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStatement(Aexpr2Parser.IfStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SwitchStatement}
+	 * labeled alternative in {@link Aexpr2Parser#selective}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSwitchStatement(Aexpr2Parser.SwitchStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Aexpr2Parser#iflogic}.
 	 * @param ctx the parse tree

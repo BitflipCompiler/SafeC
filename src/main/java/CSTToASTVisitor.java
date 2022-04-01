@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
 
@@ -37,7 +40,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitDclassignsemi(Aexpr2Parser.DclassignsemiContext ctx) {
+    public ASTNode visitDclassignSemi(Aexpr2Parser.DclassignSemiContext ctx) {
         if(ctx.vassign() != null){
             return visit(ctx.vassign());
         } else if ( ctx.safedeclaration() != null){
@@ -220,13 +223,31 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitIterative(Aexpr2Parser.IterativeContext ctx) {
-        return visitChildren(ctx);
+    public ASTNode visitForLoop(Aexpr2Parser.ForLoopContext ctx) {
+        return super.visitForLoop(ctx);
     }
 
     @Override
-    public ASTNode visitSelective(Aexpr2Parser.SelectiveContext ctx) {
-        return visitChildren(ctx);
+    public ASTNode visitWhileLoop(Aexpr2Parser.WhileLoopContext ctx) {
+        return super.visitWhileLoop(ctx);
+    }
+
+    @Override
+    public ASTNode visitIfStatement(Aexpr2Parser.IfStatementContext ctx) {
+        if(ctx.block().size() == 2){
+            return new ASTIfStatementNode(visit(ctx.iflogic()),visit(ctx.block(0)),visit(ctx.block(1)));
+        }else{
+            return new ASTIfStatementNode(visit(ctx.iflogic()),visit(ctx.block(0)),null);
+        }
+    }
+
+    @Override
+    public ASTNode visitSwitchStatement(Aexpr2Parser.SwitchStatementContext ctx) {
+        List<ASTNode> scases = new ArrayList<>();
+        for(int i = 0; i < ctx.scase().size(); i++){
+            scases.add(visit(ctx.scase().get(i)));
+        }
+        return new ASTSwitchStatementNode(ctx.ID().toString(),scases,visit(ctx.defcase()));
     }
 
     @Override
@@ -246,8 +267,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitDefcase(Aexpr2Parser.DefcaseContext ctx) {
-
-        return visitChildren(ctx);
+        return new ASTDefCaseNode(visit(ctx.caseblock()));
     }
 
     @Override

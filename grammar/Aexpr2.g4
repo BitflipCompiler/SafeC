@@ -106,12 +106,14 @@ ctrlstruct:
       | iterative;
 
 iterative:
-        FORSTMT LPAR forparams RPAR block
-      | WHILESTMT LPAR bexpr RPAR block  ;
+        FORSTMT LPAR forparams RPAR block                      #ForLoop
+      | WHILESTMT LPAR bexpr RPAR block                        #WhileLoop
+      ;
 
 selective:
-        IFSTMT iflogic block ( ELSE  block)?
-      | SWITCHSTMT LPAR ID RPAR LBRACE (scase)* defcase RBRACE;
+        IFSTMT iflogic block ( ELSE  block)?                    #IfStatement
+      | SWITCHSTMT LPAR ID RPAR LBRACE (scase)* defcase RBRACE  #SwitchStatement
+      ;
 iflogic:
       LPAR bexpr RPAR;
 
