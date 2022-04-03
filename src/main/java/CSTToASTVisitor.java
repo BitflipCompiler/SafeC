@@ -198,7 +198,12 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitFunccalls(Aexpr2Parser.FunccallsContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.callparams() != null){
+            return new ASTFuncCalls(ctx.ID().toString(),visit(ctx.callparams()));
+        }else if(ctx.callparams() == null){
+            return new ASTFuncCalls(ctx.ID().toString());
+        }
+        throw new RuntimeException("Somethinf went wrong in VisitFuncCalls");
     }
 
     @Override
@@ -214,12 +219,24 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitCallparams(Aexpr2Parser.CallparamsContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.vals().size() == 1){
+            visit(ctx.vals().get(0));
+        }else if (ctx.vals().size() > 1){
+            for(int i = 0; i < ctx.vals().size();i++){
+                visit(ctx.vals().get(i));
+            }
+        }
+        throw new RuntimeException("Something went wrong in visitCallParams");
     }
 
     @Override
     public ASTNode visitCtrlstruct(Aexpr2Parser.CtrlstructContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.iterative() != null){
+            return visit(ctx.iterative());
+        }else if(ctx.selective() != null){
+            return visit(ctx.selective());
+        }
+        throw new RuntimeException("Something went wrong in visitCtrlStruct");
     }
 
     @Override
