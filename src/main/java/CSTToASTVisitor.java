@@ -52,7 +52,17 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitDclassignsemicommand(Aexpr2Parser.DclassignsemicommandContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.dclassignsemi() != null){
+            for(int i = 0; i < ctx.dclassignsemi().size(); i++){
+               return visit(ctx.dclassignsemi().get(i));
+            }
+        }else if(ctx.command() != null) {
+            for (int i = 0; i < ctx.command().size(); i++) {
+                return visit(ctx.command().get(i));
+            }
+        }
+        throw new RuntimeException("Something went wrong in visitDeclAssignSemiCommand");
+
     }
 
     @Override
@@ -193,7 +203,12 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitCommand(Aexpr2Parser.CommandContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.ctrlstruct() != null){
+            return visit(ctx.ctrlstruct());
+        }else if(ctx.funccalls() != null){
+            return visit(ctx.funccalls());
+        }
+        throw new RuntimeException("Something went wrong in visitCommand");
     }
 
     @Override

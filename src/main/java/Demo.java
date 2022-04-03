@@ -23,7 +23,7 @@ public class Demo {
         ASTNode ASTTree = cstToASTVisitor.visit(parseTree);
 
         //PRETTY PRINT
-        ASTTree.accept(new PrettyPrint());
+        //ASTTree.accept(new PrettyPrint());
 
         //SYMBOL TABLE FILLING
         /*SymbolTable symbolTable = new SymbolTable();
