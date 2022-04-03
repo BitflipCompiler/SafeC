@@ -224,12 +224,12 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitForLoop(Aexpr2Parser.ForLoopContext ctx) {
-        return super.visitForLoop(ctx);
+        return new ASTForLoop(visit(ctx.forparams()), visit(ctx.block()));
     }
 
     @Override
     public ASTNode visitWhileLoop(Aexpr2Parser.WhileLoopContext ctx) {
-        return super.visitWhileLoop(ctx);
+        return new ASTWhileLoop(visit(ctx.bexpr()),visit(ctx.block()));
     }
 
     @Override
@@ -257,7 +257,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitForparams(Aexpr2Parser.ForparamsContext ctx) {
-        return visitChildren(ctx);
+        return new ASTForParams(visit(ctx.numdclassign()), visit(ctx.bexpr()), ctx.ID().toString(), visit(ctx.aexpr()));
     }
 
     @Override
