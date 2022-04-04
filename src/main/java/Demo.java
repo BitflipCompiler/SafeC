@@ -11,12 +11,12 @@ public class Demo {
 
         //LEXER
         CharStream charStream = CharStreams.fromFileName("input/example.txt");
-        Aexpr2Lexer aexpr2Lexer = new Aexpr2Lexer(charStream);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(aexpr2Lexer);
+        SafeCLexer SafeCLexer = new SafeCLexer(charStream);
+        CommonTokenStream commonTokenStream = new CommonTokenStream(SafeCLexer);
 
         //PARSER
-        Aexpr2Parser aexpr2Parser = new Aexpr2Parser(commonTokenStream);
-        ParseTree parseTree = aexpr2Parser.prog();
+        SafeCParser SafeCParser = new SafeCParser(commonTokenStream);
+        ParseTree parseTree = SafeCParser.prog();
 
         //FROM CST TO AST
         CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();

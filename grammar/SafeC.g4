@@ -1,4 +1,4 @@
-grammar Aexpr2;
+grammar SafeC;
 
 prog: (declaration)* ;
 
