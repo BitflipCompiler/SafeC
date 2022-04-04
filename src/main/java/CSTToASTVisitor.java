@@ -77,7 +77,14 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitParams(Aexpr2Parser.ParamsContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.vdcl().size() == 1){
+            return visit(ctx.vdcl().get(0));
+        }else{
+            for(int i = 0; i < ctx.vdcl().size(); i++){
+                return visit(ctx.vdcl().get(i));
+            }
+        }
+        throw new RuntimeException("Something went wrong in VisitParams");
     }
 
     @Override
@@ -96,17 +103,38 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVdcl(Aexpr2Parser.VdclContext ctx) {
-       return visitChildren(ctx);
+      if(ctx.numdecl() != null){
+          return visit(ctx.numdecl());
+      }else if(ctx.chardecl() != null){
+          return visit(ctx.chardecl());
+      }else if(ctx.stringdecl() != null){
+          return visit(ctx.stringdecl());
+      }else if(ctx.booldecl() != null){
+          return visit(ctx.booldecl());
+      }else if (ctx.arraydecl() != null){
+          return visit(ctx.arraydecl());
+      }else{
+          throw new RuntimeException("Something went wrong in visitVdcl");
+      }
     }
 
     @Override
     public ASTNode visitArraydecl(Aexpr2Parser.ArraydeclContext ctx) {
-        return visitChildren(ctx);
+        return new ASTArrayDecl(visit(ctx.arrdcltype()),ctx.ID().toString());
     }
 
     @Override
     public ASTNode visitArrdcltype(Aexpr2Parser.ArrdcltypeContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.NUMDCL() != null){
+            return new ASTNumberLitteralNode();
+        } else if (ctx.CHARDCL() != null){
+            return new ASTCharLitteralNode();
+        } else if(ctx.STRDCL() != null){
+            return new ASTStringLitteralNode();
+        } else if (ctx.BOOLDCL() != null){
+            return new ASTBoolLitteralNode();
+        }
+        throw new RuntimeException("Datatype not valid exception.");
     }
 
     @Override
@@ -116,12 +144,32 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVdclassign(Aexpr2Parser.VdclassignContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.numdclassign() != null){
+            return visit(ctx.numdclassign());
+        }else if(ctx.chardclassign() != null){
+            return visit(ctx.chardclassign());
+        }else if(ctx.stringdclassign() != null){
+            return visit(ctx.stringdclassign());
+        }else if(ctx.booldclassign() != null){
+            return visit(ctx.booldclassign());
+        }else if(ctx.arraydclassign() != null){
+            return visit(ctx.arraydclassign());
+        }
+        throw new RuntimeException("Something went wrong in VisitVdeclAssign");
     }
 
     @Override
     public ASTNode visitArraydclassign(Aexpr2Parser.ArraydclassignContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.numarraydclassign() != null){
+            return visit(ctx.numarraydclassign());
+        }else if(ctx.chararraydclassign() != null){
+            return visit(ctx.chararraydclassign());
+        }else if(ctx.stringarraydclassign() != null){
+            return visit(ctx.stringarraydclassign());
+        }else if (ctx.boolarraydclassign() != null){
+            return visit(ctx.boolarraydclassign());
+        }
+        throw new RuntimeException("Something went wrong in visitArrayDclAssign");
     }
 
     @Override
@@ -223,8 +271,12 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitFuncdcl(Aexpr2Parser.FuncdclContext ctx) {
-
-        return visitChildren(ctx);
+        if(ctx.params() != null){
+            return new ASTFuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()));
+        }else if(ctx.params() == null){
+            return new ASTFuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()));
+        }
+        throw new RuntimeException("Something went wrong in visitFuncDcl");
     }
 
     @Override
@@ -419,7 +471,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitRelop(Aexpr2Parser.RelopContext ctx) {
-      return visitChildren(ctx);
+      throw new RuntimeException("I dont think we should ever be here because, it all should have been done in VisitBexprRelop ");
     }
 
     @Override
