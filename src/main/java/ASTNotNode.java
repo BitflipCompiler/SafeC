@@ -4,4 +4,8 @@ public class ASTNotNode extends ASTBexpr{
     public ASTNotNode(ASTNode value) {
         this.value = value;
     }
+    @Override
+    public void accept(ASTVisitor v) {
+        v.visit(this);
+    }
 }

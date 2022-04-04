@@ -9,4 +9,8 @@ public class ASTIdBoolValNode extends ASTBexpr{
         this.boolVal = boolVal;
     }
 
+    @Override
+    public void accept(ASTVisitor v) {
+        v.visit(this);
+    }
 }

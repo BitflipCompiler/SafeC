@@ -10,6 +10,6 @@ public class ASTDclAssignSemi extends ASTNode{
 
     @Override
     public void accept(ASTVisitor v) {
-
+        v.visit(this);
     }
 }

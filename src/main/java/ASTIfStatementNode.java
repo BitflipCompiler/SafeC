@@ -12,6 +12,6 @@ public class ASTIfStatementNode extends ASTNode {
 
     @Override
     public void accept(ASTVisitor v) {
-
+        v.visit(this);
     }
 }
