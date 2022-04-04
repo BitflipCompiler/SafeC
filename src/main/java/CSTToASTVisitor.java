@@ -45,29 +45,24 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
             return visit(ctx.vassign());
         } else if ( ctx.safedeclaration() != null){
             return visit(ctx.safedeclaration());
-        } else{
-            throw new RuntimeException("Dclassignsemi not valid.");
         }
+        throw new RuntimeException("Dclassignsemi not valid.");
     }
 
     @Override
     public ASTNode visitDclassignsemicommand(Aexpr2Parser.DclassignsemicommandContext ctx) {
-        if(ctx.dclassignsemi() == null && ctx.command() == null){
-            return null;
-        }else if(ctx.dclassignsemi() != null){
-            ASTDclAssignSemi astDclAssignSemi = new ASTDclAssignSemi();
+        ASTDclAssignSemi astDclAssignSemi = new ASTDclAssignSemi();
+        ASTCommandNode astCommandNode = new ASTCommandNode();
+        if(ctx.dclassignsemi() != null){
             for(int i = 0; i < ctx.dclassignsemi().size(); i++){
                astDclAssignSemi.nodes.add(visit(ctx.dclassignsemi().get(i)));
             }
-            return astDclAssignSemi;
         }else if(ctx.command() != null) {
-            ASTCommandNode astCommandNode = new ASTCommandNode();
             for (int i = 0; i < ctx.command().size(); i++) {
                  astCommandNode.nodes.add(visit(ctx.command().get(i)));
             }
-            return astCommandNode;
         }
-        throw new RuntimeException("Something went wrong in visitDeclAssignSemiCommand");
+        return new ASTDclAssignSemiCommandNode(astDclAssignSemi, astCommandNode);
     }
 
     @Override
@@ -77,19 +72,16 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
         } else if(ctx.vdcl() != null){
             return new ASTSafeDclNode(ctx.SAFETY().toString(), visit(ctx.vdcl()));
         }
-        return visitChildren(ctx);
+        throw new RuntimeException("safedeclaration not valid.");
     }
 
     @Override
     public ASTNode visitParams(Aexpr2Parser.ParamsContext ctx) {
-        if(ctx.vdcl().size() == 1){
-            return visit(ctx.vdcl().get(0));
-        }else{
-            for(int i = 0; i < ctx.vdcl().size();i++){
-                visit(ctx.vdcl().get(i));
-            }
+        ASTFormalParamsNode astFormalParamsNode = new ASTFormalParamsNode();
+        for(int i = 0; i < ctx.vdcl().size();i++){
+            astFormalParamsNode.vdcls.add(visit(ctx.vdcl().get(i)));
         }
-        throw new RuntimeException("Something went wrong in VisitParams");
+        return astFormalParamsNode;
     }
 
     @Override
@@ -179,22 +171,22 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitNumarraydclassign(Aexpr2Parser.NumarraydclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTArrayNumNode(ctx.ID().toString(), visit(ctx.numarray()));
     }
 
     @Override
     public ASTNode visitChararraydclassign(Aexpr2Parser.ChararraydclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTArrayCharNode(ctx.ID().toString(), visit(ctx.chararray()));
     }
 
     @Override
     public ASTNode visitStringarraydclassign(Aexpr2Parser.StringarraydclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTArrayStringNode(ctx.ID().toString(), visit(ctx.strarray()));
     }
 
     @Override
     public ASTNode visitBoolarraydclassign(Aexpr2Parser.BoolarraydclassignContext ctx) {
-        return visitChildren(ctx);
+        return new ASTArrayBoolNode(ctx.ID().toString(), visit(ctx.boolarray()));
     }
 
     @Override
@@ -208,7 +200,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
         } else if (ctx.BOOLDCL() != null){
             return new ASTBoolLitteralNode();
         } else if (ctx.VOIDDCL() != null){
-            return new ASTVoidNode();
+            return new ASTVoidLitteralNode();
         }
         throw new RuntimeException("Datatype not valid exception.");
     }
@@ -219,39 +211,70 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
             return new ASTCharValNode(ctx.CHARVAL().toString());
         } else if(ctx.STRVAL() != null){
             return new ASTStringValNode(ctx.STRVAL().toString());
+        } else if(ctx.aexpr() != null){
+            return visit(ctx.aexpr());
+        } else if(ctx.bexpr() != null){
+            return visit(ctx.bexpr());
+        } else if (ctx.funccalls() != null){
+            return visit(ctx.funccalls());
         } else {
-            return visitChildren(ctx);
+            throw new RuntimeException("Atypes not valid.");
         }
     }
 
     @Override
     public ASTNode visitArrayassign(Aexpr2Parser.ArrayassignContext ctx) {
-        return visitChildren(ctx);
+        return visit(ctx.arraydata());
     }
 
     @Override
     public ASTNode visitArraydata(Aexpr2Parser.ArraydataContext ctx) {
-        return visitChildren(ctx);
+        if(ctx.numarray() != null){
+            return visit(ctx.numarray());
+        } else if(ctx.chararray() != null){
+            return visit(ctx.chararray());
+        } else if(ctx.strarray() != null){
+            return visit(ctx.strarray());
+        } else if(ctx.boolarray() != null){
+            return visit(ctx.boolarray());
+        }
+        throw new RuntimeException("arraydata not valid.");
     }
 
     @Override
     public ASTNode visitNumarray(Aexpr2Parser.NumarrayContext ctx) {
-        return visitChildren(ctx);
+        ASTArrayNumValuesNode astArrayNumValuesNode = new ASTArrayNumValuesNode();
+        for(int i = 0; i < ctx.numberval().size();i++){
+            astArrayNumValuesNode.numValues.add(visit(ctx.numberval().get(i)));
+        }
+        return astArrayNumValuesNode;
     }
 
     @Override
     public ASTNode visitChararray(Aexpr2Parser.ChararrayContext ctx) {
-        return visitChildren(ctx);
+        ASTArrayCharValuesNode astArrayCharValuesNode = new ASTArrayCharValuesNode();
+        for(int i = 0; i < ctx.CHARVAL().size();i++){
+            astArrayCharValuesNode.charvalues.add(visit(ctx.CHARVAL().get(i)));
+        }
+        return astArrayCharValuesNode;
     }
 
     @Override
     public ASTNode visitStrarray(Aexpr2Parser.StrarrayContext ctx) {
-        return visitChildren(ctx);
+        ASTArrayStrValuesNode astArrayStrValuesNode = new ASTArrayStrValuesNode();
+        for(int i = 0; i < ctx.STRVAL().size();i++){
+            astArrayStrValuesNode.strValues.add(visit(ctx.STRVAL().get(i)));
+        }
+        return astArrayStrValuesNode;
     }
 
     @Override
     public ASTNode visitBoolarray(Aexpr2Parser.BoolarrayContext ctx) {
-        return visitChildren(ctx);
+        ASTArrayBoolValuesNode astArrayBoolValuesNode = new ASTArrayBoolValuesNode();
+        for(int i = 0; i < ctx.BOOLVAL().size();i++){
+            astArrayBoolValuesNode.boolValues.add(visit(ctx.BOOLVAL().get(i)));
+        }
+        return astArrayBoolValuesNode;
     }
 
     @Override
@@ -271,7 +294,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
         }else if(ctx.callparams() == null){
             return new ASTFuncCalls(ctx.ID().toString());
         }
-        throw new RuntimeException("Somethinf went wrong in VisitFuncCalls");
+        throw new RuntimeException("Something went wrong in VisitFuncCalls");
     }
 
     @Override
@@ -291,14 +314,11 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitCallparams(Aexpr2Parser.CallparamsContext ctx) {
-        if(ctx.vals().size() == 1){
-            visit(ctx.vals().get(0));
-        }else if (ctx.vals().size() > 1){
-            for(int i = 0; i < ctx.vals().size();i++){
-                visit(ctx.vals().get(i));
-            }
+        ASTActualParamsNode astActualParamsNode = new ASTActualParamsNode();
+        for(int i = 0; i < ctx.vals().size();i++){
+            astActualParamsNode.vals.add(visit(ctx.vals().get(i)));
         }
-        throw new RuntimeException("Something went wrong in visitCallParams");
+        return astActualParamsNode;
     }
 
     @Override
@@ -361,42 +381,42 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitNumdecl(Aexpr2Parser.NumdeclContext ctx) {
-        return new ASTNumNode(ctx.ID().toString());
+        return new ASTNumDclNode(ctx.ID().toString());
     }
 
     @Override
     public ASTNode visitBooldecl(Aexpr2Parser.BooldeclContext ctx) {
-        return new ASTBoolNode(ctx.ID().toString());
+        return new ASTBoolDclNode(ctx.ID().toString());
     }
 
     @Override
     public ASTNode visitChardecl(Aexpr2Parser.ChardeclContext ctx) {
-        return new ASTCharNode(ctx.ID().toString());
+        return new ASTCharDclNode(ctx.ID().toString());
     }
 
     @Override
     public ASTNode visitStringdecl(Aexpr2Parser.StringdeclContext ctx) {
-        return new ASTStringNode(visit(ctx.ID()).toString());
+        return new ASTStringDclNode(visit(ctx.ID()).toString());
     }
 
     @Override
     public ASTNode visitNumdclassign(Aexpr2Parser.NumdclassignContext ctx) {
-        return new ASTNumNode(visit(ctx.numdecl().ID()).toString(), visit(ctx.aexpr()));
+        return new ASTNumDclAssignNode(visit(ctx.numdecl()), visit(ctx.aexpr()));
     }
 
     @Override
     public ASTNode visitChardclassign(Aexpr2Parser.ChardclassignContext ctx) {
-        return new ASTCharNode(visit(ctx.chardecl().ID()).toString(), new ASTCharValNode(visit(ctx.CHARVAL()).toString()));
+        return new ASTCharDclAssignNode(visit(ctx.chardecl()), new ASTCharValNode(visit(ctx.CHARVAL()).toString()));
     }
 
     @Override
     public ASTNode visitStringdclassign(Aexpr2Parser.StringdclassignContext ctx) {
-        return new ASTStringNode(visit(ctx.stringdecl().ID()).toString(), new ASTStringValNode(visit(ctx.STRVAL()).toString()));
+        return new ASTStringDclAssignNode(visit(ctx.stringdecl()), new ASTStringValNode(visit(ctx.STRVAL()).toString()));
     }
 
     @Override
     public ASTNode visitBooldclassign(Aexpr2Parser.BooldclassignContext ctx) {
-        return new ASTBoolNode(visit(ctx.booldecl().ID()).toString(), visit(ctx.bexpr()));
+        return new ASTBoolDclAssignNode(visit(ctx.booldecl()), visit(ctx.bexpr()));
     }
 
     @Override
