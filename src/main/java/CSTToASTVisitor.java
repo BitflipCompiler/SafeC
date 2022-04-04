@@ -40,7 +40,7 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitDclassignSemi(Aexpr2Parser.DclassignSemiContext ctx) {
+    public ASTNode visitDclassignsemi(Aexpr2Parser.DclassignsemiContext ctx) {
         if(ctx.vassign() != null){
             return visit(ctx.vassign());
         } else if ( ctx.safedeclaration() != null){
@@ -52,17 +52,22 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitDclassignsemicommand(Aexpr2Parser.DclassignsemicommandContext ctx) {
-        if(ctx.dclassignsemi() != null){
+        if(ctx.dclassignsemi() == null && ctx.command() == null){
+            return null;
+        }else if(ctx.dclassignsemi() != null){
+            ASTDclAssignSemi astDclAssignSemi = new ASTDclAssignSemi();
             for(int i = 0; i < ctx.dclassignsemi().size(); i++){
-               return visit(ctx.dclassignsemi().get(i));
+               astDclAssignSemi.nodes.add(visit(ctx.dclassignsemi().get(i)));
             }
+            return astDclAssignSemi;
         }else if(ctx.command() != null) {
+            ASTCommandNode astCommandNode = new ASTCommandNode();
             for (int i = 0; i < ctx.command().size(); i++) {
-                return visit(ctx.command().get(i));
+                 astCommandNode.nodes.add(visit(ctx.command().get(i)));
             }
+            return astCommandNode;
         }
         throw new RuntimeException("Something went wrong in visitDeclAssignSemiCommand");
-
     }
 
     @Override
@@ -80,8 +85,8 @@ public class CSTToASTVisitor extends Aexpr2BaseVisitor<ASTNode> {
         if(ctx.vdcl().size() == 1){
             return visit(ctx.vdcl().get(0));
         }else{
-            for(int i = 0; i < ctx.vdcl().size(); i++){
-                return visit(ctx.vdcl().get(i));
+            for(int i = 0; i < ctx.vdcl().size();i++){
+                visit(ctx.vdcl().get(i));
             }
         }
         throw new RuntimeException("Something went wrong in VisitParams");

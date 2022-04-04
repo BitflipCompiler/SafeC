@@ -1,5 +1,8 @@
-$ x {
-#7 number x;
-}
+void kat(){ return null; };
+void missekat(){ return null; };
 
-#7 number x;
+number missekat(number x, number y){
+    #7 number x = 10;
+    #7 number y = 0;
+    return x;
+}

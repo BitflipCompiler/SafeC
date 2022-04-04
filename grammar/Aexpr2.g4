@@ -12,7 +12,7 @@ structdcl: DOLLAR ID structblock;
 structblock: LBRACE (safedeclaration SEMI)+ RBRACE;
 
 dclassignsemi:
-     (safedeclaration | vassign) SEMI   #DclassignSemi;
+     (safedeclaration | vassign) SEMI;
 dclassignsemicommand:
      (dclassignsemi | command)*;
 safedeclaration:
