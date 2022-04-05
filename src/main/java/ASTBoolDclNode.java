@@ -1,4 +1,4 @@
-public class ASTBoolDclNode extends ASTNode{
+public class ASTBoolDclNode extends ASTDcl{
 
     String id;
 

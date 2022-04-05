@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ASTSwitchStatementNode extends ASTNode{
+public class ASTSwitchStatementNode extends ASTSelective{
     String id;
     List<ASTNode> scases = new ArrayList<>();
     ASTNode defcase;

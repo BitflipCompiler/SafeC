@@ -1,4 +1,4 @@
-public class ASTStringDclAssignNode extends ASTNode{
+public class ASTStringDclAssignNode extends ASTDclAssign{
     ASTNode stringdcl;
     ASTStringValNode stringval;
 

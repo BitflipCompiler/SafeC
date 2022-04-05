@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ASTArrayCharValuesNode extends ASTNode{
+public class ASTArrayCharValuesNode extends ASTArrayData{
     List<ASTNode> charvalues = new ArrayList<>();
 
     public ASTArrayCharValuesNode() {

@@ -1,4 +1,4 @@
-public class ASTWhileLoop extends ASTNode{
+public class ASTWhileLoop extends ASTSelective{
     ASTNode bexpr;
     ASTNode block;
 

@@ -1,4 +1,4 @@
-public class ASTPiNode extends ASTNumbervalNode{
+public class ASTPiNode extends ASTNumberval {
 
     public ASTPiNode() {
     }

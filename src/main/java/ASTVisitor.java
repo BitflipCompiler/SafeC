@@ -32,7 +32,7 @@ public abstract class ASTVisitor {
 
     public abstract void visit(ASTModNode ctx);
 
-    public abstract void visit(ASTNumbervalNode ctx);
+    public abstract void visit(ASTNumberval ctx);
 
     public abstract void visit(ASTNumvalNode ctx);
 
@@ -52,7 +52,7 @@ public abstract class ASTVisitor {
 
     public abstract void visit(ASTArrayCharValuesNode ctx);
 
-    public abstract void visit(ASTArrayDecl ctx);
+    public abstract void visit(ASTArrayDeclNode ctx);
 
     public abstract void visit(ASTArrayNumNode ctx);
 

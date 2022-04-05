@@ -1,4 +1,4 @@
-public class ASTNumDclAssignNode extends ASTNode{
+public class ASTNumDclAssignNode extends ASTDclAssign{
     ASTNode numdecl;
     ASTNode aexpr;
 

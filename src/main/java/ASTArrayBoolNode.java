@@ -1,4 +1,4 @@
-public class ASTArrayBoolNode extends ASTNode{
+public class ASTArrayBoolNode extends ASTArray{
     String id;
     ASTNode boolArray;
 

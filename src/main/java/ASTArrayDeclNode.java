@@ -1,8 +1,8 @@
-public class ASTArrayDecl extends ASTNode{
+public class ASTArrayDeclNode extends ASTNode{
     ASTNode arrdcltype;
     String id;
 
-    public ASTArrayDecl(ASTNode arrdcltype, String id) {
+    public ASTArrayDeclNode(ASTNode arrdcltype, String id) {
         this.arrdcltype = arrdcltype;
         this.id = id;
     }

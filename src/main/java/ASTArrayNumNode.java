@@ -1,4 +1,4 @@
-public class ASTArrayNumNode extends ASTNode{
+public class ASTArrayNumNode extends ASTArray{
     String id;
     ASTNode numArray;
 

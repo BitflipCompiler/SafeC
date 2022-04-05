@@ -1,4 +1,4 @@
-public class ASTStringLitteralNode extends ASTNode{
+public class ASTStringLitteralNode extends ASTDatatype{
 
     public ASTStringLitteralNode() {
     }

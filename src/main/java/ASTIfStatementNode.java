@@ -1,4 +1,4 @@
-public class ASTIfStatementNode extends ASTNode {
+public class ASTIfStatementNode extends ASTSelective {
     ASTNode iflogic;
     ASTNode ifThenBlock;
     ASTNode elseBlock;

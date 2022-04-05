@@ -1,4 +1,4 @@
-public class ASTNumvalNode extends ASTNumbervalNode{
+public class ASTNumvalNode extends ASTNumberval {
     public String value;
 
     public ASTNumvalNode(String value) {

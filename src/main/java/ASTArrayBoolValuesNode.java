@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ASTArrayBoolValuesNode extends ASTNode{
+public class ASTArrayBoolValuesNode extends ASTArrayData{
     List<ASTNode> boolValues = new ArrayList<>();
 
     public ASTArrayBoolValuesNode() {

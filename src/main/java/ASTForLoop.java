@@ -1,4 +1,4 @@
-public class ASTForLoop extends ASTNode{
+public class ASTForLoop extends ASTIterative{
 
     ASTNode forparams;
     ASTNode block;

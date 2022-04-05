@@ -1,4 +1,4 @@
-public class ASTModNode extends ASTNode{
+public class ASTModNode extends ASTAexpr{
     public ASTNode leftChild;
     public ASTNode rightChild;
 

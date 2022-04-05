@@ -1,4 +1,4 @@
-public class ASTBoolLitteralNode extends ASTNode{
+public class ASTBoolLitteralNode extends ASTDatatype{
 
     public ASTBoolLitteralNode() {
     }

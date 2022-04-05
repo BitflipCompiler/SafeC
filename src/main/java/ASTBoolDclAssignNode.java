@@ -1,4 +1,4 @@
-public class ASTBoolDclAssignNode extends ASTNode{
+public class ASTBoolDclAssignNode extends ASTDclAssign{
     ASTNode boolDcl;
     ASTNode bexpr;
 

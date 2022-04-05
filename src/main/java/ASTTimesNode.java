@@ -1,4 +1,4 @@
-public class ASTTimesNode extends ASTNode{
+public class ASTTimesNode extends ASTAexpr{
     public ASTNode leftChild;
     public ASTNode rightChild;
 

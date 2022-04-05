@@ -117,7 +117,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitArraydecl(SafeCParser.ArraydeclContext ctx) {
-        return new ASTArrayDecl(visit(ctx.arrdcltype()),ctx.ID().toString());
+        return new ASTArrayDeclNode(visit(ctx.arrdcltype()),ctx.ID().toString());
     }
 
     @Override

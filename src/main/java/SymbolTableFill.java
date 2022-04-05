@@ -92,7 +92,7 @@ public class SymbolTableFill extends ASTVisitor{
     }
 
     @Override
-    public void visit(ASTNumbervalNode ctx) {
+    public void visit(ASTNumberval ctx) {
 
     }
 
@@ -144,7 +144,7 @@ public class SymbolTableFill extends ASTVisitor{
     }
 
     @Override
-    public void visit(ASTArrayDecl ctx) {
+    public void visit(ASTArrayDeclNode ctx) {
 
     }
 
