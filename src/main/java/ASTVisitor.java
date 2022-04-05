@@ -41,4 +41,12 @@ public abstract class ASTVisitor {
     public abstract void visit(ASTPlusNode ctx);
 
     public abstract void visit(ASTTimesNode ctx);
+
+    public abstract void visit(ASTActualParamsNode ctx);
+
+    public abstract void visit(ASTArrayBoolNode ctx);
+
+    public abstract void visit(ASTArrayBoolValuesNode ctx);
+
+
 }

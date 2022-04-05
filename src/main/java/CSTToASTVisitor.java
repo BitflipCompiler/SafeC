@@ -396,7 +396,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitStringdecl(SafeCParser.StringdeclContext ctx) {
-        return new ASTStringDclNode(visit(ctx.ID()).toString());
+        return new ASTStringDclNode(ctx.ID().toString());
     }
 
     @Override
@@ -406,12 +406,12 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitChardclassign(SafeCParser.ChardclassignContext ctx) {
-        return new ASTCharDclAssignNode(visit(ctx.chardecl()), new ASTCharValNode(visit(ctx.CHARVAL()).toString()));
+        return new ASTCharDclAssignNode(visit(ctx.chardecl()), new ASTCharValNode(ctx.CHARVAL().toString()));
     }
 
     @Override
     public ASTNode visitStringdclassign(SafeCParser.StringdclassignContext ctx) {
-        return new ASTStringDclAssignNode(visit(ctx.stringdecl()), new ASTStringValNode(visit(ctx.STRVAL()).toString()));
+        return new ASTStringDclAssignNode(visit(ctx.stringdecl()), new ASTStringValNode(ctx.STRVAL().toString()));
     }
 
     @Override
