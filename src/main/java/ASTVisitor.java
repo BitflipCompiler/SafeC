@@ -80,10 +80,6 @@ public abstract class ASTVisitor {
 
     public abstract void visit(ASTCharValNode ctx);
 
-    public abstract void visit(ASTCommandNode ctx);
-
-    public abstract void visit(ASTDclAssignSemi ctx);
-
     public abstract void visit(ASTDclAssignSemiCommandNode ctx);
 
     public abstract void visit(ASTDefCaseNode ctx);

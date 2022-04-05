@@ -13,8 +13,12 @@ structblock: LBRACE (safedeclaration SEMI)+ RBRACE;
 
 dclassignsemi:
      (safedeclaration | vassign) SEMI;
+
 dclassignsemicommand:
-     (dclassignsemi | command)*;
+        dclassignsemi dclassignsemicommand
+      | command dclassignsemicommand
+      | ;
+
 safedeclaration:
       SAFETY (vdcl | vdclassign);
 params:

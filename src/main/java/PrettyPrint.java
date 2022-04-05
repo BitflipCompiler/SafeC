@@ -281,24 +281,9 @@ public class PrettyPrint extends ASTVisitor {
     }
 
     @Override
-    public void visit(ASTCommandNode ctx) {
-        for (ASTNode node : ctx.nodes) {
-            visit(node);
-        }
-    }
-
-    @Override
-    public void visit(ASTDclAssignSemi ctx) {
-        for (ASTNode node : ctx.nodes) {
-            System.out.println("=");
-            visit(node);
-            System.out.println(";");
-        }
-    }
-
-    @Override
     public void visit(ASTDclAssignSemiCommandNode ctx) {
-
+        visit(ctx.actual);
+        visit(ctx.recursion);
     }
 
     @Override

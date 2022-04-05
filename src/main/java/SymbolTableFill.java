@@ -214,16 +214,6 @@ public class SymbolTableFill extends ASTVisitor{
     }
 
     @Override
-    public void visit(ASTCommandNode ctx) {
-
-    }
-
-    @Override
-    public void visit(ASTDclAssignSemi ctx) {
-
-    }
-
-    @Override
     public void visit(ASTDclAssignSemiCommandNode ctx) {
 
     }
