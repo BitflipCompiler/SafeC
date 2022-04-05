@@ -51,10 +51,20 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitDclassignsemicommand(SafeCParser.DclassignsemicommandContext ctx) {
-        if(ctx.dclassignsemi() != null){
-            return new ASTDclAssignSemiCommandNode(visit(ctx.dclassignsemi()), visit(ctx.dclassignsemicommand()));
-        } else if (ctx.command() != null){
-            return new ASTDclAssignSemiCommandNode(visit(ctx.command()), visit(ctx.dclassignsemicommand()));
+        if(ctx.dclassignsemicommand() != null){
+            if(ctx.dclassignsemi() != null){
+                return new ASTDclAssignSemiCommandNode(visit(ctx.dclassignsemi()), visit(ctx.dclassignsemicommand()));
+            } else if(ctx.command() != null){
+                return new ASTDclAssignSemiCommandNode(visit(ctx.command()), visit(ctx.dclassignsemicommand()));
+            }
+        } else if(ctx.dclassignsemicommand() == null){
+            if (ctx.dclassignsemi() != null){
+                return new ASTDclAssignSemiCommandNode(visit(ctx.dclassignsemi()), null);
+            } else if(ctx.command() != null){
+                return new ASTDclAssignSemiCommandNode(visit(ctx.command()), null);
+            } else if(ctx.dclassignsemi() == null && ctx.command() == null) {
+                return new ASTEmptyNode();
+            }
         }
         throw new RuntimeException("dclAssignSemiCommand not valid.");
     }
