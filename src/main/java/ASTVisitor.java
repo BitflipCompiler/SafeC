@@ -48,5 +48,95 @@ public abstract class ASTVisitor {
 
     public abstract void visit(ASTArrayBoolValuesNode ctx);
 
+    public abstract void visit(ASTArrayCharNode ctx);
+
+    public abstract void visit(ASTArrayCharValuesNode ctx);
+
+    public abstract void visit(ASTArrayDecl ctx);
+
+    public abstract void visit(ASTArrayNumNode ctx);
+
+    public abstract void visit(ASTArrayNumValuesNode ctx);
+
+    public abstract void visit(ASTArrayStringNode ctx);
+
+    public abstract void visit(ASTArrayStrValuesNode ctx);
+
+    public abstract void visit(ASTAssignNode ctx);
+
+    public abstract void visit(ASTBexpr ctx);
+
+    public abstract void visit(ASTBoolDclAssignNode ctx);
+
+    public abstract void visit(ASTBoolDclNode ctx);
+
+    public abstract void visit(ASTBoolLitteralNode ctx);
+
+    public abstract void visit(ASTCaseBlockNode ctx);
+
+    public abstract void visit(ASTCharDclAssignNode ctx);
+
+    public abstract void visit(ASTCharDclNode ctx);
+
+    public abstract void visit(ASTCharValNode ctx);
+
+    public abstract void visit(ASTCommandNode ctx);
+
+    public abstract void visit(ASTDclAssignSemi ctx);
+
+    public abstract void visit(ASTDclAssignSemiCommandNode ctx);
+
+    public abstract void visit(ASTDefCaseNode ctx);
+
+    public abstract void visit(ASTForLoop ctx);
+
+    public abstract void visit(ASTFormalParamsNode ctx);
+
+    public abstract void visit(ASTForParams ctx);
+
+    public abstract void visit(ASTFuncBlockNode ctx);
+
+    public abstract void visit(ASTFuncCalls ctx);
+
+    public abstract void visit(ASTFuncDcl ctx);
+
+    public abstract void visit(ASTIfStatementNode ctx);
+
+    public abstract void visit(ASTNumberLitteralNode ctx);
+
+    public abstract void visit(ASTNumDclAssignNode ctx);
+
+    public abstract void visit(ASTNumDclNode ctx);
+
+    public abstract void visit(ASTOrNode ctx);
+
+    public abstract void visit(ASTProgNode ctx);
+
+    public abstract void visit(ASTSafeDclNode ctx);
+
+    public abstract void visit(ASTScaseNode ctx);
+
+    public abstract void visit(ASTStringDclAssignNode ctx);
+
+    public abstract void visit(ASTStringDclNode ctx);
+
+    public abstract void visit(ASTStringLitteralNode ctx);
+
+    public abstract void visit(ASTStringValNode ctx);
+
+    public abstract void visit(ASTStructBlockNode ctx);
+
+    public abstract void visit(ASTStructNode ctx);
+
+    public abstract void visit(ASTSwitchStatementNode ctx);
+
+    public abstract void visit(ASTVoidLitteralNode ctx);
+
+    public abstract void visit(ASTWhileLoop ctx);
+
+
+
+
+
 
 }
