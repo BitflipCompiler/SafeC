@@ -1,0 +1,17 @@
+package nodes;
+
+import nodes.abstracts.ASTNode;
+import visitor.ASTVisitor;
+
+public class ASTIdNode extends ASTNode {
+    public String id;
+
+    public ASTIdNode(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public void accept(ASTVisitor v) {
+        v.visit(this);
+    }
+}

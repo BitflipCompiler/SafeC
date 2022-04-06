@@ -1,8 +1,11 @@
+import gen.*;
+import nodes.abstracts.ASTNode;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-
+import run.CSTToASTVisitor;
+import run.PrettyPrint;
 import java.io.IOException;
 
 public class Demo {
@@ -26,8 +29,8 @@ public class Demo {
         ASTTree.accept(new PrettyPrint());
 
         //SYMBOL TABLE FILLING
-        /*SymbolTable symbolTable = new SymbolTable();
-        ASTTree.accept(new SymbolTableFill(symbolTable));
+        /*run.SymbolTable symbolTable = new run.SymbolTable();
+        ASTTree.accept(new run.SymbolTableFill(symbolTable));
 
         System.out.println(symbolTable);*/
 
