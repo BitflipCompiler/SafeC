@@ -1,11 +1,11 @@
 import gen.*;
-import nodes.abstracts.ASTNode;
+import ast.abstracts.Node;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import run.CSTToASTVisitor;
-import run.PrettyPrint;
+import service.CSTToASTVisitor;
+import service.PrettyPrint;
 import java.io.IOException;
 
 public class Demo {
@@ -23,7 +23,7 @@ public class Demo {
 
         //FROM CST TO AST
         CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
-        ASTNode ASTTree = cstToASTVisitor.visit(parseTree);
+        Node ASTTree = cstToASTVisitor.visit(parseTree);
 
         //PRETTY PRINT
         ASTTree.accept(new PrettyPrint());
