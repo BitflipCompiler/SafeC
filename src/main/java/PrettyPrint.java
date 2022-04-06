@@ -1,4 +1,13 @@
 public class PrettyPrint extends ASTVisitor {
+    private int indentation = 0;
+
+    StringBuilder printIndentation(int indentation){
+        StringBuilder str = new StringBuilder(" ");
+        for(int i = 0; i < indentation; i++){
+            str.append("\t");
+        }
+        return str;
+    }
 
     @Override
     public void visit(ASTNotNode ctx) {
@@ -286,6 +295,7 @@ public class PrettyPrint extends ASTVisitor {
     @Override
     public void visit(ASTDclAssignSemiCommandNode ctx) {
         System.out.println();
+        System.out.print(printIndentation(indentation));
         visit(ctx.actual);
         visit(ctx.recursion);
     }
@@ -303,8 +313,10 @@ public class PrettyPrint extends ASTVisitor {
         visit(ctx.forparams);
         System.out.print(")");
         System.out.print("{");
+        indentation++;
         visit(ctx.block);
         System.out.println();
+        indentation--;
         System.out.println("}");
     }
 
@@ -338,12 +350,14 @@ public class PrettyPrint extends ASTVisitor {
     @Override
     public void visit(ASTFuncBlockNode ctx) {
         System.out.print("{");
+        indentation++;
         visit(ctx.dclAssignSemiCommand);
         System.out.println();
         System.out.print("return ");
         visit(ctx.returnValue);
         System.out.print(";");
         System.out.println();
+        indentation--;
         System.out.println("}");
     }
 
@@ -377,15 +391,21 @@ public class PrettyPrint extends ASTVisitor {
         visit(ctx.iflogic);
         System.out.print(")");
         System.out.print("{");
+        indentation++;
         visit(ctx.ifThenBlock);
         System.out.println();
+        indentation--;
+        System.out.print(printIndentation(indentation));
         System.out.println("}");
+
         if(ctx.elseBlock != null){
             System.out.print("else ");
             System.out.print("{");
+            indentation++;
             visit(ctx.elseBlock);
             System.out.println();
             System.out.print("}");
+            indentation--;
         }
     }
 
@@ -465,10 +485,14 @@ public class PrettyPrint extends ASTVisitor {
     @Override
     public void visit(ASTStructBlockNode ctx) {
         System.out.print("{ \n");
+        indentation++;
         for (ASTNode node : ctx.safeDclNodes) {
+            System.out.print(printIndentation(indentation));
             visit(node);
         }
-        System.out.print("\n" + "} \n");
+        indentation--;
+        System.out.print(printIndentation(indentation));
+        System.out.print("\n" + "}");
     }
 
     @Override
@@ -486,11 +510,16 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print(")");
         System.out.println("{ ");
         if(ctx.scases != null){
+            indentation++;
             for (ASTNode node : ctx.scases) {
+                System.out.print(printIndentation(indentation));
                 visit(node);
             }
         }
+        System.out.print(printIndentation(indentation));
         visit(ctx.defcase);
+        indentation--;
+        System.out.print(printIndentation(indentation));
         System.out.print("} ");
     }
 
@@ -506,7 +535,11 @@ public class PrettyPrint extends ASTVisitor {
         visit(ctx.bexpr);
         System.out.print(")");
         System.out.print("{");
+        indentation++;
         visit(ctx.block);
+        indentation--;
+        System.out.print(printIndentation(indentation));
         System.out.println("}");
+
     }
 }
