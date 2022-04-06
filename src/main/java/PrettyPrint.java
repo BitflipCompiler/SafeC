@@ -229,6 +229,7 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print(ctx.id);
         System.out.print(" = ");
         visit(ctx.atypes);
+        //System.out.println();
     }
 
     @Override
@@ -241,7 +242,7 @@ public class PrettyPrint extends ASTVisitor {
         visit(ctx.boolDcl);
         System.out.print(" = ");
         visit(ctx.bexpr);
-        System.out.println(";");
+        //System.out.println(";");
     }
 
     @Override
@@ -261,6 +262,7 @@ public class PrettyPrint extends ASTVisitor {
         if(ctx.optbreak != null){
             System.out.print(ctx.optbreak);
         }
+        System.out.println();
     }
 
     @Override
@@ -283,6 +285,7 @@ public class PrettyPrint extends ASTVisitor {
 
     @Override
     public void visit(ASTDclAssignSemiCommandNode ctx) {
+        System.out.println();
         visit(ctx.actual);
         visit(ctx.recursion);
     }
@@ -299,18 +302,21 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print("(");
         visit(ctx.forparams);
         System.out.print(")");
+        System.out.print("{");
         visit(ctx.block);
+        System.out.println();
+        System.out.println("}");
     }
 
     @Override
     public void visit(ASTFormalParamsNode ctx) {
         if(ctx.vdcls.size() == 1){
-            System.out.print(ctx.vdcls.get(0));
+            visit(ctx.vdcls.get(0));
         }else {
             System.out.print(ctx.vdcls.get(0));
             for (int i = 1; i < ctx.vdcls.size();i++) {
                 System.out.print(", ");
-                System.out.print(ctx.vdcls.get(i));
+                visit(ctx.vdcls.get(i));
             }
         }
     }
@@ -331,12 +337,14 @@ public class PrettyPrint extends ASTVisitor {
 
     @Override
     public void visit(ASTFuncBlockNode ctx) {
-        System.out.print("{ ");
+        System.out.print("{");
         visit(ctx.dclAssignSemiCommand);
+        System.out.println();
         System.out.print("return ");
         visit(ctx.returnValue);
         System.out.print(";");
-        System.out.print("} ");
+        System.out.println();
+        System.out.println("}");
     }
 
     @Override
@@ -365,11 +373,19 @@ public class PrettyPrint extends ASTVisitor {
     @Override
     public void visit(ASTIfStatementNode ctx) {
         System.out.print("if ");
+        System.out.print("(");
         visit(ctx.iflogic);
+        System.out.print(")");
+        System.out.print("{");
         visit(ctx.ifThenBlock);
+        System.out.println();
+        System.out.println("}");
         if(ctx.elseBlock != null){
             System.out.print("else ");
+            System.out.print("{");
             visit(ctx.elseBlock);
+            System.out.println();
+            System.out.print("}");
         }
     }
 
@@ -402,6 +418,7 @@ public class PrettyPrint extends ASTVisitor {
     public void visit(ASTProgNode ctx) {
         for (ASTNode node : ctx.nodes) {
             visit(node);
+            System.out.println();
         }
     }
 
@@ -410,13 +427,14 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print(ctx.safety);
         System.out.print(" ");
         visit(ctx.variable);
+        //System.out.println();
     }
 
     @Override
     public void visit(ASTScaseNode ctx) {
         System.out.print("case ");
         visit(ctx.vals);
-        System.out.print(";");
+        System.out.print(":");
         visit(ctx.caseblock);
     }
 
@@ -466,7 +484,7 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print("(");
         System.out.print(ctx.id);
         System.out.print(")");
-        System.out.print("{ ");
+        System.out.println("{ ");
         if(ctx.scases != null){
             for (ASTNode node : ctx.scases) {
                 visit(node);
@@ -487,6 +505,8 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print("(");
         visit(ctx.bexpr);
         System.out.print(")");
+        System.out.print("{");
         visit(ctx.block);
+        System.out.println("}");
     }
 }
