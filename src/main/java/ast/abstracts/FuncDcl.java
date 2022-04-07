@@ -3,20 +3,20 @@ package ast.abstracts;
 import visitor.ASTVisitor;
 
 public class FuncDcl extends Node {
-    public Node dataytype;
+    public Node datatype;
     public String id;
     public Node params;
     public Node funcblock;
 
-    public FuncDcl(Node dataytype, String id, Node params, Node funcblock) {
-        this.dataytype = dataytype;
+    public FuncDcl(Node datatype, String id, Node params, Node funcblock) {
+        this.datatype = datatype;
         this.id = id;
         this.params = params;
         this.funcblock = funcblock;
     }
 
-    public FuncDcl(Node dataytype, String id, Node funcblock) {
-        this.dataytype = dataytype;
+    public FuncDcl(Node datatype, String id, Node funcblock) {
+        this.datatype = datatype;
         this.id = id;
         this.funcblock = funcblock;
     }

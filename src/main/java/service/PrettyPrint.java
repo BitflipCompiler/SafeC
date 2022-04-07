@@ -379,7 +379,7 @@ public class PrettyPrint extends ASTVisitor {
 
     @Override
     public void visit(FuncDcl ctx) {
-        visit(ctx.dataytype);
+        visit(ctx.datatype);
         System.out.print(ctx.id);
         System.out.print("(");
         if(ctx.params != null){

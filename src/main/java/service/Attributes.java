@@ -3,23 +3,26 @@ package service;
 
 public class Attributes {
     String name;
-    //run.Type type;
+    Type type;
     int scopeDepth;
+    int safelvl;
 
-    public Attributes(String name) {
+    public Attributes(String name, Type type) {
         this.name = name;
-     //   this.type = type;
+        this.type = type;
     }
 
-    /*public run.Type getType() {
+
+
+    public Type getType() {
         return type;
     }
-*/    @Override
+    @Override
     public String toString() {
-        return "run.Attributes{" +
+        return "Attributes{" +
                 "name='" + name + '\'' +
-               // ", type=" + type +
+                ", type=" + type +
                 ", scopeDepth=" + scopeDepth +
-                '}';
+                "} \n";
     }
 }

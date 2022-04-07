@@ -6,6 +6,9 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import service.CSTToASTVisitor;
 import service.PrettyPrint;
+import service.SymbolTable;
+import service.SymbolTableFill;
+
 import java.io.IOException;
 
 public class Demo {
@@ -26,13 +29,13 @@ public class Demo {
         Node ASTTree = cstToASTVisitor.visit(parseTree);
 
         //PRETTY PRINT
-        ASTTree.accept(new PrettyPrint());
+        //ASTTree.accept(new PrettyPrint());
 
         //SYMBOL TABLE FILLING
-        /*run.SymbolTable symbolTable = new run.SymbolTable();
-        ASTTree.accept(new run.SymbolTableFill(symbolTable));
+        SymbolTable symbolTable = new SymbolTable();
+        ASTTree.accept(new SymbolTableFill(symbolTable));
 
-        System.out.println(symbolTable);*/
+        System.out.println(symbolTable);
 
     }
 }

@@ -1,4 +1,5 @@
-package service;/*
+package service;
+/*
 * inspiration taken from:
 * https://github.com/NickDue/Projekt4_Src/blob/main/AELCompiler/src/SymbolTable/SymbolTable.java
 *
@@ -43,10 +44,10 @@ public class SymbolTable {
 
     @Override
     public String toString() {
-        return "run.SymbolTable{" +
+        return "SymbolTable{" +
                 "symbols=" + symbols.toString() +
                 ", scopes=" + scopes +
                 ", depth=" + depth +
-                '}';
+                "}";
     }
 }

@@ -6,5 +6,14 @@ public enum Type {
     String,
     Char,
     Void,
-    Struct
+    Struct,
+    ArrayBool,
+    ArrayNum,
+    ArrayStr,
+    ArrayChar,
+    FuncNum,
+    FuncChar,
+    FuncStr,
+    FuncBool,
+    FuncVoid
 }
