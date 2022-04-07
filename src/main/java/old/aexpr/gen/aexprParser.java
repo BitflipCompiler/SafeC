@@ -1,5 +1,5 @@
 // Generated from C:/Users/Mandrup/Documents/GitHub/ANTLR/src/main/java/aexpr\aexpr.g4 by ANTLR 4.9.2
-package aexpr.gen;
+package old.aexpr.gen;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -20,7 +20,7 @@ public class aexprParser extends Parser {
 		RULE_aexpr = 0, RULE_term = 1, RULE_part = 2, RULE_numberval = 3;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"aexpr", "term", "part", "numberval"
+                "old/aexpr", "term", "part", "numberval"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();

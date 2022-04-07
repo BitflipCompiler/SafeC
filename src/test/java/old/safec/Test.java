@@ -1,4 +1,4 @@
-package safec;
+package old.safec;
 
 import org.antlr.v4.runtime.*;
 import old.safec.gen.SafecLexer;

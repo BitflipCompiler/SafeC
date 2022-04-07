@@ -1,5 +1,5 @@
 // Generated from C:/Users/Mandrup/Documents/GitHub/ANTLR/src/main/java/bexpr\bexpr.g4 by ANTLR 4.9.2
-package bexpr.gen;
+package old.bexpr.gen;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -23,7 +23,7 @@ public class bexprParser extends Parser {
 		RULE_bop = 10, RULE_relop = 11;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"bexpr", "bterm", "bpart", "bpiece", "blast", "aexpr", "term", "part", 
+                "old/bexpr", "bterm", "bpart", "bpiece", "blast", "old/aexpr", "term", "part",
 			"partbool", "numberval", "bop", "relop"
 		};
 	}
