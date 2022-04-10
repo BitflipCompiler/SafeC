@@ -17,7 +17,7 @@ public class SymbolTable {
 
     public void enterSymbol(Attributes attr) {
         // Add to scope display
-        attr.scopeDepth = depth;
+        attr.level = depth;
         scopes.get(depth).add(attr);
 
         // Add to hashtable
