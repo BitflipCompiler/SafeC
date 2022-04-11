@@ -6,9 +6,9 @@ import visitor.ASTVisitor;
 
 public class SymbolTableFill extends ASTVisitor {
 
-    SymbolTableAlaTommy symbolTable;
+    SymbolTable symbolTable;
 
-    public SymbolTableFill(SymbolTableAlaTommy symbolTable) {
+    public SymbolTableFill(SymbolTable symbolTable) {
         this.symbolTable = symbolTable;
     }
 

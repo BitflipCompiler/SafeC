@@ -19,11 +19,11 @@ number stop(){
 
 void pitch(number a){
     x = x - a;
-    #7 number x;
     if(x<0){
         #7 number x;
         x = 360 - x;
     }
+    #7 number x;
 return 0;
 }
 

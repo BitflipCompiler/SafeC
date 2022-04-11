@@ -29,7 +29,7 @@ public class Demo {
         //ASTTree.accept(new PrettyPrint());
 
         //SYMBOL TABLE FILLING
-        SymbolTableAlaTommy symbolTable = new SymbolTableAlaTommy();
+        SymbolTable symbolTable = new SymbolTable();
         ASTTree.accept(new SymbolTableFill(symbolTable));
 
         System.out.println(symbolTable.symbolTable);
