@@ -1,0 +1,6 @@
+void start(){
+    #7 boolean x;
+    x = 10 == 5;
+
+    return 0;
+}

@@ -1,13 +1,15 @@
 package ast;
 
-import ast.abstracts.Node;
+import ast.abstracts.Dcl;
+import ast.abstracts.StructBlock;
 import visitor.ASTVisitor;
 
-public class StructNode extends Node {
+public class StructNode extends Dcl {
     public String id;
-    public Node structBlock;
 
-    public StructNode(String id, Node structBlock) {
+    public StructBlock structBlock;
+
+    public StructNode(String id, StructBlock structBlock) {
         this.id = id;
         this.structBlock = structBlock;
     }
