@@ -1,9 +1,11 @@
 package ast;
 
+import ast.abstracts.Dcl;
+import ast.abstracts.DclAssign;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
-public class SafeDclNode extends Node {
+public class SafeDclNode extends DclAssign {
     public String safety;
     public Node variable;
 

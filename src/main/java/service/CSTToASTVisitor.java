@@ -17,15 +17,15 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         }
         return progNode;
     }
-    //TODO not sure
+
     @Override
-    public Node visitDeclaration(SafeCParser.DeclarationContext ctx) {
+    public Dcl visitDeclaration(SafeCParser.DeclarationContext ctx) {
         if(ctx.dclassignsemi() != null){
-            return visit(ctx.dclassignsemi());
+            return (Dcl) visit(ctx.dclassignsemi());
         } else if(ctx.structdcl() != null){
-            return visit(ctx.structdcl());
+            return (Dcl) visit(ctx.structdcl());
         } else if (ctx.funcdcl() != null){
-            return visit(ctx.funcdcl());
+            return (Dcl) visit(ctx.funcdcl());
         }
         throw new RuntimeException("declaration not valid.");
     }
@@ -47,11 +47,11 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     //TODO not sure
     @Override
-    public Node visitDclassignsemi(SafeCParser.DclassignsemiContext ctx) {
+    public DclAssign visitDclassignsemi(SafeCParser.DclassignsemiContext ctx) {
         if(ctx.vassign() != null){
-            return visit(ctx.vassign());
+            return (DclAssign) visit(ctx.vassign());
         } else if ( ctx.safedeclaration() != null){
-            return visit(ctx.safedeclaration());
+            return (DclAssign) visit(ctx.safedeclaration());
         }
         throw new RuntimeException("Dclassignsemi not valid.");
     }

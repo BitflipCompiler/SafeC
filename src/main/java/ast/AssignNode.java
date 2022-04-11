@@ -1,9 +1,11 @@
 package ast;
 
+import ast.abstracts.Dcl;
+import ast.abstracts.DclAssign;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
-public class AssignNode extends Node {
+public class AssignNode extends DclAssign {
     public String id;
     public Node atypes;
 
