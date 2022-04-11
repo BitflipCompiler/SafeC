@@ -4,10 +4,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import service.CSTToASTVisitor;
-import service.PrettyPrint;
-import service.SymbolTable;
-import service.SymbolTableFill;
+import service.*;
 
 import java.io.IOException;
 
@@ -35,7 +32,7 @@ public class Demo {
         SymbolTable symbolTable = new SymbolTable();
         ASTTree.accept(new SymbolTableFill(symbolTable));
 
-        System.out.println(symbolTable);
+        System.out.println(symbolTable.symbolTable);
 
     }
 }

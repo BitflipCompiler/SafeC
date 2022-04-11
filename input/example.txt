@@ -1,5 +1,5 @@
 $ poopx {
-#7 number x;
+#7 string x;
 }
 
 #10 boolean on = true;
@@ -12,7 +12,7 @@ void start(){
     on = true;
     return 0;
 }
-void stop(){
+number stop(){
     on = false;
 	return 0;
 }
@@ -20,18 +20,21 @@ void stop(){
 void pitch(number a){
     x = x - a;
     if(x<0){
+        #7 number x;
         x = 360 - x;
     }
+    #7 number x;
 return 0;
 }
 
-void yaw(number b){
+boolean yaw(number b){
     x=(x + b) % 360;
 return 0;
 }
 
 void roll(){
     for(number i = 0; i < 100; i = i + 1){
+        #7 number y;
         y= y + 1;
     }
 return 0;
@@ -46,6 +49,8 @@ return 0;
 
 void whileInAtmosphere(){
     #6 number i;
+    #6 number f;
+    #3 boolean x;
     i = 0;
     while(on == true){
     calcCenterOfPressure();
