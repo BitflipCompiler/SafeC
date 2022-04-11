@@ -2,7 +2,7 @@ package ast.abstracts;
 
 import visitor.ASTVisitor;
 
-public class FuncDcl extends Node {
+public class FuncDcl extends Dcl {
     public Node datatype;
     public String id;
     public Node params;

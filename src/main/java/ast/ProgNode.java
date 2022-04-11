@@ -1,5 +1,6 @@
 package ast;
 
+import ast.abstracts.Dcl;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 

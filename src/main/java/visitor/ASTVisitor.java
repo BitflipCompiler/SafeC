@@ -127,7 +127,7 @@ public abstract class ASTVisitor {
 
     public abstract void visit(StructBlockNode ctx);
 
-    public abstract void visit(StructNode ctx);
+    public abstract void visit(StructDclNode ctx);
 
     public abstract void visit(SwitchStatementNode ctx);
 

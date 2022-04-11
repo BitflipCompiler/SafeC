@@ -36,7 +36,7 @@ public class SymbolTableFill extends ASTVisitor {
     }
 
     @Override
-    public void visit(StructNode ctx) {
+    public void visit(StructDclNode ctx) {
         symbolTable.enterSymbol(ctx.id, Type.Struct);
         symbolTable.openScope();
         visit(ctx.structBlock);

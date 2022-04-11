@@ -1,9 +1,10 @@
 package ast;
 
+import ast.abstracts.Aexpr;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
-public class IdNode extends Node {
+public class IdNode extends Aexpr {
     public String id;
 
     public IdNode(String id) {
