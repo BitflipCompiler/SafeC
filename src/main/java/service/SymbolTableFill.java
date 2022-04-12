@@ -4,6 +4,7 @@ import ast.*;
 import ast.abstracts.*;
 import visitor.ASTVisitor;
 
+
 public class SymbolTableFill extends ASTVisitor {
 
     SymbolTable symbolTable;
@@ -184,11 +185,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(AssignNode ctx) {
-        Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
-        if(foundId != null){
-            visit(ctx.atypes);
-        }
-
+        ctx.accept(new TypeChecker(symbolTable));
         //symbolTable.enterSymbol(ctx.id, new Attributes(ctx.id, null));
         //visit(ctx.atypes);
     }
@@ -389,6 +386,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(DivisionNode ctx) {
+        ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
@@ -400,12 +398,28 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(MinusNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.accept(new TypeChecker(symbolTable));
+        //TYPECHECK
+
+        //CHECK IF LEFTCHILD OR RIGHTCHILD ID IS AN AEXPR
+        // IF NOT THROW AN ERROR ("YOU ARE IN A MINUS NODE YOU CAN ONLY BE AN AEXPR")
+
+/*        if(ctx.leftchild.getClass.getSuperclass.equals(ctx.rightchild.getClass.getSuperclass){
+
+            //Begge children har den samme type
+        }else if ((ctx.leftchild.getClass.getSuperclass == IdNode || ctx.rightchild.getClass.getSuperclass == IdNode)
+            && (ctx.leftchild.getClass.getSuperclass == numberval || ctx.rightchild.getClass.getSuperclass == numberval) ){
+                // its maybe cool.
+            }else{
+
+            //En af children er anderledes.
+        }
+*/
     }
 
     @Override
     public void visit(ModNode ctx) {
+        ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
@@ -427,12 +441,14 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(PlusNode ctx) {
+        ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
 
     @Override
     public void visit(TimesNode ctx) {
+        ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }

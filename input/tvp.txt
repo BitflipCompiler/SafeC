@@ -1,8 +1,2 @@
-void roll(){
-    for(number i = 0; i < 100; i = i + 1){
-        #7 number y;
-        y= y + 1;
-    }
-return 0;
-}
-
+#7 char x;
+x = "a";

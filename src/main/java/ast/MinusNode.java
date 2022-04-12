@@ -1,10 +1,10 @@
 package ast;
 
-import ast.abstracts.expr;
+import ast.abstracts.Aexpr;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
-public class MinusNode extends expr {
+public class MinusNode extends Aexpr {
     public Node leftChild;
     public Node rightChild;
 
