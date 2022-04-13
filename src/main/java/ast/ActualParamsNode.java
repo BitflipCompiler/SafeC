@@ -6,7 +6,7 @@ import visitor.ASTVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActualParamsNode extends Callparems {
+public class ActualParamsNode extends Node {
     public List<Node> vals = new ArrayList<>();
 
     public ActualParamsNode() {

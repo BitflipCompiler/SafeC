@@ -1,9 +1,10 @@
 package ast;
 
 import ast.abstracts.Dcl;
+import ast.abstracts.VDcl;
 import visitor.ASTVisitor;
 
-public class BoolDclNode extends Dcl {
+public class BoolDclNode extends VDcl {
 
     public String id;
 

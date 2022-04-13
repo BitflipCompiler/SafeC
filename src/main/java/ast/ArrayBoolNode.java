@@ -1,10 +1,10 @@
 package ast;
 
-import ast.abstracts.ASTArray;
+import ast.abstracts.ArrayDclAssign;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
-public class ArrayBoolNode extends ASTArray {
+public class ArrayBoolNode extends ArrayDclAssign {
     public String id;
     public Node boolArray;
 

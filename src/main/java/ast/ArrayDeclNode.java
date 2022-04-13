@@ -1,9 +1,10 @@
 package ast;
 
 import ast.abstracts.Node;
+import ast.abstracts.VDcl;
 import visitor.ASTVisitor;
 
-public class ArrayDeclNode extends Node {
+public class ArrayDeclNode extends VDcl {
     public Node arrdcltype;
     public String id;
 

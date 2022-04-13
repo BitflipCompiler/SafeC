@@ -45,7 +45,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         return structBlocknode;
     }
 
-    //TODO not sure
+
     @Override
     public DclAssign visitDclassignsemi(SafeCParser.DclassignsemiContext ctx) {
         if(ctx.vassign() != null){
@@ -55,7 +55,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         }
         throw new RuntimeException("Dclassignsemi not valid.");
     }
-
+    //TODO ASK ANDERS
     //Has to be Node since DclAssignSemiCommandNode and EmptyNode is not the same
     @Override
     public Node visitDclassignsemicommand(SafeCParser.DclassignsemicommandContext ctx) {
@@ -71,13 +71,13 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
             } else if(ctx.command() != null){
                 return new DclAssignSemiCommandNode(visit(ctx.command()), null);
             } else if(ctx.dclassignsemi() == null && ctx.command() == null) {
+                //Returns a node that is empty/null
                 return new EmptyNode();
             }
         }
         throw new RuntimeException("dclAssignSemiCommand not valid.");
     }
 
-    //TODO SafeDclNode extend Node?
     @Override
     public SafeDclNode visitSafedeclaration(SafeCParser.SafedeclarationContext ctx) {
         if(ctx.vdclassign() != null){
@@ -88,7 +88,6 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         throw new RuntimeException("safedeclaration not valid.");
     }
 
-    //Todo FormalParamsNode extend something else than Node?
     @Override
     public FormalParamsNode visitParams(SafeCParser.ParamsContext ctx) {
         FormalParamsNode astFormalParamsNode = new FormalParamsNode();
@@ -97,13 +96,13 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         }
         return astFormalParamsNode;
     }
-    //TODO not sure
+
     @Override
     public Node visitBlock(SafeCParser.BlockContext ctx) {
         return visit(ctx.dclassignsemicommand());
     }
 
-    //Todo not sure if CaseBlockNode should extend someting else than Node
+
     @Override
     public CaseBlockNode visitCaseblock(SafeCParser.CaseblockContext ctx) {
         if(ctx.BREAK() != null){
@@ -112,24 +111,24 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
             return new CaseBlockNode(visit(ctx.dclassignsemicommand()));
         }
     }
-    //TODO to complicated?
+
     @Override
-    public Node visitVdcl(SafeCParser.VdclContext ctx) {
+    public VDcl visitVdcl(SafeCParser.VdclContext ctx) {
       if(ctx.numdecl() != null){
-          return visit(ctx.numdecl());
+          return (VDcl) visit(ctx.numdecl());
       }else if(ctx.chardecl() != null){
-          return visit(ctx.chardecl());
+          return (VDcl) visit(ctx.chardecl());
       }else if(ctx.stringdecl() != null){
-          return visit(ctx.stringdecl());
+          return (VDcl) visit(ctx.stringdecl());
       }else if(ctx.booldecl() != null){
-          return visit(ctx.booldecl());
+          return (VDcl) visit(ctx.booldecl());
       }else if (ctx.arraydecl() != null){
-          return visit(ctx.arraydecl());
+          return (VDcl) visit(ctx.arraydecl());
       }else{
           throw new RuntimeException("Something went wrong in visitVdcl");
       }
     }
-    //TODO not sure if ArrayDclNode should extend something else than Node
+
     @Override
     public ArrayDeclNode visitArraydecl(SafeCParser.ArraydeclContext ctx) {
         return new ArrayDeclNode(visit(ctx.arrdcltype()),ctx.ID().toString());
@@ -149,38 +148,38 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         throw new RuntimeException("Datatype not valid exception.");
     }
 
-    //TODO Not sure if AssignNode extend should be Node
+
     @Override
     public AssignNode visitVassign(SafeCParser.VassignContext ctx) {
         return new AssignNode(ctx.ID().toString(), visit(ctx.atypes()));
     }
-    //Todo not sure what to do
+
     @Override
-    public Node visitVdclassign(SafeCParser.VdclassignContext ctx) {
+    public DclAssign visitVdclassign(SafeCParser.VdclassignContext ctx) {
         if(ctx.numdclassign() != null){
-            return visit(ctx.numdclassign());
+            return (DclAssign) visit(ctx.numdclassign());
         }else if(ctx.chardclassign() != null){
-            return visit(ctx.chardclassign());
+            return (DclAssign) visit(ctx.chardclassign());
         }else if(ctx.stringdclassign() != null){
-            return visit(ctx.stringdclassign());
+            return (DclAssign) visit(ctx.stringdclassign());
         }else if(ctx.booldclassign() != null){
-            return visit(ctx.booldclassign());
+            return (DclAssign) visit(ctx.booldclassign());
         }else if(ctx.arraydclassign() != null){
-            return visit(ctx.arraydclassign());
+            return (DclAssign) visit(ctx.arraydclassign());
         }
         throw new RuntimeException("Something went wrong in VisitVdeclAssign");
     }
-    //Todo not sure what to do
+
     @Override
-    public Node visitArraydclassign(SafeCParser.ArraydclassignContext ctx) {
+    public ArrayDclAssign visitArraydclassign(SafeCParser.ArraydclassignContext ctx) {
         if(ctx.numarraydclassign() != null){
-            return visit(ctx.numarraydclassign());
+            return (ArrayDclAssign) visit(ctx.numarraydclassign());
         }else if(ctx.chararraydclassign() != null){
-            return visit(ctx.chararraydclassign());
+            return (ArrayDclAssign) visit(ctx.chararraydclassign());
         }else if(ctx.stringarraydclassign() != null){
-            return visit(ctx.stringarraydclassign());
+            return (ArrayDclAssign) visit(ctx.stringarraydclassign());
         }else if (ctx.boolarraydclassign() != null){
-            return visit(ctx.boolarraydclassign());
+            return (ArrayDclAssign) visit(ctx.boolarraydclassign());
         }
         throw new RuntimeException("Something went wrong in visitArrayDclAssign");
     }
@@ -221,7 +220,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         throw new RuntimeException("Datatype not valid exception.");
     }
 
-    //TODO to complex to be anything but Node? confirm plz
+    //TODO Anders
     @Override
     public Node visitAtypes(SafeCParser.AtypesContext ctx) {
         if(ctx.CHARVAL() != null){
@@ -239,23 +238,23 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         }
     }
 
-    //TODO Not sure
+
     @Override
-    public Node visitArrayassign(SafeCParser.ArrayassignContext ctx) {
-        return visit(ctx.arraydata());
+    public ATypes visitArrayassign(SafeCParser.ArrayassignContext ctx) {
+        return (ATypes) visit(ctx.arraydata());
     }
 
     //TODO Not sure
     @Override
-    public Node visitArraydata(SafeCParser.ArraydataContext ctx) {
+    public ArrayAssign visitArraydata(SafeCParser.ArraydataContext ctx) {
         if(ctx.numarray() != null){
-            return visit(ctx.numarray());
+            return (ArrayAssign) visit(ctx.numarray());
         } else if(ctx.chararray() != null){
-            return visit(ctx.chararray());
+            return (ArrayAssign) visit(ctx.chararray());
         } else if(ctx.strarray() != null){
-            return visit(ctx.strarray());
+            return (ArrayAssign) visit(ctx.strarray());
         } else if(ctx.boolarray() != null){
-            return visit(ctx.boolarray());
+            return (ArrayAssign) visit(ctx.boolarray());
         }
         throw new RuntimeException("arraydata not valid.");
     }
@@ -296,7 +295,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         return astArrayBoolValuesNode;
     }
 
-    //TODO not sure
+    //TODO Anders (duplicate af 1)
     @Override
     public Node visitCommand(SafeCParser.CommandContext ctx) {
         if(ctx.ctrlstruct() != null){
@@ -307,7 +306,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         throw new RuntimeException("Something went wrong in visitCommand");
     }
 
-    //TODO Funccalls could extend both commands and atypes??
+    //TODO Anders (same as charval and stringval problem)
     @Override
     public FuncCalls visitFunccalls(SafeCParser.FunccallsContext ctx) {
         if(ctx.callparams() != null){
@@ -329,12 +328,12 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         throw new RuntimeException("Something went wrong in visitFuncDcl");
     }
 
-    //TODO extends in funcblockNode change from Node?
+    //TODO Anders spørgsmål (skal funcblockNode extend noget andet end Node)
     @Override
     public FuncBlockNode visitFuncblock(SafeCParser.FuncblockContext ctx) {
         return new FuncBlockNode(visit(ctx.dclassignsemicommand()), visit(ctx.vals()));
     }
-
+    //TODO Anders (Løs d. oven over, løser vi denne)
     @Override
     public ActualParamsNode visitCallparams(SafeCParser.CallparamsContext ctx) {
         ActualParamsNode astActualParamsNode = new ActualParamsNode();
@@ -344,13 +343,13 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         return astActualParamsNode;
     }
 
-    //TODO not sure
+
     @Override
-    public Node visitCtrlstruct(SafeCParser.CtrlstructContext ctx) {
+    public Command visitCtrlstruct(SafeCParser.CtrlstructContext ctx) {
         if(ctx.iterative() != null){
-            return visit(ctx.iterative());
+            return (Command) visit(ctx.iterative());
         }else if(ctx.selective() != null){
-            return visit(ctx.selective());
+            return (Command) visit(ctx.selective());
         }
         throw new RuntimeException("Something went wrong in visitCtrlStruct");
     }
@@ -382,23 +381,23 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         }
         return new SwitchStatementNode(ctx.ID().toString(),scases,visit(ctx.defcase()));
     }
-    //TODO Node needs to change to what?
+
     @Override
-    public Node visitIflogic(SafeCParser.IflogicContext ctx) {
-        return visit(ctx.bexpr());
+    public Bexpr visitIflogic(SafeCParser.IflogicContext ctx) {
+        return (Bexpr) visit(ctx.bexpr());
     }
 
-    //TODO Look into ForParams extend
+    //TODO Anders Tvetydig
     @Override
     public ForParams visitForparams(SafeCParser.ForparamsContext ctx) {
         return new ForParams(visit(ctx.numdclassign()), visit(ctx.bexpr()), ctx.ID().toString(), visit(ctx.aexpr()));
     }
-    //TODO Look into ScaseNode extend
+    //TODO Anders (dclassignsemicommand problem)
     @Override
     public ScaseNode visitScase(SafeCParser.ScaseContext ctx) {
         return new ScaseNode(visit(ctx.vals()), visit(ctx.caseblock()));
     }
-    //TODO Look into Defcase extend
+    //TODO (dclassignsemicommand problem)
     @Override
     public DefCaseNode visitDefcase(SafeCParser.DefcaseContext ctx) {
         return new DefCaseNode(visit(ctx.caseblock()));
@@ -483,10 +482,10 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
             throw new RuntimeException("BexprBop bop not valid.");
         }
     }
-    //TODO this one??
+
     @Override
-    public Node visitBexprParens(SafeCParser.BexprParensContext ctx) {
-        return visit(ctx.bexpr());
+    public Bexpr visitBexprParens(SafeCParser.BexprParensContext ctx) {
+        return (Bexpr) visit(ctx.bexpr());
     }
 
     @Override
@@ -503,7 +502,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         return (Bop) visitChildren(ctx);
     }
 
-    //This is a complicated one, that returs Vals, Bexpr and Aexpr
+    //TODO This is a complicated one, that returs Vals, Bexpr and Aexpr
     @Override
     public Node visitVals(SafeCParser.ValsContext ctx) {
         if(ctx.CHARVAL() != null){
@@ -521,7 +520,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     }
 
     @Override
-    public Expr visitAexprTimesDivNode(SafeCParser.AexprTimesDivNodeContext ctx) {
+    public Aexpr visitAexprTimesDivNode(SafeCParser.AexprTimesDivNodeContext ctx) {
         if(ctx.op.getType() == SafeCParser.TIMES){
             return new TimesNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
         } else if(ctx.op.getType() == SafeCParser.DIVISION){
@@ -532,17 +531,17 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     }
 
     @Override
-    public Expr visitAexprAddSubNode(SafeCParser.AexprAddSubNodeContext ctx) {
+    public Aexpr visitAexprAddSubNode(SafeCParser.AexprAddSubNodeContext ctx) {
         if(ctx.op.getType() == SafeCParser.PLUS){
             return new PlusNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
         } else {
             return new MinusNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
         }
     }
-   //!TODO change node to something else?
+
     @Override 
-    public Node visitAexprParensNode(SafeCParser.AexprParensNodeContext ctx) {
-        return visit(ctx.aexpr());
+    public Aexpr visitAexprParensNode(SafeCParser.AexprParensNodeContext ctx) {
+        return (Aexpr) visit(ctx.aexpr());
     }
     
     @Override 

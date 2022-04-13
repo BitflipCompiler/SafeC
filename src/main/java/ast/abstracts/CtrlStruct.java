@@ -2,10 +2,9 @@ package ast.abstracts;
 
 import visitor.ASTVisitor;
 
-public abstract class ASTArray extends Node {
-
+public abstract class CtrlStruct extends Command{
     @Override
     public void accept(ASTVisitor v) {
-        v.visit(this);
+
     }
 }

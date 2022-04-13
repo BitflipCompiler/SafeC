@@ -2,9 +2,9 @@ package ast.abstracts;
 
 import visitor.ASTVisitor;
 
-public abstract class Numberval extends Aexpr {
+public abstract class VDcl extends Node{
     @Override
     public void accept(ASTVisitor v) {
-        v.visit(this);
+
     }
 }
