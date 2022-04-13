@@ -3,6 +3,9 @@ package service;
 import ast.*;
 import ast.abstracts.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TypeChecker extends SymbolTableFill {
 
 
@@ -17,7 +20,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(SafeDclNode ctx) {
-        super.visit(ctx);
+        System.out.println("SafeDclNode");
     }
 
     @Override
@@ -37,7 +40,12 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(FormalParamsNode ctx) {
-        super.visit(ctx);
+        for (Node node : ctx.vdcls) {
+            visit(node);
+        }
+        //List<Node> paramnodes = new ArrayList<>(ctx.vdcls);
+        //System.out.println(paramnodes.get(0).getClass().getSimpleName());
+
     }
 
     @Override
@@ -106,10 +114,14 @@ public class TypeChecker extends SymbolTableFill {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
 
-
+        if (foundId == null) {
+            visit(ctx.atypes);
+            return ;
+        }
         switch (atypesSuper) {
             case "Aexpr" -> {
                 if (foundId.type == Type.Number) {
+                    System.out.println("Aexpr");
                     visit(ctx.atypes);
                 } else {
                     throw new RuntimeException("Type " + foundId.type + "does not match with type " + atypesSuper);
@@ -211,7 +223,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(CharDclNode ctx) {
-        super.visit(ctx);
+        System.out.println("CharDclNode");
     }
 
     @Override
@@ -221,7 +233,8 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(NumDclNode ctx) {
-        super.visit(ctx);
+        //TODO: Få Id til at være en del af formalParams.
+        //ctx.id == x
     }
 
     @Override
@@ -231,7 +244,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(StringDclNode ctx) {
-        super.visit(ctx);
+        System.out.println("StringDclNode");
     }
 
     @Override
@@ -326,7 +339,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(DivisionNode ctx) {
-        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
+ /*       String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
         String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
 
         try {
@@ -341,7 +354,7 @@ public class TypeChecker extends SymbolTableFill {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }*/
     }
 
     @Override
@@ -351,7 +364,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(MinusNode ctx) {
-        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
+/*        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
         String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
 
         try {
@@ -366,12 +379,12 @@ public class TypeChecker extends SymbolTableFill {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }*/
     }
 
     @Override
     public void visit(ModNode ctx) {
-        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
+   /*     String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
         String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
 
         try {
@@ -386,7 +399,7 @@ public class TypeChecker extends SymbolTableFill {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }*/
     }
 
     @Override
@@ -407,6 +420,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(PlusNode ctx) {
 
+/*
         String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
         String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
 
@@ -423,13 +437,14 @@ public class TypeChecker extends SymbolTableFill {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+*/
 
 
     }
 
     @Override
     public void visit(TimesNode ctx) {
-        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
+/*        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
         String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
 
         try {
@@ -444,7 +459,7 @@ public class TypeChecker extends SymbolTableFill {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        }*/
     }
 
     @Override

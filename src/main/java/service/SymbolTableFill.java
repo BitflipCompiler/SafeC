@@ -4,6 +4,8 @@ import ast.*;
 import ast.abstracts.*;
 import visitor.ASTVisitor;
 
+import java.util.Arrays;
+
 
 public class SymbolTableFill extends ASTVisitor {
 
@@ -50,17 +52,17 @@ public class SymbolTableFill extends ASTVisitor {
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
         symbolTable.enterSymbol(ctx.id, funcType);
-        /*visit(ctx.datatype);
+        //visit(ctx.datatype);
         if(ctx.params != null){
             visit(ctx.params);
-        }*/
+        }
         symbolTable.openScope();
         visit(ctx.funcblock);
         symbolTable.closeScope();
     }
 
     private Type getDataType(String datatype) {
-        if (datatype.startsWith("Number")){
+        if (datatype.startsWith("Num")){
             return Type.Number;
         } else if (datatype.startsWith("Void")){
             return Type.Void;
@@ -76,9 +78,15 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(FormalParamsNode ctx) {
-        /*for (Node node: ctx.vdcls) {
-            visit(node);
-        }*/
+        ctx.accept(new TypeChecker(symbolTable));
+        //TODO: Der skal laves noget om her, vi skal have IDs ind
+        for (Node node: ctx.vdcls) {
+            Type type = getDataType(node.getClass().getSimpleName());
+            //Attributes name = symbolTable.retrieveSymbol(node.toString());
+            //symbolTable.enterSymbol(type);
+        }
+
+
     }
 
     @Override
@@ -97,6 +105,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ActualParamsNode ctx) {
+        ctx.accept(new TypeChecker(symbolTable));
         /*for (Node node: ctx.vals) {
             visit(node);
         }*/

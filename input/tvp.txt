@@ -1,2 +1,4 @@
-#7 char x;
-x = "a";
+void kat (number x){
+x = 10 + 10;
+return null;
+}

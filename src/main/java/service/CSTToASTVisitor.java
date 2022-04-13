@@ -5,6 +5,7 @@ import ast.abstracts.*;
 import gen.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
