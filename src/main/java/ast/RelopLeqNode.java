@@ -1,16 +1,17 @@
 package ast;
 
+import ast.abstracts.Aexpr;
 import ast.abstracts.Bexpr;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
 public class RelopLeqNode extends Bexpr {
-    public Node leftChild;
-    public Node rightChild;
+    public Aexpr leftChild;
+    public Aexpr rightChild;
 
     public RelopLeqNode(Node leftChild, Node rightChild) {
-        this.leftChild = leftChild;
-        this.rightChild = rightChild;
+        this.leftChild = (Aexpr) leftChild;
+        this.rightChild = (Aexpr) rightChild;
     }
 
     @Override

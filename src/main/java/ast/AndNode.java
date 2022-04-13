@@ -5,12 +5,12 @@ import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
 public class AndNode extends Bexpr {
-    public Node leftChild;
-    public Node rightChild;
+    public Bexpr leftChild;
+    public Bexpr rightChild;
 
     public AndNode(Node leftChild, Node rightChild) {
-        this.leftChild = leftChild;
-        this.rightChild = rightChild;
+        this.leftChild = (Bexpr) leftChild;
+        this.rightChild = (Bexpr) rightChild;
     }
     @Override
     public void accept(ASTVisitor v) {

@@ -1,14 +1,15 @@
 package ast;
 
 import ast.abstracts.Node;
+import ast.abstracts.Vals;
 import visitor.ASTVisitor;
 
 public class FuncBlockNode extends Node {
-    public Node dclAssignSemiCommand;
+    public DclAssignSemiCommandNode dclAssignSemiCommand;
     public Node returnValue;
 
     public FuncBlockNode(Node dclAssignSemiCommand, Node returnValue) {
-        this.dclAssignSemiCommand = dclAssignSemiCommand;
+        this.dclAssignSemiCommand = (DclAssignSemiCommandNode) dclAssignSemiCommand;
         this.returnValue = returnValue;
     }
 

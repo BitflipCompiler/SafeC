@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayStrValuesNode extends ArrayData {
-    public List<Node> strValues = new ArrayList<>();
+    public List<StringValNode> strValues = new ArrayList<>();
 
     public ArrayStrValuesNode() {
     }

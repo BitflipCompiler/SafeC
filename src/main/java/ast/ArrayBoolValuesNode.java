@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayBoolValuesNode extends ArrayData {
-    public List<Node> boolValues = new ArrayList<>();
+    public List<BoolValNode> boolValues = new ArrayList<>();
 
     public ArrayBoolValuesNode() {
     }

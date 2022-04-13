@@ -89,17 +89,17 @@ public abstract class ASTVisitor {
 
     public abstract void visit(DefCaseNode ctx);
 
-    public abstract void visit(ForLoop ctx);
+    public abstract void visit(ForLoopNode ctx);
 
     public abstract void visit(FormalParamsNode ctx);
 
-    public abstract void visit(ForParams ctx);
+    public abstract void visit(ForParamsNode ctx);
 
     public abstract void visit(FuncBlockNode ctx);
 
-    public abstract void visit(FuncCalls ctx);
+    public abstract void visit(FuncCallsNode ctx);
 
-    public abstract void visit(FuncDcl ctx);
+    public abstract void visit(FuncDclNode ctx);
 
     public abstract void visit(IfStatementNode ctx);
 

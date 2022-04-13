@@ -313,7 +313,7 @@ public class PrettyPrint extends ASTVisitor {
     }
 
     @Override
-    public void visit(ForLoop ctx) {
+    public void visit(ForLoopNode ctx) {
         System.out.print("for ");
         System.out.print("(");
         visit(ctx.forparams);
@@ -340,7 +340,7 @@ public class PrettyPrint extends ASTVisitor {
     }
 
     @Override
-    public void visit(ForParams ctx) {
+    public void visit(ForParamsNode ctx) {
         visit(ctx.numdclassign);
         System.out.print(";");
         visit(ctx.bexpr);
@@ -368,7 +368,7 @@ public class PrettyPrint extends ASTVisitor {
     }
 
     @Override
-    public void visit(FuncCalls ctx) {
+    public void visit(FuncCallsNode ctx) {
         System.out.print(ctx.id);
         System.out.print("(");
         if(ctx.callparams != null){
@@ -378,7 +378,7 @@ public class PrettyPrint extends ASTVisitor {
     }
 
     @Override
-    public void visit(FuncDcl ctx) {
+    public void visit(FuncDclNode ctx) {
         visit(ctx.datatype);
         System.out.print(ctx.id);
         System.out.print("(");

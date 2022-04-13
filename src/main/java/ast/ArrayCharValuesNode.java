@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayCharValuesNode extends ArrayData {
-    public List<Node> charvalues = new ArrayList<>();
+    public List<CharValNode> charvalues = new ArrayList<>();
 
     public ArrayCharValuesNode() {
     }

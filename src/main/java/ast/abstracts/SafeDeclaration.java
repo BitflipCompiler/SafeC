@@ -2,9 +2,9 @@ package ast.abstracts;
 
 import visitor.ASTVisitor;
 
-public abstract class ArrayDclAssign extends VDclAssign{
+public abstract class SafeDeclaration extends DclAssign{
     @Override
     public void accept(ASTVisitor v) {
-        super.accept(v);
+        v.visit(this);
     }
 }

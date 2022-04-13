@@ -5,10 +5,10 @@ import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
 public class NotNode extends Bexpr {
-    public Node value;
+    public Bexpr value;
 
     public NotNode(Node value) {
-        this.value = value;
+        this.value = (Bexpr) value;
     }
     @Override
     public void accept(ASTVisitor v) {

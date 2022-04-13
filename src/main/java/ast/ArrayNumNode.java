@@ -6,11 +6,11 @@ import visitor.ASTVisitor;
 
 public class ArrayNumNode extends ArrayDclAssign {
     public String id;
-    public Node numArray;
+    public ArrayNumValuesNode numArray;
 
     public ArrayNumNode(String id, Node numArray) {
         this.id = id;
-        this.numArray = numArray;
+        this.numArray = (ArrayNumValuesNode) numArray;
     }
 
     @Override

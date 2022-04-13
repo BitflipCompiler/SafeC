@@ -1,14 +1,15 @@
 package ast;
 
 import ast.abstracts.Node;
+import ast.abstracts.Vals;
 import visitor.ASTVisitor;
 
 public class ScaseNode extends Node {
-    public Node vals;
+    public Vals vals;
     public Node caseblock;
 
     public ScaseNode(Node vals, Node caseblock) {
-        this.vals = vals;
+        this.vals = (Vals) vals;
         this.caseblock = caseblock;
     }
 

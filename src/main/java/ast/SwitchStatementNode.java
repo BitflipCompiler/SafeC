@@ -9,13 +9,13 @@ import java.util.List;
 
 public class SwitchStatementNode extends Selective {
     public String id;
-    public List<Node> scases = new ArrayList<>();
-    public Node defcase;
+    public List<ScaseNode> scases;
+    public DefCaseNode defcase;
 
-    public SwitchStatementNode(String id, List<Node> scases, Node defcase) {
+    public SwitchStatementNode(String id, List<ScaseNode> scases, Node defcase) {
         this.id = id;
         this.scases = scases;
-        this.defcase = defcase;
+        this.defcase = (DefCaseNode) defcase;
     }
 
     @Override

@@ -2,14 +2,15 @@ package ast;
 
 import ast.abstracts.DclAssign;
 import ast.abstracts.Node;
+import ast.abstracts.VDclAssign;
 import visitor.ASTVisitor;
 
-public class StringDclAssignNode extends DclAssign {
-    public Node stringdcl;
+public class StringDclAssignNode extends VDclAssign {
+    public StringDclNode stringdcl;
     public StringValNode stringval;
 
     public StringDclAssignNode(Node stringdcl, StringValNode stringval) {
-        this.stringdcl = stringdcl;
+        this.stringdcl = (StringDclNode) stringdcl;
         this.stringval = stringval;
     }
 

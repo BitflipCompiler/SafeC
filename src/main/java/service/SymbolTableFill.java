@@ -45,7 +45,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     //FUNCTIONS
     @Override
-    public void visit(FuncDcl ctx) {
+    public void visit(FuncDclNode ctx) {
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
         symbolTable.enterSymbol(ctx.id, funcType);
@@ -87,7 +87,7 @@ public class SymbolTableFill extends ASTVisitor {
     }
 
     @Override
-    public void visit(FuncCalls ctx) {
+    public void visit(FuncCallsNode ctx) {
         //TODO: skal slå op i symbol table og tjekke om id på func findes
        /* if(ctx.callparams != null){
             visit(ctx.callparams);
@@ -159,7 +159,7 @@ public class SymbolTableFill extends ASTVisitor {
 
 
     @Override
-    public void visit(ForLoop ctx) {
+    public void visit(ForLoopNode ctx) {
         visit(ctx.forparams);
         symbolTable.openScope();
         visit(ctx.block);
@@ -167,7 +167,7 @@ public class SymbolTableFill extends ASTVisitor {
     }
 
     @Override
-    public void visit(ForParams ctx) {
+    public void visit(ForParamsNode ctx) {
         visit(ctx.numdclassign);
         //visit(ctx.bexpr);
         //symbolTable.enterSymbol(ctx.id, new Attributes(ctx.id, Type.Number));

@@ -1,5 +1,6 @@
 package ast;
 
+import ast.abstracts.ATypes;
 import ast.abstracts.Dcl;
 import ast.abstracts.DclAssign;
 import ast.abstracts.Node;

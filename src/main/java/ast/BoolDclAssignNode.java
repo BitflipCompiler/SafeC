@@ -1,16 +1,18 @@
 package ast;
 
+import ast.abstracts.Bexpr;
 import ast.abstracts.DclAssign;
 import ast.abstracts.Node;
+import ast.abstracts.VDclAssign;
 import visitor.ASTVisitor;
 
-public class BoolDclAssignNode extends DclAssign {
-    public Node boolDcl;
-    public Node bexpr;
+public class BoolDclAssignNode extends VDclAssign {
+    public BoolDclNode boolDcl;
+    public Bexpr bexpr;
 
     public BoolDclAssignNode(Node boolDcl, Node bexpr) {
-        this.boolDcl = boolDcl;
-        this.bexpr = bexpr;
+        this.boolDcl = (BoolDclNode) boolDcl;
+        this.bexpr = (Bexpr) bexpr;
     }
 
     @Override
