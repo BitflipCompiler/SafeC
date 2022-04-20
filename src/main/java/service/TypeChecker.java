@@ -40,9 +40,9 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(FormalParamsNode ctx) {
-        for (Node node : ctx.vdcls) {
+        /*for (Node node : ctx.vdcls) {
             visit(node);
-        }
+        }*/
         //List<Node> paramnodes = new ArrayList<>(ctx.vdcls);
         //System.out.println(paramnodes.get(0).getClass().getSimpleName());
 
@@ -114,8 +114,8 @@ public class TypeChecker extends SymbolTableFill {
 
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
-        System.out.println(ctx.atypes.getClass().getSimpleName());
-        System.out.println(atypesSuper);
+        /*System.out.println(ctx.atypes.getClass().getSimpleName());
+        System.out.println(atypesSuper);*/
 
         if (foundId == null) {
             visit(ctx.atypes);
@@ -194,7 +194,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(ArrayDeclNode ctx) {
-        symbolTable.enterSymbol(ctx.id,getDataType(ctx.arrdcltype.toString()),true);
+        symbolTable.enterSymbol(new Attributes(ctx.id,getDataType(ctx.arrdcltype.toString()),false));
     }
 
     @Override
@@ -224,7 +224,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(CharDclNode ctx) {
-        symbolTable.enterSymbol(ctx.id,Type.Char,true);
+        symbolTable.enterSymbol(new Attributes(ctx.id,Type.Char,false));
     }
 
     @Override
@@ -235,7 +235,8 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(NumDclNode ctx) {
         //TODO: Få Id til at være en del af formalParams.
-        symbolTable.enterSymbol(ctx.id,Type.Number,true);
+        System.out.println(ctx.id);
+        symbolTable.enterSymbol(new Attributes(ctx.id,Type.Number,true));
     }
 
     @Override
@@ -245,7 +246,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(StringDclNode ctx) {
-        symbolTable.enterSymbol(ctx.id,Type.String,true);
+        symbolTable.enterSymbol(new Attributes(ctx.id,Type.String,false));
     }
 
     @Override
@@ -280,7 +281,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(BoolDclNode ctx) {
-        symbolTable.enterSymbol(ctx.id,Type.Boolean,true);
+        symbolTable.enterSymbol(new Attributes(ctx.id,Type.Boolean,false));
     }
 
     @Override

@@ -15,4 +15,11 @@ public class NumDclNode extends Dcl {
     public void accept(ASTVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "NumDclNode{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }
