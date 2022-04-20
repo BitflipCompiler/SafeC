@@ -10,10 +10,12 @@ public class Attributes {
     int depth;
     Attributes prevSymbol;
     int safelvl;
+    boolean isformalparam;
 
-    public Attributes(String name, Type type) {
+    public Attributes(String name, Type type,Boolean isformalparam) {
         this.name = name;
         this.type = type;
+        this.isformalparam = isformalparam;
     }
 
 
@@ -43,7 +45,8 @@ public class Attributes {
                 "type=" + type +
                 ", level=" + level +
                 ", depth=" + depth +
-                ", prevSymbol=" + prevSymbol +
+                ", isparam=" + isformalparam +
+                ", prevSymbol="  + prevSymbol +
                 "}\n";
     }
 }

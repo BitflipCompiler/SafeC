@@ -35,12 +35,12 @@ public class SymbolTable {
     }
 
 
-    public void enterSymbol(String name, Type type){
+    public void enterSymbol(String name, Type type, boolean formalparam){
         Attributes oldAttribute = this.retrieveSymbol(name);
-        if(oldAttribute != null && oldAttribute.depth == depth){
+        if(oldAttribute != null && oldAttribute.depth == depth && !formalparam){
             throw new RuntimeException("Duplicate definition of: " + name);
         }
-        Attributes newAttribute = new Attributes(name, type);
+        Attributes newAttribute = new Attributes(name, type, formalparam);
         //Add to scope display
         newAttribute.level = scopeCount;
         newAttribute.depth = depth;

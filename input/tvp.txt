@@ -1,4 +1,7 @@
+#7 number x;
 void kat (number x){
-x = 10 + 10;
+    x = 10 + 10;
+    #7 string y;
 return null;
 }
+x = kat (y);

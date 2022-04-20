@@ -55,6 +55,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(FuncCalls ctx) {
+
         super.visit(ctx);
     }
 
@@ -113,6 +114,8 @@ public class TypeChecker extends SymbolTableFill {
 
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
+        System.out.println(ctx.atypes.getClass().getSimpleName());
+        System.out.println(atypesSuper);
 
         if (foundId == null) {
             visit(ctx.atypes);
@@ -121,7 +124,6 @@ public class TypeChecker extends SymbolTableFill {
         switch (atypesSuper) {
             case "Aexpr" -> {
                 if (foundId.type == Type.Number) {
-                    System.out.println("Aexpr");
                     visit(ctx.atypes);
                 } else {
                     throw new RuntimeException("Type " + foundId.type + "does not match with type " + atypesSuper);
@@ -130,7 +132,6 @@ public class TypeChecker extends SymbolTableFill {
 
             case "Bexpr" -> {
                 if (foundId.type == Type.Boolean) {
-                    System.out.println("Bexpr");
                     visit(ctx.atypes);
                 } else {
                     throw new RuntimeException("Type " + foundId.type + "does not match with type " + atypesSuper);
@@ -139,7 +140,6 @@ public class TypeChecker extends SymbolTableFill {
 
             case "FuncCalls" -> {
                 if (foundId.type == Type.Number || foundId.type == Type.Char || foundId.type == Type.String || foundId.type == Type.Boolean || foundId.type == Type.Void) {
-                    System.out.println("Funccalls");
                     visit(ctx.atypes);
                 } else {
                     throw new RuntimeException("Type " + foundId.type + "does not match with type " + atypesSuper);
@@ -148,7 +148,6 @@ public class TypeChecker extends SymbolTableFill {
 
             case "ArrayData" -> {
                 if (foundId.type == Type.Number || foundId.type == Type.Char || foundId.type == Type.String || foundId.type == Type.Boolean) {
-                    System.out.println("ArrayAssign");
                     visit(ctx.atypes);
                 } else {
                     throw new RuntimeException("Type " + foundId.type + "does not match with type " + atypesSuper);
@@ -161,6 +160,8 @@ public class TypeChecker extends SymbolTableFill {
                     System.out.println("Char");
                 } else if (foundId.type == Type.String && atypesNormal.equals("StringValNode")) {
                     System.out.println("String");
+                }else if(foundId.type == Type.Number){ //der er noget her der skal laves om, vi burde ikke komme herind..
+                    visit(ctx.atypes);
                 } else {
                     throw new RuntimeException("Type " + foundId.type + "does not match with type " + atypesNormal);
                 }
@@ -193,12 +194,12 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(ArrayDeclNode ctx) {
-        super.visit(ctx);
+        symbolTable.enterSymbol(ctx.id,getDataType(ctx.arrdcltype.toString()),true);
     }
 
     @Override
     public void visit(ArrayNumNode ctx) {
-        super.visit(ctx);
+        visit(ctx);
     }
 
     @Override
@@ -223,7 +224,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(CharDclNode ctx) {
-        System.out.println("CharDclNode");
+        symbolTable.enterSymbol(ctx.id,Type.Char,true);
     }
 
     @Override
@@ -234,7 +235,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(NumDclNode ctx) {
         //TODO: Få Id til at være en del af formalParams.
-        //ctx.id == x
+        symbolTable.enterSymbol(ctx.id,Type.Number,true);
     }
 
     @Override
@@ -244,7 +245,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(StringDclNode ctx) {
-        System.out.println("StringDclNode");
+        symbolTable.enterSymbol(ctx.id,Type.String,true);
     }
 
     @Override
@@ -279,7 +280,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(BoolDclNode ctx) {
-        super.visit(ctx);
+        symbolTable.enterSymbol(ctx.id,Type.Boolean,true);
     }
 
     @Override

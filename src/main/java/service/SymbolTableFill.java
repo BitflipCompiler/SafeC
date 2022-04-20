@@ -40,7 +40,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StructNode ctx) {
-        symbolTable.enterSymbol(ctx.id, Type.Struct);
+        symbolTable.enterSymbol(ctx.id, Type.Struct,false);
         symbolTable.openScope();
         visit(ctx.structBlock);
         symbolTable.closeScope();
@@ -51,8 +51,7 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(FuncDcl ctx) {
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
-        symbolTable.enterSymbol(ctx.id, funcType);
-        //visit(ctx.datatype);
+        symbolTable.enterSymbol(ctx.id, funcType,false);
         if(ctx.params != null){
             visit(ctx.params);
         }
@@ -61,7 +60,7 @@ public class SymbolTableFill extends ASTVisitor {
         symbolTable.closeScope();
     }
 
-    private Type getDataType(String datatype) {
+    public Type getDataType(String datatype) {
         if (datatype.startsWith("Num")){
             return Type.Number;
         } else if (datatype.startsWith("Void")){
@@ -80,13 +79,6 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(FormalParamsNode ctx) {
         ctx.accept(new TypeChecker(symbolTable));
         //TODO: Der skal laves noget om her, vi skal have IDs ind
-        for (Node node: ctx.vdcls) {
-            Type type = getDataType(node.getClass().getSimpleName());
-            //Attributes name = symbolTable.retrieveSymbol(node.toString());
-            //symbolTable.enterSymbol(type);
-        }
-
-
     }
 
     @Override
@@ -97,6 +89,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(FuncCalls ctx) {
+        System.out.println("funccals symbolfil");
         //TODO: skal slå op i symbol table og tjekke om id på func findes
        /* if(ctx.callparams != null){
             visit(ctx.callparams);
@@ -202,7 +195,7 @@ public class SymbolTableFill extends ASTVisitor {
     //ARRAYS
     @Override
     public void visit(ArrayBoolNode ctx) {
-        symbolTable.enterSymbol(ctx.id, Type.ArrayBool);
+        symbolTable.enterSymbol(ctx.id, Type.ArrayBool,false);
     }
 
     @Override
@@ -212,7 +205,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ArrayCharNode ctx) {
-        symbolTable.enterSymbol(ctx.id, Type.ArrayChar);
+        symbolTable.enterSymbol(ctx.id, Type.ArrayChar,false);
     }
 
     @Override
@@ -222,13 +215,13 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ArrayDeclNode ctx) {
-        symbolTable.enterSymbol(ctx.id,null);
+        symbolTable.enterSymbol(ctx.id,null,false);
         visit(ctx.arrdcltype);
     }
 
     @Override
     public void visit(ArrayNumNode ctx) {
-        symbolTable.enterSymbol(ctx.id, Type.ArrayNum);
+        symbolTable.enterSymbol(ctx.id, Type.ArrayNum,false);
     }
 
     @Override
@@ -238,7 +231,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ArrayStringNode ctx) {
-        symbolTable.enterSymbol(ctx.id, Type.ArrayStr);
+        symbolTable.enterSymbol(ctx.id, Type.ArrayStr,false);
     }
 
     @Override
@@ -255,7 +248,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(CharDclNode ctx) {
-        symbolTable.enterSymbol(ctx.id, Type.Char);
+        symbolTable.enterSymbol(ctx.id, Type.Char,false);
 
     }
     @Override
@@ -270,7 +263,7 @@ public class SymbolTableFill extends ASTVisitor {
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
             System.out.println("goes here number:" + ctx.id);
-            symbolTable.enterSymbol(ctx.id, Type.Number);
+            symbolTable.enterSymbol(ctx.id, Type.Number,false);
         }
     }
 
@@ -286,7 +279,7 @@ public class SymbolTableFill extends ASTVisitor {
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
             System.out.println("goes here string:" + ctx.id);
-            symbolTable.enterSymbol(ctx.id, Type.String);
+            symbolTable.enterSymbol(ctx.id, Type.String,false);
         }
     }
 
@@ -323,7 +316,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(BoolDclNode ctx) {
-        symbolTable.enterSymbol(ctx.id, Type.Boolean);
+        symbolTable.enterSymbol(ctx.id, Type.Boolean,false);
     }
 
 
@@ -402,7 +395,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(IdNode ctx) {
-        symbolTable.enterSymbol(ctx.id,null);
+        symbolTable.enterSymbol(ctx.id,null,false);
     }
 
     @Override
