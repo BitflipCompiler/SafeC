@@ -51,7 +51,6 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(FuncDcl ctx) {
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
-        System.out.println(ctx.params);
 
         symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock, ctx.params));
         if(ctx.params != null){

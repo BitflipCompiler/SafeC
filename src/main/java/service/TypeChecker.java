@@ -3,9 +3,6 @@ package service;
 import ast.*;
 import ast.abstracts.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TypeChecker extends SymbolTableFill {
 
 

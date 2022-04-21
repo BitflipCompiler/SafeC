@@ -14,4 +14,11 @@ public class IdNode extends Node {
     public void accept(ASTVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "IdNode{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

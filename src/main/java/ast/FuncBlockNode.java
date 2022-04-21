@@ -20,8 +20,8 @@ public class FuncBlockNode extends Node {
     @Override
     public String toString() {
         return "FuncBlockNode{" +
-                "dclAssignSemiCommand=" + dclAssignSemiCommand +
-                ", returnValue=" + returnValue +
+                "dclAssignSemiCommand=" + dclAssignSemiCommand.getClass().getSimpleName() +
+                ", returnValue=" + returnValue.getClass().getSimpleName() +
                 '}';
     }
 }

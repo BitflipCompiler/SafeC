@@ -1,5 +1,5 @@
 #7 number x;
-void kat (number x){
+number kat (number x){
     x = 10 + 10;
     #7 string y;
 return null;
