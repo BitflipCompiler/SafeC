@@ -1,0 +1,4 @@
+void start(){
+    on = true;
+    return 0;
+}
