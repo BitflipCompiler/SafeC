@@ -1,3 +1,0 @@
-$ poopx {
-#7 string x;
-}

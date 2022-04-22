@@ -1,3 +1,0 @@
-#1 number decl1;
-#1 number decl2;
-#1 number decl3;
