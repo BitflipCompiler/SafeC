@@ -75,9 +75,11 @@ public class SymbolTable {
         for (Attributes symbol : this.scopes.get(this.scopes.size()-1).attributes) {
             if(symbol.getClass().getSimpleName().equals("FuncAttributes")){
                 FuncAttributes funcsymbol = (FuncAttributes) symbol;
-                for (Map.Entry<String, Type> formalparam : funcsymbol.formalParams.entrySet()) {
-                    if(id.equals(formalparam.getKey())){
-                        return formalparam;
+                if(funcsymbol.formalParams != null){
+                    for (Map.Entry<String, Type> formalparam : funcsymbol.formalParams.entrySet()) {
+                        if(id.equals(formalparam.getKey())){
+                            return formalparam;
+                        }
                     }
                 }
             }

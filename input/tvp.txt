@@ -7,3 +7,7 @@ return null;
 }
 x = kat (9, "Molly", true);
 
+boolean missekat (){
+    x = "hej";
+    return true;
+}

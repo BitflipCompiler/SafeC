@@ -135,52 +135,43 @@ public class TypeChecker extends SymbolTableFill {
         Map.Entry<String,Type> formalparms = symbolTable.checkFormalParams(ctx.id);
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
-        //Attributes formalparmsAtt = new Attributes(formalparms.getKey(),formalparms.getValue(),true);
-        System.out.println(formalparms);
+
         if (formalparms == null) {
-
-
-
-            if (foundId == null) {
-                visit(ctx.atypes);
-                System.out.println("foundId is null wtf ????");
-            } else {
-                if (atypesSuper.equals("Aexpr") || ctx.atypes.getClass().getSuperclass().getSuperclass().getSimpleName().equals("Aexpr")) {
-                    if (foundId.type == Type.Number) {
-                        visit(ctx.atypes);
-                    } else {
-                        throw new RuntimeException("Type " + foundId.type + " does not match with type " + atypesSuper);
-                    }
-                } else if (atypesSuper.equals("Bexpr")) {
-                    if (foundId.type == Type.Boolean) {
-                        visit(ctx.atypes);
-                    } else {
-                        throw new RuntimeException("Type " + foundId.type + " does not match with type " + atypesSuper);
-                    }
-                } else if (atypesSuper.equals("ArrayData")) {
-                    if (foundId.type == Type.Number || foundId.type == Type.Char || foundId.type == Type.String || foundId.type == Type.Boolean) {
-                        visit(ctx.atypes);
-                    } else {
-                        throw new RuntimeException("Type " + foundId.type + " does not match with type " + atypesSuper);
-                    }
-                } else if (foundId.type == Type.Char && atypesNormal.equals("CharValNode")) {
-                    System.out.println("Char");
-                } else if (foundId.type == Type.String && atypesNormal.equals("StringValNode")) {
-                    System.out.println("String");
-                } else if (atypesNormal.equals("FuncCalls")) {
-                    visit(ctx.atypes);
-                } else {
-                    throw new RuntimeException("Her: Type " + foundId.type + "does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
-                }
-            }
+                evalAssign(ctx, foundId.type);
         } else {
-            System.out.println("her "+formalparms.getValue().getClass().getSimpleName());
-            System.out.println("atypes " + atypesNormal);
-            if(formalparms.getValue().getClass().getSimpleName().toString().equals(atypesNormal)){
-                System.out.println("Pisse fedt!");
-            }else{
-                throw new RuntimeException("Type " + foundId.type + " does not match with formal type " + formalparms.getValue());
+                evalAssign(ctx, formalparms.getValue());
+        }
+    }
+
+    private void evalAssign(AssignNode ctx, Type type ){
+        String atypesNormal = ctx.atypes.getClass().getSimpleName();
+        String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
+        if (atypesSuper.equals("Aexpr") || ctx.atypes.getClass().getSuperclass().getSuperclass().getSimpleName().equals("Aexpr")) {
+            if (type == Type.Number) {
+                visit(ctx.atypes);
+            } else {
+                throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
             }
+        } else if (atypesSuper.equals("Bexpr")) {
+            if (type == Type.Boolean) {
+                visit(ctx.atypes);
+            } else {
+                throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
+            }
+        } else if (atypesSuper.equals("ArrayData")) {
+            if (type == Type.Number || type == Type.Char || type == Type.String || type == Type.Boolean) {
+                visit(ctx.atypes);
+            } else {
+                throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
+            }
+        } else if (type == Type.Char && atypesNormal.equals("CharValNode")) {
+            System.out.println("Char");
+        } else if (type == Type.String && atypesNormal.equals("StringValNode")) {
+            System.out.println("String");
+        } else if (atypesNormal.equals("FuncCalls")) {
+            visit(ctx.atypes);
+        } else {
+            throw new RuntimeException("Her: Type " + type + "does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
         }
     }
 
