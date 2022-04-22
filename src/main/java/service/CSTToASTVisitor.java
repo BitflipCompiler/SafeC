@@ -311,7 +311,12 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public Node visitFuncdcl(SafeCParser.FuncdclContext ctx) {
         if(ctx.params() != null){
-            return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()));
+            ArrayList<String> formalParams = new ArrayList<>();
+            for(int i = 0; i < ctx.params().vdcl().size(); i++){
+                formalParams.add(ctx.params().vdcl().get(i).children.get(0).getChild(0).getText());
+            }
+
+            return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()), formalParams);
         }else if(ctx.params() == null){
             return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()));
         }

@@ -1,7 +1,9 @@
 #7 number x;
-number kat (number x){
+#7 number y;
+number kat (number x, string name){
     x = 10 + 10;
     #7 string y;
 return null;
 }
-x = kat (y);
+x = kat (9, "Molly");
+

@@ -4,6 +4,7 @@ import ast.*;
 import ast.abstracts.*;
 import visitor.ASTVisitor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -51,11 +52,19 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(FuncDcl ctx) {
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
-
-        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock, ctx.params));
-        if(ctx.params != null){
-            ctx.params.accept(new TypeChecker(symbolTable));
+        ArrayList<String> stringFormalParams = ctx.getFormalParams();
+        ArrayList<Type> typeFormalParams = new ArrayList<>();
+        for (String param: stringFormalParams) {
+            String fixedParam = param.substring(0, 1).toUpperCase() + param.substring(1);
+            Type typeParam = getDataType(fixedParam);
+            typeFormalParams.add(typeParam);
         }
+
+
+        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock, typeFormalParams));
+        /*if(ctx.params != null){
+            ctx.params.accept(new TypeChecker(symbolTable));
+        }*/
         symbolTable.openScope();
         visit(ctx.funcblock);
         symbolTable.closeScope();
@@ -78,6 +87,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(FormalParamsNode ctx) {
+        System.out.println("blablabla");
     }
 
     @Override
@@ -387,7 +397,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(DivisionNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
@@ -399,7 +409,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(MinusNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //TYPECHECK
 
         //CHECK IF LEFTCHILD OR RIGHTCHILD ID IS AN AEXPR
@@ -420,7 +430,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ModNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
@@ -442,14 +452,14 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(PlusNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
 
     @Override
     public void visit(TimesNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
