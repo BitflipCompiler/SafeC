@@ -126,8 +126,6 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
         assertEquals("DclAssignSemiCommandNode", dclAssignSemiCommandNode.getClass().getSimpleName());
     }
 
-    //TODO to be continued
-
     @Test
     void testVisitSafedeclaration() throws IOException {
         //Declaration
@@ -151,21 +149,13 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
         //number x, number y, number z
         SafeCParser parser = getParserFromString("number x, string y, boolean z, char c, [number] a");
         FormalParamsNode formalParamsNode = (FormalParamsNode) cstToASTVisitor.visitParams(parser.params());
-
         assertEquals(5, formalParamsNode.vdcls.size());
-
         assertEquals("FormalParamsNode", formalParamsNode.getClass().getSimpleName());
-
         assertEquals("NumDclNode", formalParamsNode.vdcls.get(0).getClass().getSimpleName());
-
         assertEquals("StringDclNode", formalParamsNode.vdcls.get(1).getClass().getSimpleName());
-
         assertEquals("BoolDclNode", formalParamsNode.vdcls.get(2).getClass().getSimpleName());
-
         assertEquals("CharDclNode", formalParamsNode.vdcls.get(3).getClass().getSimpleName());
-
         assertEquals("ArrayDeclNode", formalParamsNode.vdcls.get(4).getClass().getSimpleName());
-
     }
 
     @Test
@@ -364,37 +354,102 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
     }
 
     @Test
-    void testVisitDatatype() {
+    void testVisitDatatype() throws IOException {
+        //Numberliteral
+        SafeCParser parser = getParserFromString("number");
+        Node node = cstToASTVisitor.visitDatatype(parser.datatype());
+        assertEquals("NumberLitteralNode",node.getClass().getSimpleName());
+        //CharLiteral
+        parser = getParserFromString("char");
+        node = cstToASTVisitor.visitDatatype(parser.datatype());
+        assertEquals("CharLitteralNode",node.getClass().getSimpleName());
+        //StringLiteral
+        parser = getParserFromString("string");
+        node = cstToASTVisitor.visitDatatype(parser.datatype());
+        assertEquals("StringLitteralNode",node.getClass().getSimpleName());
+        //BoolLiteral
+        parser = getParserFromString("boolean");
+        node = cstToASTVisitor.visitDatatype(parser.datatype());
+        assertEquals("BoolLitteralNode",node.getClass().getSimpleName());
+        //VoidLiteral
+        parser = getParserFromString("void");
+        node = cstToASTVisitor.visitDatatype(parser.datatype());
+        assertEquals("VoidLitteralNode",node.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitAtypes() {
+    void testVisitAtypes() throws IOException {
+        //aexpr
+        SafeCParser parser = getParserFromString("10 + 10 - 48");
+        Node node = cstToASTVisitor.visitAtypes(parser.atypes());
+        assertEquals("MinusNode", node.getClass().getSimpleName());
+        // bexpr
+        parser = getParserFromString("x == true");
+        node = cstToASTVisitor.visitAtypes(parser.atypes());
+        assertEquals("IdBoolValNode", node.getClass().getSimpleName());
+        // CHARVAL
+        parser = getParserFromString("'c'");
+        node = cstToASTVisitor.visitAtypes(parser.atypes());
+        assertEquals("CharValNode", node.getClass().getSimpleName());
+        // STRVAL
+        parser = getParserFromString("\"string\"");
+        node = cstToASTVisitor.visitAtypes(parser.atypes());
+        assertEquals("StringValNode", node.getClass().getSimpleName());
+        // funccalls
+        parser = getParserFromString("cat()");
+        node = cstToASTVisitor.visitAtypes(parser.atypes());
+        assertEquals("FuncCalls", node.getClass().getSimpleName());
+        // TODO arrayassign is not part of visitor atm
+        //parser = getParserFromString("[19, 10]");
+        //node = cstToASTVisitor.visitAtypes(parser.atypes());
+        //assertEquals("", node.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitArrayassign() {
+    void testVisitArrayassign() throws IOException {
+        SafeCParser parser = getParserFromString("[10]");
+        Node node = cstToASTVisitor.visitArrayassign(parser.arrayassign());
+        assertEquals("ArrayNumValuesNode",node.getClass().getSimpleName());
+
+
     }
 
     @Test
-    void testVisitArraydata() {
+    void testVisitArraydata() throws IOException {
+        SafeCParser parser = getParserFromString("10,20,30");
+        Node node = cstToASTVisitor.visitArraydata(parser.arraydata());
+        assertEquals("ArrayNumValuesNode", node.getClass().getSimpleName());
+
     }
 
     @Test
-    void testVisitNumarray() {
+    void testVisitNumarray() throws IOException {
+        SafeCParser parser = getParserFromString("10,20,30");
+        Node node = cstToASTVisitor.visitNumarray(parser.numarray());
+        assertEquals("ArrayNumValuesNode", node.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitChararray() {
+    void testVisitChararray() throws IOException {
+        SafeCParser parser = getParserFromString("'c','a','b'");
+        Node node = cstToASTVisitor.visitChararray(parser.chararray());
+        assertEquals("ArrayCharValuesNode", node.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitStrarray() {
+    void testVisitStrarray() throws IOException {
+        SafeCParser parser = getParserFromString("\"Jonathan\",\"Tommy\",\"Karlemil\", \"Nicolai\"");
+        Node node = cstToASTVisitor.visitStrarray(parser.strarray());
+        assertEquals("ArrayStrValuesNode", node.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitBoolarray() {
+    void testVisitBoolarray() throws IOException {
+        SafeCParser parser = getParserFromString("true, false, true, false");
+        Node node = cstToASTVisitor.visitBoolarray(parser.boolarray());
+        assertEquals("ArrayBoolValuesNode", node.getClass().getSimpleName());
     }
-
+        //TODO To be continued
     @Test
     void testVisitCommand() {
     }
