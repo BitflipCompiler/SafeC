@@ -1,11 +1,11 @@
 #7 string x;
 #7 number y;
-number kat (number x, string name, boolean poopx){
-    x = 10 + 10;
+number kat (number bla, string name, boolean poopx){
+    bla = 10 + 10;
     #7 string y;
-return null;
+return y;
 }
-x = kat (9, "Molly", true);
+x = kat(9, "Molly", true);
 
 boolean missekat (){
     x = "hej";

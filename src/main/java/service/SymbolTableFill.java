@@ -4,11 +4,6 @@ import ast.*;
 import ast.abstracts.*;
 import visitor.ASTVisitor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class SymbolTableFill extends ASTVisitor {
 
@@ -56,12 +51,12 @@ public class SymbolTableFill extends ASTVisitor {
         Type funcType = this.getDataType(datatype);
         //ArrayList<String> stringFormalParams = ctx.getFormalParams();
 
-        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams));
+        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
         /*if(ctx.params != null){
             ctx.params.accept(new TypeChecker(symbolTable));
         }*/
         symbolTable.openScope();
-        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams));
+        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
         visit(ctx.funcblock);
         symbolTable.closeScope();
     }

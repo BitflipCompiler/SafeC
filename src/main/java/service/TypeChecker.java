@@ -59,8 +59,8 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(FuncCalls ctx) {
         FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(ctx.id);
-        /*visit(foundFunc.formalParams);*/
         Map<String, Type> formalParams = foundFunc.getFormalParams();
+
         visit(ctx.callparams);
         int i = 0;
         for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
@@ -69,12 +69,6 @@ public class TypeChecker extends SymbolTableFill {
             }
             i++;
         }
-/*        for(int i = 0; i < formalParams.size(); i++){
-            if(!actualParams.get(i).equals(formalParams.get(actualParams))){
-                throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalParams.get(i));
-            }
-
-        }*/
     }
 
     @Override
@@ -133,8 +127,7 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(AssignNode ctx) {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
         Map.Entry<String,Type> formalparms = symbolTable.checkFormalParams(ctx.id);
-        String atypesNormal = ctx.atypes.getClass().getSimpleName();
-        String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
+
 
         if (formalparms == null) {
                 evalAssign(ctx, foundId.type);
@@ -169,7 +162,16 @@ public class TypeChecker extends SymbolTableFill {
         } else if (type == Type.String && atypesNormal.equals("StringValNode")) {
             System.out.println("String");
         } else if (atypesNormal.equals("FuncCalls")) {
-            visit(ctx.atypes);
+            FuncCalls funcDcl = (FuncCalls) ctx.atypes;
+            FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
+            System.out.println("type is: " + type);
+            System.out.println("foundFunc type is: "+ foundFunc.type);
+
+            if(type.equals(foundFunc.type)){
+                visit(ctx.atypes);
+            }else {
+                throw new RuntimeException("BLABLA");
+            }
         } else {
             throw new RuntimeException("Her: Type " + type + "does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
         }

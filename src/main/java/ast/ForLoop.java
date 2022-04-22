@@ -1,5 +1,7 @@
-package ast.abstracts;
+package ast;
 
+import ast.abstracts.Iterative;
+import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
 public class ForLoop extends Iterative {

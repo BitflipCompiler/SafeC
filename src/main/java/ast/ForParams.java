@@ -1,5 +1,6 @@
-package ast.abstracts;
+package ast;
 
+import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
 public class ForParams extends Node {

@@ -322,14 +322,15 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Node visitFuncdcl(SafeCParser.FuncdclContext ctx) {
+
         if(ctx.params() != null){
             LinkedHashMap<String,Type> formalParams = new LinkedHashMap<>();
             for(int i = 0; i < ctx.params().vdcl().size(); i++){
                 formalParams.put(ctx.params().vdcl().get(i).children.get(0).getChild(1).getText(), getDataType(ctx.params().vdcl().get(i).children.get(0).getChild(0).getText()));
             }
-            return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()), formalParams);
+            return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()),ctx.funcblock().children.get(3).getText(), formalParams);
         }else if(ctx.params() == null){
-            return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()));
+            return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()), ctx.funcblock().children.get(3).getText());
         }
         throw new RuntimeException("Something went wrong in visitFuncDcl");
     }
