@@ -101,7 +101,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitCaseblock(SafeCParser.CaseblockContext ctx) {
+    public CaseBlockNode visitCaseblock(SafeCParser.CaseblockContext ctx) {
         if(ctx.BREAK() != null){
             return new CaseBlockNode(visit(ctx.dclassignsemicommand()), ctx.BREAK().toString());
         } else {
@@ -146,7 +146,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitVassign(SafeCParser.VassignContext ctx) {
+    public AssignNode visitVassign(SafeCParser.VassignContext ctx) {
         return new AssignNode(ctx.ID().toString(), visit(ctx.atypes()));
     }
 
