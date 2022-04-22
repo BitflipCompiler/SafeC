@@ -1,4 +1,4 @@
-#7 number x;
+#7 string x;
 #7 number y;
 number kat (number x, string name, boolean poopx){
     x = 10 + 10;

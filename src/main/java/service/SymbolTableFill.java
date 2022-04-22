@@ -61,6 +61,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.params.accept(new TypeChecker(symbolTable));
         }*/
         symbolTable.openScope();
+        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams));
         visit(ctx.funcblock);
         symbolTable.closeScope();
     }

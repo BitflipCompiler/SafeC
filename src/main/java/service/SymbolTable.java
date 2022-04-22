@@ -2,6 +2,7 @@ package service;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class SymbolTable {
     public final Hashtable<String, Attributes> symbolTable = new Hashtable<>();
@@ -67,13 +68,22 @@ public class SymbolTable {
         return false;
     }
 
-    public Attributes checkFormalParams(String id){
-        for (Attributes symbol: this.scopes.get(this.scopes.size()-1).attributes) {
-            System.out.println(symbol.getClass().getSimpleName());
-            if (id.equals(symbol.name)){
-                return symbol;
-            }
+    public Map.Entry<String, Type> checkFormalParams(String id){
+        if(this.scopes.get(scopes.size()-1).attributes.isEmpty()){
+            return null;
         }
+        for (Attributes symbol : this.scopes.get(this.scopes.size()-1).attributes) {
+            if(symbol.getClass().getSimpleName().equals("FuncAttributes")){
+                FuncAttributes funcsymbol = (FuncAttributes) symbol;
+                for (Map.Entry<String, Type> formalparam : funcsymbol.formalParams.entrySet()) {
+                    if(id.equals(formalparam.getKey())){
+                        return formalparam;
+                    }
+                }
+            }
+
+        }
+
         return null;
     }
     @Override

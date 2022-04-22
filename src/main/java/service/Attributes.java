@@ -41,7 +41,7 @@ public class Attributes {
     @Override
     public String toString() {
         return "{" +
-                //"name='" + name + '\'' +
+                "name='" + name + '\'' +
                 "type=" + type +
                 ", level=" + level +
                 ", depth=" + depth +
