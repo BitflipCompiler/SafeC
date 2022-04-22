@@ -4,9 +4,7 @@ import ast.*;
 import ast.abstracts.*;
 import gen.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
@@ -307,15 +305,28 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         }
         throw new RuntimeException("Something went wrong in VisitFuncCalls");
     }
+    public Type getDataType(String datatype) {
+        if (datatype.startsWith("num")){
+            return Type.Number;
+        } else if (datatype.startsWith("void")){
+            return Type.Void;
+        } else if (datatype.startsWith("string")){
+            return Type.String;
+        } else if (datatype.startsWith("bool")){
+            return Type.Boolean;
+        } else if (datatype.startsWith("char")){
+            return Type.Char;
+        }
+        throw new RuntimeException("Datatype not viable.");
+    }
 
     @Override
     public Node visitFuncdcl(SafeCParser.FuncdclContext ctx) {
         if(ctx.params() != null){
-            ArrayList<String> formalParams = new ArrayList<>();
+            LinkedHashMap<String,Type> formalParams = new LinkedHashMap<>();
             for(int i = 0; i < ctx.params().vdcl().size(); i++){
-                formalParams.add(ctx.params().vdcl().get(i).children.get(0).getChild(0).getText());
+                formalParams.put(ctx.params().vdcl().get(i).children.get(0).getChild(1).getText(), getDataType(ctx.params().vdcl().get(i).children.get(0).getChild(0).getText()));
             }
-
             return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()), formalParams);
         }else if(ctx.params() == null){
             return new FuncDcl(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()));

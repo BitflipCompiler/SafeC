@@ -67,6 +67,15 @@ public class SymbolTable {
         return false;
     }
 
+    public Attributes checkFormalParams(String id){
+        for (Attributes symbol: this.scopes.get(this.scopes.size()-1).attributes) {
+            System.out.println(symbol.getClass().getSimpleName());
+            if (id.equals(symbol.name)){
+                return symbol;
+            }
+        }
+        return null;
+    }
     @Override
     public String toString() {
         return

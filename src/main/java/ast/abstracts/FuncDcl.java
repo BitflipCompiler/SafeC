@@ -1,17 +1,20 @@
 package ast.abstracts;
 
+import service.Type;
 import visitor.ASTVisitor;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class FuncDcl extends Node {
     public Node datatype;
     public String id;
     public Node params;
     public Node funcblock;
-    public ArrayList<String> formalParams;
+    public LinkedHashMap<String, Type> formalParams;
 
-    public FuncDcl(Node datatype, String id, Node params, Node funcblock, ArrayList<String> formalParams) {
+    public FuncDcl(Node datatype, String id, Node params, Node funcblock, LinkedHashMap<String,Type> formalParams) {
         this.datatype = datatype;
         this.id = id;
         this.params = params;
@@ -25,7 +28,7 @@ public class FuncDcl extends Node {
         this.funcblock = funcblock;
     }
 
-    public ArrayList<String> getFormalParams() {
+    public LinkedHashMap<String,Type> getFormalParams() {
         return formalParams;
     }
 

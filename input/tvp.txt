@@ -1,9 +1,9 @@
 #7 number x;
 #7 number y;
-number kat (number x, string name){
+number kat (number x, string name, boolean poopx){
     x = 10 + 10;
     #7 string y;
 return null;
 }
-x = kat (9, "Molly");
+x = kat (9, "Molly", true);
 

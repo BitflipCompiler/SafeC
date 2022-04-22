@@ -4,6 +4,7 @@ import ast.*;
 import ast.abstracts.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class TypeChecker extends SymbolTableFill {
 
@@ -59,13 +60,21 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(FuncCalls ctx) {
         FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(ctx.id);
         /*visit(foundFunc.formalParams);*/
-        ArrayList<Type> formalParams = foundFunc.getFormalParams();
+        Map<String,Type> formalParams = foundFunc.getFormalParams();
         visit(ctx.callparams);
-        for(int i = 0; i < formalParams.size(); i++){
-            if(!actualParams.get(i).equals(formalParams.get(i))){
+        int i = 0;
+        for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
+            if(formalparam.getValue() != actualParams.get(i)){
+                throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+            }
+            i++;
+        }
+/*        for(int i = 0; i < formalParams.size(); i++){
+            if(!actualParams.get(i).equals(formalParams.get(actualParams))){
                 throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalParams.get(i));
             }
-        }
+
+        }*/
     }
 
     @Override
@@ -124,6 +133,12 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(AssignNode ctx) {
 
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
+
+        System.out.println("heyo" + symbolTable.checkFormalParams(ctx.id));
+
+        if(!formalParams.isEmpty()){
+            System.out.println("formal" + formalParams);
+        }
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
 

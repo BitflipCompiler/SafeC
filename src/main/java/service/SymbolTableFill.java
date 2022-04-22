@@ -6,6 +6,8 @@ import visitor.ASTVisitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SymbolTableFill extends ASTVisitor {
@@ -52,16 +54,9 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(FuncDcl ctx) {
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
-        ArrayList<String> stringFormalParams = ctx.getFormalParams();
-        ArrayList<Type> typeFormalParams = new ArrayList<>();
-        for (String param: stringFormalParams) {
-            String fixedParam = param.substring(0, 1).toUpperCase() + param.substring(1);
-            Type typeParam = getDataType(fixedParam);
-            typeFormalParams.add(typeParam);
-        }
+        //ArrayList<String> stringFormalParams = ctx.getFormalParams();
 
-
-        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock, typeFormalParams));
+        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams));
         /*if(ctx.params != null){
             ctx.params.accept(new TypeChecker(symbolTable));
         }*/
