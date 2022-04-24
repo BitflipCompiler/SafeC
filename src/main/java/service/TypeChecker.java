@@ -63,11 +63,15 @@ public class TypeChecker extends SymbolTableFill {
 
         visit(ctx.callparams);
         int i = 0;
-        for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
-            if (formalparam.getValue() != actualParams.get(i)) {
-                throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+        if(actualParams.size() == formalParams.size()){
+            for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
+                if (formalparam.getValue() != actualParams.get(i)) {
+                    throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+                }
+                i++;
             }
-            i++;
+        }else{
+            throw new RuntimeException("Actual params size: "  + actualParams.size() + " Formal params size: " + " " + formalParams.size());
         }
     }
 
@@ -126,13 +130,29 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(AssignNode ctx) {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
-        Map.Entry<String,Type> formalparms = symbolTable.checkFormalParams(ctx.id);
+        Map.Entry<String, Type> formalparms = symbolTable.checkFormalParams(ctx.id);
+        String atypesNormal = ctx.atypes.getClass().getSimpleName();
 
 
-        if (formalparms == null) {
+        if (atypesNormal.equals("FuncCalls")) {
+            FuncCalls funcDcl = (FuncCalls) ctx.atypes;
+            FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
+            System.out.println("type is: " + foundId.type);
+            System.out.println("foundFunc type is: " + foundFunc.type);
+
+            if (foundId.type.equals(foundFunc.type)) {
+                visit(ctx.atypes);
+            } else {
+                throw new RuntimeException("BLABLA");
+            }
+
+        }else {
+
+            if (formalparms == null) {
                 evalAssign(ctx, foundId.type);
-        } else {
+            } else {
                 evalAssign(ctx, formalparms.getValue());
+            }
         }
     }
 
@@ -161,7 +181,7 @@ public class TypeChecker extends SymbolTableFill {
             System.out.println("Char");
         } else if (type == Type.String && atypesNormal.equals("StringValNode")) {
             System.out.println("String");
-        } else if (atypesNormal.equals("FuncCalls")) {
+        } /*else if (atypesNormal.equals("FuncCalls")) {
             FuncCalls funcDcl = (FuncCalls) ctx.atypes;
             FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
             System.out.println("type is: " + type);
@@ -172,7 +192,7 @@ public class TypeChecker extends SymbolTableFill {
             }else {
                 throw new RuntimeException("BLABLA");
             }
-        } else {
+        }*/ else {
             throw new RuntimeException("Her: Type " + type + "does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
         }
     }
