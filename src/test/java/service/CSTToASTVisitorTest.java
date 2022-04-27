@@ -1,8 +1,6 @@
 package service;
 
 import ast.*;
-import ast.abstracts.FuncCalls;
-import ast.abstracts.FuncDcl;
 import ast.abstracts.Node;
 import gen.SafeCBaseVisitor;
 import gen.SafeCLexer;
@@ -91,7 +89,7 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
                 $ poopx {
                 #7 string x;
                 }""");
-        StructNode structNode = (StructNode) cstToASTVisitor.visitStructdcl(parser.structdcl());
+        StructDclNode structNode = (StructDclNode) cstToASTVisitor.visitStructdcl(parser.structdcl());
         assertEquals("StructNode",structNode.getClass().getSimpleName());
     }
 
@@ -462,14 +460,14 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
     @Test
     void testVisitFunccalls() throws IOException{
         SafeCParser parser = getParserFromString("x(y)");
-        FuncCalls funcCalls = cstToASTVisitor.visitFunccalls(parser.funccalls());
-        assertEquals("FuncCalls", funcCalls.getClass().getSimpleName());
+        FuncCallsNode funcCallsNode = cstToASTVisitor.visitFunccalls(parser.funccalls());
+        assertEquals("FuncCalls", funcCallsNode.getClass().getSimpleName());
     }
 
     @Test
     void testVisitFuncdcl() throws IOException {
         SafeCParser parser = getParserFromString("number x () {return x;}");
-        FuncDcl funcDcl = cstToASTVisitor.visitFuncdcl(parser.funcdcl());
+        FuncDclNode funcDcl = cstToASTVisitor.visitFuncdcl(parser.funcdcl());
         assertEquals("x", funcDcl.id);
         assertEquals("FuncBlockNode", funcDcl.funcblock.getClass().getSimpleName());
         assertNull(funcDcl.params);

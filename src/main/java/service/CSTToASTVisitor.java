@@ -339,7 +339,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     public ActualParamsNode visitCallparams(SafeCParser.CallparamsContext ctx) {
         ActualParamsNode astActualParamsNode = new ActualParamsNode();
         for(int i = 0; i < ctx.vals().size();i++){
-            astActualParamsNode.vals.add((Vals) visit(ctx.vals().get(i)));
+            astActualParamsNode.vals.add( visit(ctx.vals().get(i)));
         }
         return astActualParamsNode;
     }
@@ -545,7 +545,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     }
     
     @Override 
-    public IdNode visitAexprIdNode(SafeCParser.AexprIdNodeContext ctx) {
+    public Node visitAexprIdNode(SafeCParser.AexprIdNodeContext ctx) {
         return new IdNode(ctx.ID().getText());
     }
     

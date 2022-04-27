@@ -371,8 +371,8 @@ public class PrettyPrint extends ASTVisitor {
     public void visit(FuncCallsNode ctx) {
         System.out.print(ctx.id);
         System.out.print("(");
-        if(ctx.callparams != null){
-            visit(ctx.callparams);
+        if(ctx.actualParamsNode != null){
+            visit(ctx.actualParamsNode);
         }
         System.out.print(")");
     }

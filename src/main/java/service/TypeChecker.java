@@ -26,12 +26,12 @@ public class TypeChecker extends SymbolTableFill {
     }
 
     @Override
-    public void visit(StructNode ctx) {
+    public void visit(StructDclNode ctx) {
         super.visit(ctx);
     }
 
     @Override
-    public void visit(FuncDcl ctx) {
+    public void visit(FuncDclNode ctx) {
         super.visit(ctx);
     }
 
@@ -51,7 +51,7 @@ public class TypeChecker extends SymbolTableFill {
     }
 
     @Override
-    public void visit(FuncCalls ctx) {
+    public void visit(FuncCallsNode ctx) {
 
         super.visit(ctx);
     }
@@ -92,12 +92,12 @@ public class TypeChecker extends SymbolTableFill {
     }
 
     @Override
-    public void visit(ForLoop ctx) {
+    public void visit(ForLoopNode ctx) {
         super.visit(ctx);
     }
 
     @Override
-    public void visit(ForParams ctx) {
+    public void visit(ForParamsNode ctx) {
         super.visit(ctx);
     }
 

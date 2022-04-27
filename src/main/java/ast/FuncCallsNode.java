@@ -6,7 +6,7 @@ import visitor.ASTVisitor;
 
 public class FuncCallsNode extends Node {
     public String id;
-    public Callparems callparams;
+    public ActualParamsNode actualParamsNode;
 
     public FuncCallsNode(String id) {
         this.id = id;
@@ -14,7 +14,7 @@ public class FuncCallsNode extends Node {
 
     public FuncCallsNode(String id, Node callparams) {
         this.id = id;
-        this.callparams = (Callparems) callparams;
+        this.actualParamsNode = (ActualParamsNode) callparams;
     }
 
 
