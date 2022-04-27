@@ -13,7 +13,7 @@ public class Demo {
     public static void main(String[] args) throws IOException {
 
         //LEXER
-        CharStream charStream = CharStreams.fromFileName("input/example.txt");
+        CharStream charStream = CharStreams.fromFileName("input/tvp.txt");
         SafeCLexer SafeCLexer = new SafeCLexer(charStream);
         CommonTokenStream commonTokenStream = new CommonTokenStream(SafeCLexer);
 

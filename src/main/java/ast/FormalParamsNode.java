@@ -16,4 +16,11 @@ public class FormalParamsNode extends Node {
     public void accept(ASTVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "FormalParamsNode{" +
+                "vdcls=" + vdcls +
+                '}';
+    }
 }

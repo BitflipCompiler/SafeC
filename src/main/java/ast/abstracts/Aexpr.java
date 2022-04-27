@@ -6,6 +6,6 @@ public abstract class Aexpr extends ATypes{
 
     @Override
     public void accept(ASTVisitor v) {
-
+        v.visit(this);
     }
 }

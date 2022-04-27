@@ -5,6 +5,7 @@ import ast.abstracts.*;
 import gen.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
@@ -308,6 +309,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public FuncCallsNode visitFunccalls(SafeCParser.FunccallsContext ctx) {
+
         if(ctx.callparams() != null){
             return new FuncCallsNode(ctx.ID().toString(),visit(ctx.callparams()));
         }else if(ctx.callparams() == null){
@@ -375,6 +377,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public SwitchStatementNode visitSwitchStatement(SafeCParser.SwitchStatementContext ctx) {
         List<ScaseNode> scases = new ArrayList<>();
+
         for(int i = 0; i < ctx.scase().size(); i++){
             scases.add((ScaseNode) visit(ctx.scase().get(i)));
         }
@@ -392,7 +395,6 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         return new ForParamsNode(visit(ctx.numdclassign()), visit(ctx.bexpr()), ctx.ID().toString(), visit(ctx.aexpr()));
     }
 
-    @Override
     public ScaseNode visitScase(SafeCParser.ScaseContext ctx) {
         return new ScaseNode(visit(ctx.vals()), visit(ctx.caseblock()));
     }

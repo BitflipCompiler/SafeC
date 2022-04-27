@@ -1,8 +1,7 @@
-void roll(){
-    for(number i = 0; i < 100; i = i + 1){
-        #7 number y;
-        y= y + 1;
-    }
-return 0;
+#7 number x;
+number kat (number x){
+    x = 10 + 10;
+    #7 string y;
+return null;
 }
-
+x = kat (y);

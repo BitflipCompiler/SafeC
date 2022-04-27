@@ -17,4 +17,12 @@ public class FuncBlockNode extends Node {
     public void accept(ASTVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "FuncBlockNode{" +
+                "dclAssignSemiCommand=" + dclAssignSemiCommand.getClass().getSimpleName() +
+                ", returnValue=" + returnValue.getClass().getSimpleName() +
+                '}';
+    }
 }

@@ -15,4 +15,11 @@ public class IdNode extends Aexpr {
     public void accept(ASTVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "IdNode{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }
