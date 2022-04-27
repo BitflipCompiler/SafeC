@@ -248,6 +248,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(CharDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Char,false));
 
     }
@@ -259,6 +262,10 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(NumDclNode ctx) {
+       // Attributes attr = symbolTable.retrieveSymbol(ctx.id);
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         if (symbolTable.isDeclaredLocally(ctx.id)){
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
@@ -275,6 +282,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StringDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         if (symbolTable.isDeclaredLocally(ctx.id)){
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
@@ -316,6 +326,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(BoolDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Boolean,false));
     }
 
