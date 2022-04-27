@@ -15,4 +15,11 @@ public class StringDclNode extends VDcl {
     public void accept(ASTVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "StringDclNode{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

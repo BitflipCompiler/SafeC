@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProgNode extends Node {
-    public List<Dcl> nodes = new ArrayList<>();
+    public List<Node> nodes = new ArrayList<>();
 
     public ProgNode() {
     }

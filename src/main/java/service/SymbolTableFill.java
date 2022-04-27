@@ -4,8 +4,6 @@ import ast.*;
 import ast.abstracts.*;
 import visitor.ASTVisitor;
 
-import java.util.Arrays;
-
 
 public class SymbolTableFill extends ASTVisitor {
 
@@ -52,12 +50,14 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(FuncDclNode ctx) {
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
+        //ArrayList<String> stringFormalParams = ctx.getFormalParams();
 
-        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock, ctx.params));
-        if(ctx.params != null){
+        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
+        /*if(ctx.params != null){
             ctx.params.accept(new TypeChecker(symbolTable));
-        }
+        }*/
         symbolTable.openScope();
+        symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
         visit(ctx.funcblock);
         symbolTable.closeScope();
     }
@@ -79,6 +79,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(FormalParamsNode ctx) {
+        System.out.println("blablabla");
     }
 
     @Override
@@ -248,6 +249,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(CharDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Char,false));
 
     }
@@ -259,6 +263,10 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(NumDclNode ctx) {
+       // Attributes attr = symbolTable.retrieveSymbol(ctx.id);
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         if (symbolTable.isDeclaredLocally(ctx.id)){
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
@@ -275,6 +283,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StringDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         if (symbolTable.isDeclaredLocally(ctx.id)){
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
@@ -316,6 +327,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(BoolDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Boolean,false));
     }
 
@@ -388,7 +402,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(DivisionNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
@@ -400,7 +414,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(MinusNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //TYPECHECK
 
         //CHECK IF LEFTCHILD OR RIGHTCHILD ID IS AN AEXPR
@@ -421,7 +435,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ModNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
@@ -443,14 +457,14 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(PlusNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }
 
     @Override
     public void visit(TimesNode ctx) {
-        ctx.accept(new TypeChecker(symbolTable));
+        //ctx.accept(new TypeChecker(symbolTable));
         //visit(ctx.leftChild);
         //visit(ctx.rightChild);
     }

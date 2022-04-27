@@ -6,12 +6,12 @@ import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
 public class RelopLeqNode extends Bexpr {
-    public Aexpr leftChild;
-    public Aexpr rightChild;
+    public Node leftChild;
+    public Node rightChild;
 
     public RelopLeqNode(Node leftChild, Node rightChild) {
-        this.leftChild = (Aexpr) leftChild;
-        this.rightChild = (Aexpr) rightChild;
+        this.leftChild = leftChild;
+        this.rightChild = rightChild;
     }
 
     @Override

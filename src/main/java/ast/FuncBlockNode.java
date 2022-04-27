@@ -18,6 +18,10 @@ public class FuncBlockNode extends Node {
         v.visit(this);
     }
 
+    public Node getReturnValue() {
+        return returnValue;
+    }
+
     @Override
     public String toString() {
         return "FuncBlockNode{" +

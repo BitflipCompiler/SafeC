@@ -11,6 +11,10 @@ public class IdNode extends Node {
         this.id = id;
     }
 
+    public String getId() {
+        return id;
+    }
+
     @Override
     public void accept(ASTVisitor v) {
         v.visit(this);

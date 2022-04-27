@@ -135,6 +135,4 @@ public abstract class ASTVisitor {
 
     public abstract void visit(WhileLoop ctx);
 
-
-
 }

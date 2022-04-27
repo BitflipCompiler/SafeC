@@ -4,9 +4,7 @@ import ast.*;
 import ast.abstracts.*;
 import gen.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
@@ -14,19 +12,19 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     public ProgNode visitProg(SafeCParser.ProgContext ctx) {
         ProgNode progNode = new ProgNode();
         for(int i = 0; i < ctx.declaration().size(); i++){
-            progNode.nodes.add((Dcl) visit(ctx.declaration().get(i)));
+            progNode.nodes.add(visit(ctx.declaration().get(i)));
         }
         return progNode;
     }
 
     @Override
-    public Dcl visitDeclaration(SafeCParser.DeclarationContext ctx) {
+    public Node visitDeclaration(SafeCParser.DeclarationContext ctx) {
         if(ctx.dclassignsemi() != null){
-            return (Dcl) visit(ctx.dclassignsemi());
+            return visit(ctx.dclassignsemi());
         } else if(ctx.structdcl() != null){
-            return (Dcl) visit(ctx.structdcl());
+            return visit(ctx.structdcl());
         } else if (ctx.funcdcl() != null){
-            return (Dcl) visit(ctx.funcdcl());
+            return visit(ctx.funcdcl());
         }
         throw new RuntimeException("declaration not valid.");
     }
@@ -317,14 +315,32 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
         }
         throw new RuntimeException("Something went wrong in VisitFuncCalls");
     }
+    public Type getDataType(String datatype) {
+        if (datatype.startsWith("num")){
+            return Type.Number;
+        } else if (datatype.startsWith("void")){
+            return Type.Void;
+        } else if (datatype.startsWith("string")){
+            return Type.String;
+        } else if (datatype.startsWith("bool")){
+            return Type.Boolean;
+        } else if (datatype.startsWith("char")){
+            return Type.Char;
+        }
+        throw new RuntimeException("Datatype not viable.");
+    }
 
 
     @Override
     public FuncDclNode visitFuncdcl(SafeCParser.FuncdclContext ctx) {
         if(ctx.params() != null){
-            return new FuncDclNode(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()));
+            LinkedHashMap<String,Type> formalParams = new LinkedHashMap<>();
+            for(int i = 0; i < ctx.params().vdcl().size(); i++){
+                formalParams.put(ctx.params().vdcl().get(i).children.get(0).getChild(1).getText(), getDataType(ctx.params().vdcl().get(i).children.get(0).getChild(0).getText()));
+            }
+            return new FuncDclNode(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()),ctx.funcblock().children.get(3).getText(), formalParams);
         }else if(ctx.params() == null){
-            return new FuncDclNode(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()));
+            return new FuncDclNode(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()), ctx.funcblock().children.get(3).getText());
         }
         throw new RuntimeException("Something went wrong in visitFuncDcl");
     }
@@ -493,6 +509,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     public BoolValNode visitBexprBoolval(SafeCParser.BexprBoolvalContext ctx) {
         if(ctx.BOOLVAL().getSymbol().getType() == SafeCParser.BOOLVAL){
             return new BoolValNode(ctx.BOOLVAL().toString());
+
         } else {
             throw new RuntimeException("BexprBoolVal not valid input.");
         }
