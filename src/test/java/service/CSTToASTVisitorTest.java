@@ -1,6 +1,8 @@
 package service;
 
 import ast.*;
+import ast.abstracts.FuncCalls;
+import ast.abstracts.FuncDcl;
 import ast.abstracts.Node;
 import gen.SafeCBaseVisitor;
 import gen.SafeCLexer;
@@ -451,31 +453,71 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
     }
         //TODO To be continued
     @Test
-    void testVisitCommand() {
+    void testVisitCommand() throws IOException {
+        SafeCParser parser = getParserFromString("if(true){}");
+        Node node = cstToASTVisitor.visitCommand(parser.command());
+        assertEquals("IfStatementNode",node.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitFunccalls() {
+    void testVisitFunccalls() throws IOException{
+        SafeCParser parser = getParserFromString("x(y)");
+        FuncCalls funcCalls = cstToASTVisitor.visitFunccalls(parser.funccalls());
+        assertEquals("FuncCalls", funcCalls.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitFuncdcl() {
+    void testVisitFuncdcl() throws IOException {
+        SafeCParser parser = getParserFromString("number x () {return x;}");
+        FuncDcl funcDcl = cstToASTVisitor.visitFuncdcl(parser.funcdcl());
+        assertEquals("x", funcDcl.id);
+        assertEquals("FuncBlockNode", funcDcl.funcblock.getClass().getSimpleName());
+        assertNull(funcDcl.params);
+        assertEquals("NumberLitteralNode", funcDcl.datatype.getClass().getSimpleName());
+        assertEquals("FuncDcl", funcDcl.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitFuncblock() {
+    void testVisitFuncblock() throws IOException {
+        SafeCParser parser = getParserFromString("{x = 7; return x;}");
+        FuncBlockNode funcBlockNode = cstToASTVisitor.visitFuncblock(parser.funcblock());
+        assertEquals("FuncBlockNode", funcBlockNode.getClass().getSimpleName());
+        assertEquals("IdNode", funcBlockNode.returnValue.getClass().getSimpleName());
+        assertEquals("DclAssignSemiCommandNode", funcBlockNode.dclAssignSemiCommand.getClass().getSimpleName());
     }
 
     @Test
-    void testVisitCallparams() {
+    void testVisitCallparams() throws IOException {
+        SafeCParser parser = getParserFromString("x, y, x, i");
+        ActualParamsNode actualParamsNode = cstToASTVisitor.visitCallparams(parser.callparams());
+        assertEquals("ActualParamsNode", actualParamsNode.getClass().getSimpleName());
+        assertEquals(4, actualParamsNode.vals.size());
+        for (int i = 0; i < actualParamsNode.vals.size(); i++) {
+            assertEquals("IdNode", actualParamsNode.vals.get(i).getClass().getSimpleName());
+        }
+
     }
 
     @Test
-    void testVisitCtrlstruct() {
+    void testVisitCtrlstruct() throws IOException {
+        //Forloop
+        SafeCParser parser = getParserFromString("for(number x = 7; x < 10; x = x + 1){}");
+        Node node = cstToASTVisitor.visitCtrlstruct(parser.ctrlstruct());
+        assertEquals("ForLoop", node.getClass().getSimpleName());
+
+        //whileloop
+        parser = getParserFromString("while(x <10){}");
+        node = cstToASTVisitor.visitCtrlstruct(parser.ctrlstruct());
+        assertEquals("WhileLoop", node.getClass().getSimpleName());
+
+
+
+
     }
 
     @Test
     void testVisitForLoop() {
+
     }
 
     @Test
