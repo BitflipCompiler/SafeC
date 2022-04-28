@@ -158,6 +158,11 @@ public class TypeChecker extends SymbolTableFill {
     private void evalAssign(AssignNode ctx, Type type ){
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
+        System.out.println(atypesNormal);
+        //TODO there is something that is not working with all results, (IdNode)
+        /*if(atypesNormal.equals("IdNode")){
+            visit(ctx.atypes);
+        }*/
         if (atypesSuper.equals("Aexpr") || ctx.atypes.getClass().getSuperclass().getSuperclass().getSimpleName().equals("Aexpr")) {
             if (type == Type.Number) {
                 visit(ctx.atypes);
@@ -192,7 +197,7 @@ public class TypeChecker extends SymbolTableFill {
                 throw new RuntimeException("BLABLA");
             }
         }*/ else {
-            throw new RuntimeException("Her: Type " + type + "does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
+            throw new RuntimeException("Her: Type " + type.getClass().getSimpleName() + " does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
         }
     }
 

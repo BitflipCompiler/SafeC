@@ -13,6 +13,8 @@ public class CodeGenC extends ASTVisitor {
     public StringBuilder main = new StringBuilder();
     public StringBuilder struct = new StringBuilder();
 
+    public boolean areWeInStruct = false;
+
     boolean hasBool = false;
     boolean isVoid;
 
@@ -312,7 +314,11 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.isGlobal){
             main.append(" = ");
         }else {
-            codeGen.append(" = ");
+            if(areWeInStruct){
+                struct.append(" = ");
+            }else {
+                codeGen.append(" = ");
+            }
         }
             visit(ctx.bexpr);
     }
@@ -330,8 +336,13 @@ public class CodeGenC extends ASTVisitor {
             main.append(ctx.id);
 
         }else {
-            codeGen.append("bool ");
-            codeGen.append(ctx.id);
+            if(areWeInStruct){
+                struct.append("bool ");
+                struct.append(ctx.id);
+            }else {
+                codeGen.append("bool ");
+                codeGen.append(ctx.id);
+            }
         }
     }
 
@@ -352,7 +363,16 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(CharDclAssignNode ctx) {
         visit(ctx.charDcl);
-        codeGen.append(" = ");
+        if(ctx.isGlobal){
+            main.append(" = ");
+        }else {
+            if(areWeInStruct){
+                struct.append(" = ");
+            }else {
+                codeGen.append(" = ");
+            }
+        }
+
         visit(ctx.charval);
     }
 
@@ -363,8 +383,13 @@ public class CodeGenC extends ASTVisitor {
             main.append(ctx.id);
 
         }else {
-            codeGen.append("char  ");
-            codeGen.append(ctx.id);
+            if(areWeInStruct){
+                struct.append("char  ");
+                struct.append(ctx.id);
+            }else {
+                codeGen.append("char  ");
+                codeGen.append(ctx.id);
+            }
         }
     }
 
@@ -523,7 +548,15 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(NumDclAssignNode ctx) {
         visit(ctx.numdecl);
-        codeGen.append(" = ");
+        if(ctx.isGlobal){
+            main.append(" = ");
+        }else {
+            if(areWeInStruct){
+                struct.append(" = ");
+            }else {
+                codeGen.append(" = ");
+            }
+        }
         visit(ctx.aexpr);
     }
 
@@ -534,8 +567,13 @@ public class CodeGenC extends ASTVisitor {
             main.append(ctx.id);
 
         }else {
-            codeGen.append("float ");
-            codeGen.append(ctx.id);
+            if(areWeInStruct){
+                struct.append("float ");
+                struct.append(ctx.id);
+            }else {
+                codeGen.append("float ");
+                codeGen.append(ctx.id);
+            }
         }
     }
 
@@ -564,7 +602,11 @@ public class CodeGenC extends ASTVisitor {
 
             main.append(";\n");
         }else {
-            codeGen.append(";\n");
+            if(areWeInStruct){
+                struct.append(";\n");
+            }else {
+                codeGen.append(";\n");
+            }
         }
 
         //
@@ -582,7 +624,16 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(StringDclAssignNode ctx) {
         visit(ctx.stringdcl);
-        codeGen.append(" = ");
+        if(ctx.isGlobal){
+            main.append(" = ");
+        }else {
+            if(areWeInStruct){
+                struct.append(" = ");
+            }else {
+                codeGen.append(" = ");
+            }
+        }
+
         visit(ctx.stringval);
     }
 
@@ -593,8 +644,13 @@ public class CodeGenC extends ASTVisitor {
             main.append(ctx.id);
 
         }else {
-            codeGen.append("char * ");
-            codeGen.append(ctx.id);
+            if(areWeInStruct){
+                struct.append("char * ");
+                struct.append(ctx.id);
+            }else {
+                codeGen.append("char * ");
+                codeGen.append(ctx.id);
+            }
         }
     }
 
@@ -613,6 +669,7 @@ public class CodeGenC extends ASTVisitor {
     //TODO Structs (hard bc we dont know if what we visit is inside a struct
     @Override
     public void visit(StructBlockNode ctx) {
+        areWeInStruct = true;
         struct.append("{ \n");
 
         for (Node node : ctx.safeDclNodes) {
@@ -620,6 +677,7 @@ public class CodeGenC extends ASTVisitor {
         }
 
         struct.append("\n" + "}");
+        areWeInStruct = false;
     }
 
     @Override

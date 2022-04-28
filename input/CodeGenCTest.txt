@@ -1,0 +1,33 @@
+#10 number age = 19;
+#10 string name = "KarlEmil";
+#4 boolean binary = true;
+#1 char favChar = 'n';
+
+void setAge(number agen){
+    age = agen;
+    return 0;
+}
+
+number getAge(){
+    return age;
+}
+
+string getName(){
+    return name;
+}
+
+boolean getBinary(){
+    return binary;
+}
+
+char getFavChar(){
+    return favChar;
+}
+
+boolean isOver18(){
+    #7 boolean is18 = false;
+    if(age > 18){
+        is18 = true;
+    }
+    return is18;
+}

@@ -5,6 +5,7 @@ import ast.abstracts.Vals;
 import visitor.ASTVisitor;
 
 public class FuncBlockNode extends Node {
+    //TODO Maybe this needs to be NODE and not DclAssignSemiCommandNode (like in CSToAstVisitor)
     public DclAssignSemiCommandNode dclAssignSemiCommand;
     public Node returnValue;
 
