@@ -599,8 +599,12 @@ class CSTToASTVisitorTest  {
     }
 
     @Test
-    void testVisitBexprBoolval() {
+    void testVisitBexprBoolval() throws IOException {
+        //SafeCParser parser = getParserFromString("true");
+        //BoolValNode boolValNode = cstToASTVisitor.visitBexprBoolval(parser.bexpr());
     }
+
+    //Node node = cstToASTVisitor.visitCtrlstruct(parser.ctrlstruct());
 
     @Test
     void testVisitBop() {

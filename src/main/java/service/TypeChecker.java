@@ -297,10 +297,6 @@ public class TypeChecker extends SymbolTableFill {
 
     }
 
-    @Override
-    public void visit(Bexpr ctx) {
-
-    }
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
@@ -434,10 +430,6 @@ public class TypeChecker extends SymbolTableFill {
         }*/
     }
 
-    @Override
-    public void visit(Numberval ctx) {
-
-    }
 
     @Override
     public void visit(NumvalNode ctx) {

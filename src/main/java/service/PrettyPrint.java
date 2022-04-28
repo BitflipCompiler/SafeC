@@ -110,10 +110,6 @@ public class PrettyPrint extends ASTVisitor {
         visit(ctx.rightChild);
     }
 
-    @Override
-    public void visit(Numberval ctx) {
-
-    }
 
     @Override
     public void visit(NumvalNode ctx) {
@@ -245,11 +241,6 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print(" = ");
         visit(ctx.atypes);
         //System.out.println();
-    }
-
-    @Override
-    public void visit(Bexpr ctx) {
-
     }
 
     @Override

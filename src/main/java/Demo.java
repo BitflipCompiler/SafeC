@@ -11,6 +11,12 @@ import java.io.IOException;
 public class Demo {
 
     public static void main(String[] args) throws IOException {
+        System.out.println("     _______.     ___       _______  _______   ______ \n" +
+                "    /       |    /   \\     |   ____||   ____| /      |\n" +
+                "   |   (----`   /  ^  \\    |  |__   |  |__   |  ,----'\n" +
+                "    \\   \\      /  /_\\  \\   |   __|  |   __|  |  |     \n" +
+                ".----)   |    /  _____  \\  |  |     |  |____ |  `----.\n" +
+                "|_______/    /__/     \\__\\ |__|     |_______| \\______|\n");
 
         //LEXER
         CharStream charStream = CharStreams.fromFileName("input/example.txt");
@@ -26,13 +32,13 @@ public class Demo {
         Node ASTTree = cstToASTVisitor.visit(parseTree);
 
         //PRETTY PRINT
-        ASTTree.accept(new PrettyPrint());
+        //ASTTree.accept(new PrettyPrint());
 
         //SYMBOL TABLE FILLING
         SymbolTable symbolTable = new SymbolTable();
         ASTTree.accept(new SymbolTableFill(symbolTable));
 
-        CodeGen codeGen = new CodeGen();
+        CodeGenC codeGen = new CodeGenC();
         ASTTree.accept(codeGen);
         codeGen.setupMain(codeGen.main);
         System.out.println(codeGen.getlibs());

@@ -509,7 +509,6 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     public BoolValNode visitBexprBoolval(SafeCParser.BexprBoolvalContext ctx) {
         if(ctx.BOOLVAL().getSymbol().getType() == SafeCParser.BOOLVAL){
             return new BoolValNode(ctx.BOOLVAL().toString());
-
         } else {
             throw new RuntimeException("BexprBoolVal not valid input.");
         }

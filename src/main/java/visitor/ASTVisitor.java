@@ -37,8 +37,6 @@ public abstract class ASTVisitor {
 
     public abstract void visit(ModNode ctx);
 
-    public abstract void visit(Numberval ctx);
-
     public abstract void visit(NumvalNode ctx);
 
     public abstract void visit(PiNode ctx);
@@ -68,8 +66,6 @@ public abstract class ASTVisitor {
     public abstract void visit(ArrayStrValuesNode ctx);
 
     public abstract void visit(AssignNode ctx);
-
-    public abstract void visit(Bexpr ctx);
 
     public abstract void visit(BoolDclAssignNode ctx);
 
