@@ -601,7 +601,7 @@ public class CodeGen extends ASTVisitor {
     }
 
     @Override
-    public void visit(WhileLoop ctx) {
+    public void visit(WhileLoopNode ctx) {
         codeGen.append("while ");
         codeGen.append("(");
         visit(ctx.bexpr);

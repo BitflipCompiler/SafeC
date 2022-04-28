@@ -133,6 +133,6 @@ public abstract class ASTVisitor {
 
     public abstract void visit(VoidLitteralNode ctx);
 
-    public abstract void visit(WhileLoop ctx);
+    public abstract void visit(WhileLoopNode ctx);
 
 }

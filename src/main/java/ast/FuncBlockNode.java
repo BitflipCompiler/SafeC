@@ -5,11 +5,11 @@ import ast.abstracts.Vals;
 import visitor.ASTVisitor;
 
 public class FuncBlockNode extends Node {
-    public DclAssignSemiCommandNode dclAssignSemiCommand;
+    public Node dclAssignSemiCommand;
     public Node returnValue;
 
     public FuncBlockNode(Node dclAssignSemiCommand, Node returnValue) {
-        this.dclAssignSemiCommand = (DclAssignSemiCommandNode) dclAssignSemiCommand;
+        this.dclAssignSemiCommand = dclAssignSemiCommand;
         this.returnValue = returnValue;
     }
 

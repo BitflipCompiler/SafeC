@@ -154,7 +154,7 @@ public class SymbolTableFill extends ASTVisitor {
     }
 
     @Override
-    public void visit(WhileLoop ctx) {
+    public void visit(WhileLoopNode ctx) {
         //visit(ctx.bexpr);
         symbolTable.openScope();
         visit(ctx.block);

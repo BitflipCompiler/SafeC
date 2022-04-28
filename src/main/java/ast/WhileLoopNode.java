@@ -5,11 +5,11 @@ import ast.abstracts.Node;
 import ast.abstracts.Selective;
 import visitor.ASTVisitor;
 
-public class WhileLoop extends Selective {
+public class WhileLoopNode extends Selective {
     public Bexpr bexpr;
     public Node block;
 
-    public WhileLoop(Node bexpr, Node block) {
+    public WhileLoopNode(Node bexpr, Node block) {
         this.bexpr = (Bexpr) bexpr;
         this.block = block;
     }

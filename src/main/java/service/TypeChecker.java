@@ -107,7 +107,7 @@ public class TypeChecker extends SymbolTableFill {
     }
 
     @Override
-    public void visit(WhileLoop ctx) {
+    public void visit(WhileLoopNode ctx) {
 
     }
 

@@ -49,7 +49,7 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
         assertEquals(3, progNode.nodes.size());
         assertEquals("SafeDclNode",progNode.nodes.get(0).getClass().getSimpleName());
         assertEquals("SafeDclNode",progNode.nodes.get(1).getClass().getSimpleName());
-        assertEquals("FuncDcl",progNode.nodes.get(2).getClass().getSimpleName());
+        assertEquals("FuncDclNode",progNode.nodes.get(2).getClass().getSimpleName());
     }
 
     /*
@@ -64,7 +64,7 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
                     return 0;
                 }""");
         Node node = cstToASTVisitor.visitDeclaration(parser.declaration());
-        assertEquals("FuncDcl",node.getClass().getSimpleName());
+        assertEquals("FuncDclNode",node.getClass().getSimpleName());
 
         //dclassignsemi
         parser = getParserFromString("#1 number decl3;");
@@ -77,7 +77,7 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
                  #7 string x;
                  }""");
         node = cstToASTVisitor.visitDeclaration(parser.declaration());
-        assertEquals("StructNode",node.getClass().getSimpleName());
+        assertEquals("StructDclNode",node.getClass().getSimpleName());
     }
 
     /*
@@ -90,7 +90,7 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
                 #7 string x;
                 }""");
         StructDclNode structNode = (StructDclNode) cstToASTVisitor.visitStructdcl(parser.structdcl());
-        assertEquals("StructNode",structNode.getClass().getSimpleName());
+        assertEquals("StructDclNode",structNode.getClass().getSimpleName());
     }
 
     @Test
@@ -267,7 +267,7 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
         parser = getParserFromString("x = x(x)");
         assignNode = cstToASTVisitor.visitVassign(parser.vassign());
         assertEquals("x",assignNode.id);
-        assertEquals("FuncCalls", assignNode.atypes.getClass().getSimpleName());
+        assertEquals("FuncCallsNode", assignNode.atypes.getClass().getSimpleName());
 
     }
 
@@ -398,7 +398,7 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
         // funccalls
         parser = getParserFromString("cat()");
         node = cstToASTVisitor.visitAtypes(parser.atypes());
-        assertEquals("FuncCalls", node.getClass().getSimpleName());
+        assertEquals("FuncCallsNode", node.getClass().getSimpleName());
         // TODO arrayassign is not part of visitor atm
         //parser = getParserFromString("[19, 10]");
         //node = cstToASTVisitor.visitAtypes(parser.atypes());
@@ -461,18 +461,19 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
     void testVisitFunccalls() throws IOException{
         SafeCParser parser = getParserFromString("x(y)");
         FuncCallsNode funcCallsNode = cstToASTVisitor.visitFunccalls(parser.funccalls());
-        assertEquals("FuncCalls", funcCallsNode.getClass().getSimpleName());
+        assertEquals("FuncCallsNode", funcCallsNode.getClass().getSimpleName());
     }
 
     @Test
     void testVisitFuncdcl() throws IOException {
-        SafeCParser parser = getParserFromString("number x () {return x;}");
+        SafeCParser parser = getParserFromString("number x(number x) {return x;}");
+        //TODO Fix DclAssignSemiCommandNode in FuncDclNode (Maybe it should just be a Node?)
         FuncDclNode funcDcl = cstToASTVisitor.visitFuncdcl(parser.funcdcl());
         assertEquals("x", funcDcl.id);
         assertEquals("FuncBlockNode", funcDcl.funcblock.getClass().getSimpleName());
-        assertNull(funcDcl.params);
+        assertEquals("FormalParamsNode", funcDcl.params.getClass().getSimpleName());
         assertEquals("NumberLitteralNode", funcDcl.datatype.getClass().getSimpleName());
-        assertEquals("FuncDcl", funcDcl.getClass().getSimpleName());
+        assertEquals("FuncDclNode", funcDcl.getClass().getSimpleName());
     }
 
     @Test
@@ -501,15 +502,12 @@ class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
         //Forloop
         SafeCParser parser = getParserFromString("for(number x = 7; x < 10; x = x + 1){}");
         Node node = cstToASTVisitor.visitCtrlstruct(parser.ctrlstruct());
-        assertEquals("ForLoop", node.getClass().getSimpleName());
+        assertEquals("ForLoopNode", node.getClass().getSimpleName());
 
         //whileloop
         parser = getParserFromString("while(x <10){}");
         node = cstToASTVisitor.visitCtrlstruct(parser.ctrlstruct());
-        assertEquals("WhileLoop", node.getClass().getSimpleName());
-
-
-
+        assertEquals("WhileLoopNode", node.getClass().getSimpleName());
 
     }
 

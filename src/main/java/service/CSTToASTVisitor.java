@@ -377,8 +377,8 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     }
 
     @Override
-    public WhileLoop visitWhileLoop(SafeCParser.WhileLoopContext ctx) {
-        return new WhileLoop(visit(ctx.bexpr()),visit(ctx.block()));
+    public WhileLoopNode visitWhileLoop(SafeCParser.WhileLoopContext ctx) {
+        return new WhileLoopNode(visit(ctx.bexpr()),visit(ctx.block()));
     }
 
     @Override

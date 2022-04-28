@@ -535,7 +535,7 @@ public class PrettyPrint extends ASTVisitor {
     }
 
     @Override
-    public void visit(WhileLoop ctx) {
+    public void visit(WhileLoopNode ctx) {
         System.out.print("while ");
         System.out.print("(");
         visit(ctx.bexpr);
