@@ -172,15 +172,28 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(ActualParamsNode ctx) {
-        if(ctx.vals.size() == 1){
-            main.append(ctx.vals.get(0));
-        }else {
-            main.append(ctx.vals.get(0));
-            for (int i = 1; i < ctx.vals.size();i++) {
-                main.append(", ");
-                main.append(ctx.vals.get(i));
+        if(ctx.isGlobal == true){
+            if(ctx.vals.size() == 1){
+                main.append(ctx.vals.get(0));
+            }else {
+                main.append(ctx.vals.get(0));
+                for (int i = 1; i < ctx.vals.size();i++) {
+                    main.append(", ");
+                    main.append(ctx.vals.get(i));
+                }
+            }
+        }else{
+            if(ctx.vals.size() == 1){
+                codeGen.append(ctx.vals.get(0));
+            }else {
+                codeGen.append(ctx.vals.get(0));
+                for (int i = 1; i < ctx.vals.size();i++) {
+                    codeGen.append(", ");
+                    codeGen.append(ctx.vals.get(i));
+                }
             }
         }
+
     }
 
     @Override
@@ -415,15 +428,27 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(FuncCallsNode ctx) {
-        main.append(ctx.id);
-        main.append("(");
-        if(ctx.actualParamsNode != null){
-            visit(ctx.actualParamsNode);
-        }
-        main.append(")");
-        main.append(";");
+        if (ctx.isGlobal == true){
+            main.append(ctx.id);
+            main.append("(");
+            if(ctx.actualParamsNode != null){
+                visit(ctx.actualParamsNode);
+            }
+            main.append(")");
+            main.append(";");
 
-/*        codeGen.append(ctx.id);
+        }else{
+            codeGen.append(ctx.id);
+            codeGen.append("(");
+            if(ctx.actualParamsNode != null){
+                visit(ctx.actualParamsNode);
+            }
+            codeGen.append(")");
+            codeGen.append(";");
+
+        }
+
+/*      codeGen.append(ctx.id);
         codeGen.append("(");
         if(ctx.callparams != null){
             visit(ctx.callparams);

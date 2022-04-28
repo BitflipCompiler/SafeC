@@ -90,6 +90,10 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(FuncCallsNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
+
 
         //TODO: skal slå op i symbol table og tjekke om id på func findes
        /* if(ctx.callparams != null){
@@ -99,6 +103,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ActualParamsNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         ctx.accept(new TypeChecker(symbolTable));
         /*for (Node node: ctx.vals) {
             visit(node);

@@ -9,7 +9,7 @@ public abstract class ASTVisitor {
         ctx.accept(this);
     }
 
-    public abstract void visit(NotNode ctx);
+    public  abstract void visit(NotNode ctx);
 
     public abstract void visit(AndNode ctx);
 

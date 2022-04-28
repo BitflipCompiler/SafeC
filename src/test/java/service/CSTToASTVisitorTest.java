@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CSTToASTVisitorTest extends SafeCBaseVisitor<Node> {
+class CSTToASTVisitorTest  {
 
     CSTToASTVisitor cstToASTVisitor;
 

@@ -59,19 +59,21 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(FuncCallsNode ctx) {
         FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(ctx.id);
         Map<String, Type> formalParams = foundFunc.getFormalParams();
-
-        visit(ctx.actualParamsNode);
-        int i = 0;
-        if(actualParams.size() == formalParams.size()){
-            for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
-                if (formalparam.getValue() != actualParams.get(i)) {
-                    throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+        if (ctx.actualParamsNode != null) { //Hvis der ikke er nogle actual params skal vi ikke visit.
+            visit(ctx.actualParamsNode);
+            int i = 0;
+            if(actualParams.size() == formalParams.size()){
+                for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
+                    if (formalparam.getValue() != actualParams.get(i)) {
+                        throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+                    }
+                    i++;
                 }
-                i++;
+            }else{
+                throw new RuntimeException("Actual params size: "  + actualParams.size() + " Formal params size: " + " " + formalParams.size());
             }
-        }else{
-            throw new RuntimeException("Actual params size: "  + actualParams.size() + " Formal params size: " + " " + formalParams.size());
         }
+
     }
 
     @Override
@@ -131,11 +133,11 @@ public class TypeChecker extends SymbolTableFill {
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
 
 
-        if (atypesNormal.equals("FuncCalls")) {
+        if (atypesNormal.equals("FuncCallsNode")) {
             FuncCallsNode funcDcl = (FuncCallsNode) ctx.atypes;
             FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
-            System.out.println("type is: " + foundId.type);
-            System.out.println("foundFunc type is: " + foundFunc.type);
+            //System.out.println("type is: " + foundId.type);
+            //System.out.println("foundFunc type is: " + foundFunc.type);
 
             if (foundId.type.equals(foundFunc.type)) {
                 visit(ctx.atypes);
