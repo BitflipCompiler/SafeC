@@ -158,7 +158,7 @@ public class TypeChecker extends SymbolTableFill {
     private void evalAssign(AssignNode ctx, Type type ){
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
-        System.out.println(atypesNormal);
+        //System.out.println(atypesNormal);
         //TODO there is something that is not working with all results, (IdNode)
         /*if(atypesNormal.equals("IdNode")){
             visit(ctx.atypes);
