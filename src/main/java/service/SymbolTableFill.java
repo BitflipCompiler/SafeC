@@ -24,6 +24,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(SafeDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         //TODO: safety skal måske gemmes i SymbolTable somehow?
         visit(ctx.variable);
     }
@@ -249,8 +252,11 @@ public class SymbolTableFill extends ASTVisitor {
     //DCLS and DCLASSIGNS
     @Override
     public void visit(CharDclAssignNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         visit(ctx.charDcl);
-        //visit(ctx.charval);
+        visit(ctx.charval);
     }
 
     @Override
@@ -263,8 +269,11 @@ public class SymbolTableFill extends ASTVisitor {
     }
     @Override
     public void visit(NumDclAssignNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         visit(ctx.numdecl);
-        //visit(ctx.aexpr);
+        visit(ctx.aexpr);
     }
 
     @Override
@@ -283,8 +292,11 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StringDclAssignNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         visit(ctx.stringdcl);
-        //visit(ctx.stringval);
+        visit(ctx.stringval);
     }
 
     @Override
@@ -453,6 +465,10 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(NumvalNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
+
 
     }
 
@@ -479,11 +495,17 @@ public class SymbolTableFill extends ASTVisitor {
     //VALS
     @Override
     public void visit(CharValNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
 
     }
 
     @Override
     public void visit(StringValNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
 
     }
 }

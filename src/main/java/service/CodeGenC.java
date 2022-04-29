@@ -155,7 +155,12 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(NumvalNode ctx) {
-        codeGen.append(ctx.value);
+        if(ctx.isGlobal){
+            main.append(ctx.value);
+        }else{
+            codeGen.append(ctx.value);
+        }
+
     }
 
     @Override
@@ -363,6 +368,7 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(CharDclAssignNode ctx) {
         visit(ctx.charDcl);
+        System.out.println(ctx.isGlobal);
         if(ctx.isGlobal){
             main.append(" = ");
         }else {
@@ -395,7 +401,12 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(CharValNode ctx) {
-        codeGen.append(ctx.value);
+        System.out.println(ctx.isGlobal);
+        if(ctx.isGlobal){
+            main.append(ctx.value);
+        }else {
+            codeGen.append(ctx.value);
+        }
     }
 
     @Override
@@ -594,12 +605,9 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(SafeDclNode ctx) {
-
-        //codeGen.append(ctx.safety);
-        //codeGen.append(" ");
         visit(ctx.variable);
-        if(ctx.variable.isGlobal){
-
+        System.out.println(ctx.variable.isGlobal);
+        if(ctx.isGlobal){
             main.append(";\n");
         }else {
             if(areWeInStruct){
@@ -609,8 +617,6 @@ public class CodeGenC extends ASTVisitor {
             }
         }
 
-        //
-        //codeGen.appendln();
     }
 
     @Override
@@ -662,7 +668,12 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(StringValNode ctx) {
-        codeGen.append(ctx.value);
+        if(ctx.isGlobal){
+            main.append(ctx.value);
+        }else{
+            codeGen.append(ctx.value);
+        }
+
     }
 
     

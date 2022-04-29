@@ -2,8 +2,12 @@
 #10 string name = "KarlEmil";
 #4 boolean binary = true;
 #1 char favChar = 'n';
+#2 number x;
 
-void setAge(number agen){
+number setAge(number agen){
     age = agen;
-    return 0;
+    #8 string fname = "Jonathan";
+    return age;
 }
+
+x = setAge(20);
