@@ -368,7 +368,6 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(CharDclAssignNode ctx) {
         visit(ctx.charDcl);
-        System.out.println(ctx.isGlobal);
         if(ctx.isGlobal){
             main.append(" = ");
         }else {
@@ -401,7 +400,6 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(CharValNode ctx) {
-        System.out.println(ctx.isGlobal);
         if(ctx.isGlobal){
             main.append(ctx.value);
         }else {
@@ -606,7 +604,6 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(SafeDclNode ctx) {
         visit(ctx.variable);
-        System.out.println(ctx.variable.isGlobal);
         if(ctx.isGlobal){
             main.append(";\n");
         }else {

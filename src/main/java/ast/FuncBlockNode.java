@@ -6,13 +6,22 @@ import visitor.ASTVisitor;
 
 public class FuncBlockNode extends Node {
     //TODO Maybe this needs to be NODE and not DclAssignSemiCommandNode (like in CSToAstVisitor)
-    public DclAssignSemiCommandNode dclAssignSemiCommand;
+    public Node dclAssignSemiCommand;
     public Node returnValue;
 
+    public boolean isEmpty;
+
     public FuncBlockNode(Node dclAssignSemiCommand, Node returnValue) {
-        this.dclAssignSemiCommand = (DclAssignSemiCommandNode) dclAssignSemiCommand;
-        this.returnValue = returnValue;
+        if(dclAssignSemiCommand instanceof EmptyNode){
+            isEmpty = true;
+            this.returnValue = returnValue;
+        }else{
+            this.dclAssignSemiCommand = (DclAssignSemiCommandNode) dclAssignSemiCommand;
+            this.returnValue = returnValue;
+        }
+
     }
+
 
     @Override
     public void accept(ASTVisitor v) {

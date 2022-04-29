@@ -18,7 +18,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(ProgNode ctx) {
-
     }
 
     @Override
@@ -133,7 +132,7 @@ public class TypeChecker extends SymbolTableFill {
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
 
 
-        if (atypesNormal.equals("FuncCallsNode")) {
+        if (ctx.atypes instanceof FuncCallsNode) {
             FuncCallsNode funcDcl = (FuncCallsNode) ctx.atypes;
             FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
             //System.out.println("type is: " + foundId.type);
@@ -145,8 +144,11 @@ public class TypeChecker extends SymbolTableFill {
                 throw new RuntimeException("BLABLA");
             }
 
-        }else if(atypesNormal.equals("IdNode")){
-            if(foundId.type == formalparms.getValue()){
+        }else if(ctx.atypes instanceof IdNode){
+            if(formalparms == null){
+
+            }
+            else if(foundId.type == formalparms.getValue()){
                 //visit(ctx.atypes);
 
             }else{
@@ -169,27 +171,27 @@ public class TypeChecker extends SymbolTableFill {
         /*if(atypesNormal.equals("IdNode")){
             visit(ctx.atypes);
         }*/
-        if (atypesSuper.equals("Aexpr") || ctx.atypes.getClass().getSuperclass().getSuperclass().getSimpleName().equals("Aexpr")) {
+        if (ctx.atypes instanceof Aexpr) {
             if (type == Type.Number) {
                 visit(ctx.atypes);
             } else {
                 throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
             }
-        } else if (atypesSuper.equals("Bexpr")) {
+        } else if (ctx.atypes instanceof Bexpr) {
             if (type == Type.Boolean) {
                 visit(ctx.atypes);
             } else {
                 throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
             }
-        } else if (atypesSuper.equals("ArrayData")) {
+        } else if (ctx.atypes instanceof ArrayData) {
             if (type == Type.Number || type == Type.Char || type == Type.String || type == Type.Boolean) {
                 visit(ctx.atypes);
             } else {
                 throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
             }
-        } else if (type == Type.Char && atypesNormal.equals("CharValNode")) {
+        } else if (type == Type.Char && ctx.atypes instanceof CharValNode) {
             System.out.println("Char");
-        } else if (type == Type.String && atypesNormal.equals("StringValNode")) {
+        } else if (type == Type.String && ctx.atypes instanceof StringValNode) {
             System.out.println("String");
         } /*else if (atypesNormal.equals("FuncCalls")) {
             FuncCalls funcDcl = (FuncCalls) ctx.atypes;
