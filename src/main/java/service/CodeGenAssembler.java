@@ -8,6 +8,7 @@ import visitor.ASTVisitor;
 //TODO: .global _start og _start: og _end
 public class CodeGenAssembler extends ASTVisitor {
     public StringBuilder codeGen = new StringBuilder();
+    public StringBuilder variableData = new StringBuilder();
 
     @Override
     public void visit(NotNode ctx) {
@@ -78,7 +79,7 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(IdNode ctx) {
-
+        variableData.append(ctx.id + ": ");
     }
 
     @Override
@@ -124,6 +125,7 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(PiNode ctx) {
+        codeGen.append("3.141592");
 
     }
 
@@ -304,7 +306,8 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(NumDclNode ctx) {
-
+        //TODO: something stinks...
+        variableData.append(ctx.id + ": .float ");
     }
 
     @Override
