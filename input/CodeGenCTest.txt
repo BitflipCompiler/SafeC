@@ -7,27 +7,3 @@ void setAge(number agen){
     age = agen;
     return 0;
 }
-
-number getAge(){
-    return age;
-}
-
-string getName(){
-    return name;
-}
-
-boolean getBinary(){
-    return binary;
-}
-
-char getFavChar(){
-    return favChar;
-}
-
-boolean isOver18(){
-    #7 boolean is18 = false;
-    if(age > 18){
-        is18 = true;
-    }
-    return is18;
-}

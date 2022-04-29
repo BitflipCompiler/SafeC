@@ -19,7 +19,7 @@ public class Demo {
                 "|_______/    /__/     \\__\\ |__|     |_______| \\______|\n");
 
         //LEXER
-        CharStream charStream = CharStreams.fromFileName("input/example.txt");
+        CharStream charStream = CharStreams.fromFileName("input/CodeGenCTest.txt");
         SafeCLexer SafeCLexer = new SafeCLexer(charStream);
         CommonTokenStream commonTokenStream = new CommonTokenStream(SafeCLexer);
 

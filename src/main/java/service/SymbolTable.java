@@ -72,6 +72,7 @@ public class SymbolTable {
     }
 
     public Map.Entry<String, Type> checkFormalParams(String id){
+        System.out.println(this.scopes.get(scopes.size()-1).attributes);
         if(this.scopes.get(scopes.size()-1).attributes.isEmpty()){
             return null;
         }
@@ -80,7 +81,10 @@ public class SymbolTable {
                 FuncAttributes funcsymbol = (FuncAttributes) symbol;
                 if(funcsymbol.formalParams != null){
                     for (Map.Entry<String, Type> formalparam : funcsymbol.formalParams.entrySet()) {
+                        //System.out.println(id + formalparam.getKey());
                         if(id.equals(formalparam.getKey())){
+                            return formalparam;
+                        }else{
                             return formalparam;
                         }
                     }
