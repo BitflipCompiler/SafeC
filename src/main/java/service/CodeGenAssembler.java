@@ -118,17 +118,12 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.rightChild);
         //TODO:something stinks...
         codeGen.append("""
-                mov r4, #0
                 vpop {d1}
                 vpop {d2}
-                modloop:
-                cmp d2, d1
-                vsubcs.f64 d2, d2, d1
-                addcs r4, r4, #1
-                bhi modloop
-                vcvt.f32.f64 s14, d2
-                push {d2}
-                pop {
+                vdiv.f64 d3, d2, d1
+                vcvt.s32.f64 s13, d3
+                vcvt.f64.s32 d4, s13
+                vpush {d4}
                 """);
     }
 
