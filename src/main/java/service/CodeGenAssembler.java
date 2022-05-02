@@ -3,12 +3,30 @@ package service;
 import ast.*;
 import ast.abstracts.Bexpr;
 import ast.abstracts.Numberval;
+import org.apache.commons.lang3.RandomStringUtils;
 import visitor.ASTVisitor;
+
+import java.util.Random;
 
 //TODO: .global _start og _start: og _end
 public class CodeGenAssembler extends ASTVisitor {
     public StringBuilder codeGen = new StringBuilder();
+    public StringBuilder declarationLabels = new StringBuilder();
     public StringBuilder variableData = new StringBuilder();
+
+    public void setup(){
+        codeGen.append("""
+                .global _start
+                _start:
+                """);
+        variableData.append(".data \n");
+    }
+
+    public void printFinalCode(){
+        System.out.println(codeGen);
+        System.out.println(declarationLabels);
+        System.out.println(variableData);
+    }
 
     @Override
     public void visit(NotNode ctx) {
@@ -65,21 +83,21 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         codeGen.append("""
-                mov r4, #0
-                pop {r1}
-                pop {r2}
-                divloop:
-                cmp r2, r1
-                subcs r2, r2, r1
-                addcs r4, r4, #1
-                bhi divloop
-                push {r4}
+                vpop {d1}
+                vpop {d2}
+                vdiv.f64 d3, d2, d1
+                vpush {d3}
                 """);
     }
 
     @Override
     public void visit(IdNode ctx) {
-        variableData.append(ctx.id + ": ");
+        codeGen.append("ldr r0, " + ctx.id + "\n");
+        codeGen.append("""
+                vldr s14, [r0]
+                vcvt.f64.f32 d0, s14
+                vpush {d0}
+                """);
     }
 
     @Override
@@ -87,10 +105,10 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         codeGen.append("""
-                pop {r1}
-                pop {r2}
-                sub r3, r2, r1
-                push {r3}
+                vpop {d1}
+                vpop {d2}
+                vsub.f64 d3, d2, d1
+                vpush {d3}
                 """);
     }
 
@@ -98,16 +116,19 @@ public class CodeGenAssembler extends ASTVisitor {
     public void visit(ModNode ctx) {
         visit(ctx.leftChild);
         visit(ctx.rightChild);
+        //TODO:something stinks...
         codeGen.append("""
                 mov r4, #0
-                pop {r1}
-                pop {r2}
+                vpop {d1}
+                vpop {d2}
                 modloop:
-                cmp r2, r1
-                subcs r2, r2, r1
+                cmp d2, d1
+                vsubcs.f64 d2, d2, d1
                 addcs r4, r4, #1
                 bhi modloop
-                push {r2}
+                vcvt.f32.f64 s14, d2
+                push {d2}
+                pop {
                 """);
     }
 
@@ -118,15 +139,27 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(NumvalNode ctx) {
-        codeGen.append("mov r0, #" + ctx.value + "\n");
-        codeGen.append("push {r0}\n");
-
+        String generatedLabel = RandomStringUtils.randomAlphabetic(10);
+        codeGen.append("ldr r0, " + generatedLabel + "_address \n");
+        codeGen.append("""
+                 vldr s14, [r0]
+                 vcvt.f64.f32 d0, s14
+                 vpush {d0}
+                  """);
+        declarationLabels.append(generatedLabel + "_address: \t .word " + generatedLabel + "\n");
+        variableData.append(generatedLabel + ": \t .float " + Float.parseFloat(ctx.value) + "\n");
     }
 
     @Override
     public void visit(PiNode ctx) {
-        codeGen.append("3.141592");
-
+        codeGen.append("ldr r0, PI_address \n");
+        codeGen.append("""
+                  vldr s14, [r0]
+                  vcvt.f64.f32 d0, s14
+                  vpush {d0}
+                """);
+        declarationLabels.append("PI_address: \t .word PI \n");
+        variableData.append("PI: \t .float 3.141592 \n");
     }
 
     @Override
@@ -134,10 +167,10 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         codeGen.append("""
-                pop {r1}
-                pop {r2}
-                add r3, r2, r1
-                push {r3}
+                vpop {d1}
+                vpop {d2}
+                vadd.f64 d3, d2, d1
+                vpush {d3}
                 """);
     }
 
@@ -146,10 +179,10 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         codeGen.append("""
-                pop {r1}
-                pop {r2}
-                mul r3, r2, r1
-                push {r3}
+                vpop {d1}
+                vpop {d2}
+                vmul.f64 d3, d2, d1
+                vpush {d3}
                 """);
 
     }

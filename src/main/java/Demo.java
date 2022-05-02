@@ -33,16 +33,14 @@ public class Demo {
         ASTTree.accept(new SymbolTableFill(symbolTable));
 
         CodeGenAssembler codeGen = new CodeGenAssembler();
+        codeGen.setup();
         ASTTree.accept(codeGen);
 
         /*codeGen.setupMain(codeGen.main);
         System.out.println(codeGen.getlibs());
         System.out.println(codeGen.main.toString());
         System.out.println(codeGen.codeGen.toString());*/
-        System.out.println(codeGen.codeGen.toString());
-        System.out.println(codeGen.variableData.toString());
-
-
+        codeGen.printFinalCode();
         //System.out.println(symbolTable.symbolTable);
 
     }
