@@ -18,7 +18,7 @@ public class CodeGenC extends ASTVisitor {
     boolean hasBool = false;
     boolean isVoid;
 
-    ArrayList<String> strArr = new ArrayList();
+    StringBuilder libs = new StringBuilder();
 
     public Type getDataType(String datatype) {
         if (datatype.startsWith("Num")){
@@ -36,12 +36,12 @@ public class CodeGenC extends ASTVisitor {
     }
     //Add C libs to imports
     public void addLibs(String lib){
-        strArr.add(lib);
+        libs.append(lib);
     }
 
     //Get all libs
-    public ArrayList<String> getlibs() {
-        return  strArr;
+    public StringBuilder getlibs() {
+        return  libs;
     }
 
     //Setup C main
@@ -190,20 +190,20 @@ public class CodeGenC extends ASTVisitor {
                 visit(ctx.vals.get(0));
                 //main.append(ctx.vals.get(0));
             }else {
-                main.append(ctx.vals.get(0));
+                visit(ctx.vals.get(0));
                 for (int i = 1; i < ctx.vals.size();i++) {
                     main.append(", ");
-                    main.append(ctx.vals.get(i));
+                    visit(ctx.vals.get(i));
                 }
             }
         }else{
             if(ctx.vals.size() == 1){
-                codeGen.append(ctx.vals.get(0));
+                visit(ctx.vals.get(0));
             }else {
-                codeGen.append(ctx.vals.get(0));
+                visit(ctx.vals.get(0));
                 for (int i = 1; i < ctx.vals.size();i++) {
                     codeGen.append(", ");
-                    codeGen.append(ctx.vals.get(i));
+                    visit(ctx.vals.get(i));
                 }
             }
         }
@@ -332,7 +332,7 @@ public class CodeGenC extends ASTVisitor {
     public void visit(BoolDclNode ctx) {
 
         if(hasBool == false){
-            addLibs("#include <stdbool.h>");
+            addLibs("#include <stdbool.h>\n");
             hasBool = true;
         }
 
@@ -439,7 +439,7 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.vdcls.size() == 1){
             visit(ctx.vdcls.get(0));
         }else {
-            codeGen.append(ctx.vdcls.get(0));
+            visit(ctx.vdcls.get(0));
             for (int i = 1; i < ctx.vdcls.size();i++) {
                 codeGen.append(", ");
                 visit(ctx.vdcls.get(i));
@@ -484,7 +484,7 @@ public class CodeGenC extends ASTVisitor {
                 visit(ctx.actualParamsNode);
             }
             main.append(")");
-            main.append(";");
+            main.append(";\n");
 
         }else{
             codeGen.append(ctx.id);
@@ -684,13 +684,13 @@ public class CodeGenC extends ASTVisitor {
             visit(node);
         }
 
-        struct.append("\n" + "}");
+        struct.append( "}" + ";");
         areWeInStruct = false;
     }
 
     @Override
     public void visit(StructDclNode ctx) {
-        struct.append("typedef struct ");
+        struct.append("struct ");
         struct.append(ctx.id);
         visit(ctx.structBlock);
     }
@@ -698,7 +698,7 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(SwitchStatementNode ctx) {
         codeGen.append("switch ");
-        codeGen.append("(");
+        codeGen.append("((int)");
         codeGen.append(ctx.id);
         codeGen.append(")");
         codeGen.append("{ \n");

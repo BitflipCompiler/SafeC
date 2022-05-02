@@ -5,11 +5,11 @@ import ast.abstracts.Vals;
 import visitor.ASTVisitor;
 
 public class ScaseNode extends Node {
-    public Vals vals;
+    public Node vals;
     public Node caseblock;
 
     public ScaseNode(Node vals, Node caseblock) {
-        this.vals = (Vals) vals;
+        this.vals =  vals;
         this.caseblock = caseblock;
     }
 
