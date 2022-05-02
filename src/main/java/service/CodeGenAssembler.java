@@ -132,10 +132,6 @@ public class CodeGenAssembler extends ASTVisitor {
                 """);
     }
 
-    @Override
-    public void visit(Numberval ctx) {
-
-    }
 
     @Override
     public void visit(NumvalNode ctx) {
@@ -242,10 +238,6 @@ public class CodeGenAssembler extends ASTVisitor {
 
     }
 
-    @Override
-    public void visit(Bexpr ctx) {
-
-    }
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
