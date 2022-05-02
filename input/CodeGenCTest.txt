@@ -1,0 +1,27 @@
+#10 number age = 19;
+#10 string name = "KarlEmil";
+#4 boolean binary = true;
+#1 char favChar = 'n';
+
+#8 number newAge;
+
+#7 boolean x;
+
+number setAge(number agen){
+    age = agen;
+    age = 10 + 10;
+    return age;
+}
+
+newAge = setAge(20);
+
+
+boolean isOver18(){
+    #7 boolean is18 = false;
+    if(age > 18){
+        is18 = true;
+    }
+    return is18;
+}
+
+x = isOver18();

@@ -13,12 +13,12 @@ public class SymbolTable {
     public void openScope(){
         depth++;
         scopeCount++;
-        System.out.println("opening scope at depth: " +depth);
+        //System.out.println("opening scope at depth: " +depth);
         this.scopes.add(new Scope());
     }
 
     public void closeScope(){
-        System.out.println("symbolTable is now: " + symbolTable);
+        //System.out.println("symbolTable is now: " + symbolTable);
         for (Attributes attribute: this.scopes.get(this.scopes.size()-1).attributes) {
             Attributes prevSymbol = attribute.prevSymbol;
             this.symbolTable.remove(attribute.name);
@@ -26,7 +26,7 @@ public class SymbolTable {
                 symbolTable.put(prevSymbol.name, prevSymbol);
             }
         }
-        System.out.println("closing scope at depth: " + depth);
+        //System.out.println("closing scope at depth: " + depth);
         this.scopes.remove(this.scopes.size()-1);
         depth--;
     }
@@ -38,7 +38,10 @@ public class SymbolTable {
 
     public void enterSymbol(Attributes newAttribute){
         Attributes oldAttribute = this.retrieveSymbol(newAttribute.name);
-        if(oldAttribute != null && oldAttribute.depth == depth && !newAttribute.isformalparam){
+        if(oldAttribute != null && oldAttribute.depth == depth && !newAttribute.isformalparam
+                //This might be wrong, done to fix funccals id in globalscope
+                && newAttribute.depth != 0){
+
             throw new RuntimeException("Duplicate definition of: " + newAttribute.name);
         }
 
@@ -77,7 +80,9 @@ public class SymbolTable {
                 FuncAttributes funcsymbol = (FuncAttributes) symbol;
                 if(funcsymbol.formalParams != null){
                     for (Map.Entry<String, Type> formalparam : funcsymbol.formalParams.entrySet()) {
-                        if(id.equals(formalparam.getKey())){
+                        if(id.equals(formalparam.getKey())){ //Der er noget der lugter her.
+                            return formalparam;
+                        }else{
                             return formalparam;
                         }
                     }

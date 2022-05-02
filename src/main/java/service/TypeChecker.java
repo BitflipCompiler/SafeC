@@ -18,7 +18,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(ProgNode ctx) {
-
     }
 
     @Override
@@ -59,19 +58,21 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(FuncCallsNode ctx) {
         FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(ctx.id);
         Map<String, Type> formalParams = foundFunc.getFormalParams();
-
-        visit(ctx.actualParamsNode);
-        int i = 0;
-        if(actualParams.size() == formalParams.size()){
-            for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
-                if (formalparam.getValue() != actualParams.get(i)) {
-                    throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+        if (ctx.actualParamsNode != null) { //Hvis der ikke er nogle actual params skal vi ikke visit.
+            visit(ctx.actualParamsNode);
+            int i = 0;
+            if(actualParams.size() == formalParams.size()){
+                for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
+                    if (formalparam.getValue() != actualParams.get(i)) {
+                        throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+                    }
+                    i++;
                 }
-                i++;
+            }else{
+                throw new RuntimeException("Actual params size: "  + actualParams.size() + " Formal params size: " + " " + formalParams.size());
             }
-        }else{
-            throw new RuntimeException("Actual params size: "  + actualParams.size() + " Formal params size: " + " " + formalParams.size());
         }
+
     }
 
     @Override
@@ -131,11 +132,11 @@ public class TypeChecker extends SymbolTableFill {
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
 
 
-        if (atypesNormal.equals("FuncCalls")) {
+        if (ctx.atypes instanceof FuncCallsNode) {
             FuncCallsNode funcDcl = (FuncCallsNode) ctx.atypes;
             FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
-            System.out.println("type is: " + foundId.type);
-            System.out.println("foundFunc type is: " + foundFunc.type);
+            //System.out.println("type is: " + foundId.type);
+            //System.out.println("foundFunc type is: " + foundFunc.type);
 
             if (foundId.type.equals(foundFunc.type)) {
                 visit(ctx.atypes);
@@ -143,8 +144,18 @@ public class TypeChecker extends SymbolTableFill {
                 throw new RuntimeException("BLABLA");
             }
 
-        }else {
+        }else if(ctx.atypes instanceof IdNode){
+            if(formalparms == null){
 
+            }
+            else if(foundId.type == formalparms.getValue()){
+                //visit(ctx.atypes);
+
+            }else{
+                throw new RuntimeException("Type : "+ foundId.type + ", does not match with type " + formalparms.getValue());
+            }
+
+        }else {
             if (formalparms == null) {
                 evalAssign(ctx, foundId.type);
             } else {
@@ -156,27 +167,31 @@ public class TypeChecker extends SymbolTableFill {
     private void evalAssign(AssignNode ctx, Type type ){
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
-        if (atypesSuper.equals("Aexpr") || ctx.atypes.getClass().getSuperclass().getSuperclass().getSimpleName().equals("Aexpr")) {
+        //TODO there is something that is not working with all results, (IdNode)
+        /*if(atypesNormal.equals("IdNode")){
+            visit(ctx.atypes);
+        }*/
+        if (ctx.atypes instanceof Aexpr) {
             if (type == Type.Number) {
                 visit(ctx.atypes);
             } else {
                 throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
             }
-        } else if (atypesSuper.equals("Bexpr")) {
+        } else if (ctx.atypes instanceof Bexpr) {
             if (type == Type.Boolean) {
                 visit(ctx.atypes);
             } else {
                 throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
             }
-        } else if (atypesSuper.equals("ArrayData")) {
+        } else if (ctx.atypes instanceof ArrayData) {
             if (type == Type.Number || type == Type.Char || type == Type.String || type == Type.Boolean) {
                 visit(ctx.atypes);
             } else {
                 throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
             }
-        } else if (type == Type.Char && atypesNormal.equals("CharValNode")) {
+        } else if (type == Type.Char && ctx.atypes instanceof CharValNode) {
             System.out.println("Char");
-        } else if (type == Type.String && atypesNormal.equals("StringValNode")) {
+        } else if (type == Type.String && ctx.atypes instanceof StringValNode) {
             System.out.println("String");
         } /*else if (atypesNormal.equals("FuncCalls")) {
             FuncCalls funcDcl = (FuncCalls) ctx.atypes;
@@ -190,7 +205,7 @@ public class TypeChecker extends SymbolTableFill {
                 throw new RuntimeException("BLABLA");
             }
         }*/ else {
-            throw new RuntimeException("Her: Type " + type + "does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
+            throw new RuntimeException("Her: Type " + type.getClass().getSimpleName() + " does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
         }
     }
 
@@ -295,10 +310,6 @@ public class TypeChecker extends SymbolTableFill {
 
     }
 
-    @Override
-    public void visit(Bexpr ctx) {
-
-    }
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
@@ -432,10 +443,6 @@ public class TypeChecker extends SymbolTableFill {
         }*/
     }
 
-    @Override
-    public void visit(Numberval ctx) {
-
-    }
 
     @Override
     public void visit(NumvalNode ctx) {

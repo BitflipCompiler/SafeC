@@ -24,6 +24,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(SafeDclNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         //TODO: safety skal måske gemmes i SymbolTable somehow?
         visit(ctx.variable);
     }
@@ -90,19 +93,25 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(FuncCallsNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
 
         //TODO: skal slå op i symbol table og tjekke om id på func findes
-       /* if(ctx.callparams != null){
-            visit(ctx.callparams);
-        }*/
+        if(ctx.actualParamsNode != null){
+            visit(ctx.actualParamsNode);
+        }
     }
 
     @Override
     public void visit(ActualParamsNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         ctx.accept(new TypeChecker(symbolTable));
-        /*for (Node node: ctx.vals) {
+        for (Node node: ctx.vals) {
             visit(node);
-        }*/
+        }
     }
 
     @Override
@@ -190,7 +199,7 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(AssignNode ctx) {
         ctx.accept(new TypeChecker(symbolTable));
         //symbolTable.enterSymbol(ctx.id, new Attributes(ctx.id, null));
-        //visit(ctx.atypes);
+        visit(ctx.atypes);
     }
 
     //ARRAYS
@@ -243,8 +252,11 @@ public class SymbolTableFill extends ASTVisitor {
     //DCLS and DCLASSIGNS
     @Override
     public void visit(CharDclAssignNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         visit(ctx.charDcl);
-        //visit(ctx.charval);
+        visit(ctx.charval);
     }
 
     @Override
@@ -257,8 +269,11 @@ public class SymbolTableFill extends ASTVisitor {
     }
     @Override
     public void visit(NumDclAssignNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         visit(ctx.numdecl);
-        //visit(ctx.aexpr);
+        visit(ctx.aexpr);
     }
 
     @Override
@@ -277,8 +292,11 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StringDclAssignNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         visit(ctx.stringdcl);
-        //visit(ctx.stringval);
+        visit(ctx.stringval);
     }
 
     @Override
@@ -289,7 +307,7 @@ public class SymbolTableFill extends ASTVisitor {
         if (symbolTable.isDeclaredLocally(ctx.id)){
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
-            System.out.println("goes here string:" + ctx.id);
+            //System.out.println("goes here string:" + ctx.id);
             symbolTable.enterSymbol(new Attributes(ctx.id, Type.String,false));
         }
     }
@@ -314,15 +332,14 @@ public class SymbolTableFill extends ASTVisitor {
 
     }
 
-    @Override
-    public void visit(Bexpr ctx) {
-
-    }
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         visit(ctx.boolDcl);
-        //visit(ctx.bexpr);
+        visit(ctx.bexpr);
     }
 
     @Override
@@ -397,7 +414,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(BoolValNode ctx) {
-
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
     }
 
     @Override
@@ -409,6 +428,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(IdNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
         symbolTable.enterSymbol(new Attributes(ctx.id,null,false));
     }
 
@@ -440,13 +462,13 @@ public class SymbolTableFill extends ASTVisitor {
         //visit(ctx.rightChild);
     }
 
-    @Override
-    public void visit(Numberval ctx) {
-
-    }
 
     @Override
     public void visit(NumvalNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
+
 
     }
 
@@ -473,11 +495,17 @@ public class SymbolTableFill extends ASTVisitor {
     //VALS
     @Override
     public void visit(CharValNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
 
     }
 
     @Override
     public void visit(StringValNode ctx) {
+        if(symbolTable.depth == 0){
+            ctx.isGlobal = true;
+        }
 
     }
 }

@@ -8,6 +8,8 @@ public class FuncCallsNode extends Node {
     public String id;
     public ActualParamsNode actualParamsNode;
 
+    public boolean isGlobal;
+
     public FuncCallsNode(String id) {
         this.id = id;
     }

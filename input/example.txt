@@ -7,17 +7,18 @@ $ poopx {
 #7 number y;
 #7 number z;
 #7 string power;
+#7 number abekat;
 
-void start(){
+void start(boolean on){
     on = true;
     return 0;
 }
-number stop(){
+number stop(boolean on){
     on = false;
 	return 0;
 }
 
-void pitch(number a){
+void pitch(number a, number x){
     x = x - a;
     if(x<0){
         #7 number x;
@@ -27,14 +28,14 @@ void pitch(number a){
 return 0;
 }
 
-boolean yaw(number b){
-    x=(x + b) % 360;
+boolean yaw(number b, number x){
+    x=(x + b) * 360;
 return 0;
 }
 
 void roll(){
     for(number i = 0; i < 100; i = i + 1){
-        #7 number y;
+        #7 number y = 0;
         y= y + 1;
     }
 return 0;
@@ -47,13 +48,10 @@ void sendMessage(){
 return 0;
 }
 
-void whileInAtmosphere(){
+number whileInAtmosphere(number a, boolean on){
     #6 number i;
-    #6 number f;
-    #3 boolean x;
     i = 0;
     while(on == true){
-    calcCenterOfPressure();
     i=i+1;
     if(i==10){
         on = false;
@@ -61,12 +59,12 @@ void whileInAtmosphere(){
     }
 return 0;
 }
-
-void sendMessageToEarth(string power){
+abekat = whileInAtmosphere(x, on);
+void sendMessageToEarth(number power){
        switch(power){
-            case "solar":
+            case 1:
                 break;
-            case "battery":
+            case 2:
                 break;
             default:
                 break;

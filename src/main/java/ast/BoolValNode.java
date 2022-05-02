@@ -5,6 +5,7 @@ import visitor.ASTVisitor;
 
 public class BoolValNode extends Bexpr {
     public String value;
+    public boolean isGlobal;
 
     public BoolValNode(String value) {
         this.value = value;

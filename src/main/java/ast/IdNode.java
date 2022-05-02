@@ -6,6 +6,7 @@ import visitor.ASTVisitor;
 
 public class IdNode extends Node {
     public String id;
+    public boolean isGlobal;
 
     public IdNode(String id) {
         this.id = id;
