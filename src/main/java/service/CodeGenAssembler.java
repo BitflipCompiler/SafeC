@@ -1,12 +1,13 @@
 package service;
 
 import ast.*;
-import ast.abstracts.Bexpr;
-import ast.abstracts.Numberval;
 import org.apache.commons.lang3.RandomStringUtils;
 import visitor.ASTVisitor;
 
-import java.util.Random;
+/** This {@code CodeGenAssembler} is responsible for the Assembly code gen.
+ * The code exstends {@link ASTVisitor}, as it uses the visitor pattern to gen the
+ * assembly code.
+ */
 
 //TODO: .global _start og _start: og _end
 public class CodeGenAssembler extends ASTVisitor {

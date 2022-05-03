@@ -3,8 +3,13 @@ package service;
 import ast.*;
 import ast.abstracts.*;
 import gen.*;
-
 import java.util.*;
+
+/**
+ * This class {@link CSTToASTVisitor} is the class that converts the CST tree to an AST tree.
+ * Futhermore it fills the AST nodes with the data needed. This is done by useing the visitor {@link SafeCBaseVisitor}
+ * from the gen files.
+ */
 
 public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 

@@ -4,6 +4,10 @@ import ast.*;
 import ast.abstracts.*;
 import visitor.ASTVisitor;
 
+/**
+ * This class responsibility is to fill the {@link SymbolTable } with usefull information (Type,Scope, etc.)
+ * It uses the {@link ASTVisitor} to visit the different nodes and get the needed information.
+ */
 
 public class SymbolTableFill extends ASTVisitor {
 
@@ -278,14 +282,12 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(NumDclNode ctx) {
-       // Attributes attr = symbolTable.retrieveSymbol(ctx.id);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
         if (symbolTable.isDeclaredLocally(ctx.id)){
             throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
         } else {
-            //System.out.println("goes here number:" + ctx.id);
             symbolTable.enterSymbol(new Attributes(ctx.id, Type.Number,false));
         }
     }

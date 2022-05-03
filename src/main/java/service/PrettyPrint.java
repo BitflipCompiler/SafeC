@@ -4,6 +4,10 @@ import ast.*;
 import ast.abstracts.*;
 import visitor.ASTVisitor;
 
+/**
+ * This class' {@link PrettyPrint} job is to print the input in a pretty manner
+ * (with indentation see {@link PrettyPrint#printIndentation(int indent)} printIndentation}). It does this by using {@link ASTVisitor}.
+ */
 public class PrettyPrint extends ASTVisitor {
     private int indentation = 0;
 

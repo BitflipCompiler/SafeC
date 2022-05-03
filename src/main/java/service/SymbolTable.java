@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
+/**
+ * This class represents the SymbolTable. It has a {@link SymbolTable#symbolTable} which is a HashTable
+ * that has an ID(String) and a {@link Attributes}.
+ * Futhermore it has {@link SymbolTable#depth} and {@link SymbolTable#scopeCount} to keep track of position.
+ */
 public class SymbolTable {
     public final Hashtable<String, Attributes> symbolTable = new Hashtable<>();
     private final ArrayList<Scope> scopes = new ArrayList<>();

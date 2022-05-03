@@ -2,9 +2,13 @@ package service;
 
 import ast.*;
 import ast.abstracts.*;
-
 import java.util.ArrayList;
 import java.util.Map;
+
+/**
+ * This class {@link TypeChecker} is resposible for checking that the Types in the inout are correct.
+ * If the types are missmatched an exeption will be thrown.
+ */
 
 public class TypeChecker extends SymbolTableFill {
 
