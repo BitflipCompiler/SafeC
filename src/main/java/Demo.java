@@ -26,30 +26,33 @@ public class Demo {
 
 
 
-        //LEXER
-        CharStream charStream = CharStreams.fromFileName("input/assemblertest.txt");
-        SafeCLexer SafeCLexer = new SafeCLexer(charStream);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(SafeCLexer);
 
-        //PARSER
-        SafeCParser SafeCParser = new SafeCParser(commonTokenStream);
-        ParseTree parseTree = SafeCParser.aexpr();
-
-        //FROM CST TO AST
-        CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
-        Node ASTTree = cstToASTVisitor.visit(parseTree);
-
-        //PRETTY PRINT
-        //ASTTree.accept(new PrettyPrint());
-
-        //SYMBOL TABLE FILLING
-        SymbolTable symbolTable = new SymbolTable();
-        ASTTree.accept(new SymbolTableFill(symbolTable));
 
         System.out.println("Do you want to Generate Assembler(1) or Generate C (2)?");
+        System.out.print("> ");
         int choice = scanner.nextInt();
+
         //Assembler Generator
         if(choice == 1){
+            //LEXER
+            CharStream charStream = CharStreams.fromFileName("input/assemblertest.txt");
+            SafeCLexer SafeCLexer = new SafeCLexer(charStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(SafeCLexer);
+
+            //PARSER
+            SafeCParser SafeCParser = new SafeCParser(commonTokenStream);
+            ParseTree parseTree = SafeCParser.aexpr();
+
+            //FROM CST TO AST
+            CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
+            Node ASTTree = cstToASTVisitor.visit(parseTree);
+
+            //PRETTY PRINT
+            //ASTTree.accept(new PrettyPrint());
+
+            //SYMBOL TABLE FILLING
+            SymbolTable symbolTable = new SymbolTable();
+            ASTTree.accept(new SymbolTableFill(symbolTable));
 
             CodeGenAssembler codeGen = new CodeGenAssembler();
             codeGen.setup();
@@ -63,6 +66,25 @@ public class Demo {
 
         //C Generator
         }else if(choice == 2){
+            //LEXER
+            CharStream charStream = CharStreams.fromFileName("input/example.txt");
+            SafeCLexer SafeCLexer = new SafeCLexer(charStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(SafeCLexer);
+
+            //PARSER
+            SafeCParser SafeCParser = new SafeCParser(commonTokenStream);
+            ParseTree parseTree = SafeCParser.prog();
+
+            //FROM CST TO AST
+            CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
+            Node ASTTree = cstToASTVisitor.visit(parseTree);
+
+            //PRETTY PRINT
+            //ASTTree.accept(new PrettyPrint());
+
+            //SYMBOL TABLE FILLING
+            SymbolTable symbolTable = new SymbolTable();
+            ASTTree.accept(new SymbolTableFill(symbolTable));
 
             StringBuilder gatherAllBuilds = new StringBuilder();
             CodeGenC codeGen = new CodeGenC();
