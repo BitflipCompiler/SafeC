@@ -4,10 +4,10 @@ import ast.abstracts.Bexpr;
 import visitor.ASTVisitor;
 
 public class IdBoolValNode extends Bexpr {
-    public String id;
-    public String boolVal;
+    public IdNode id;
+    public BoolValNode boolVal;
 
-    public IdBoolValNode(String id, String boolVal) {
+    public IdBoolValNode(IdNode id, BoolValNode boolVal) {
         this.id = id;
         this.boolVal = boolVal;
     }

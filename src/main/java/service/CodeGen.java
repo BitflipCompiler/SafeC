@@ -103,9 +103,9 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(IdBoolValNode ctx) {
-        codeGen.append(ctx.id);
+        visit(ctx.id);
         codeGen.append(" == ");
-        codeGen.append(ctx.boolVal);
+        visit(ctx.boolVal);
     }
 
     @Override

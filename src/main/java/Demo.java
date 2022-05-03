@@ -19,7 +19,7 @@ public class Demo {
 
         //PARSER
         SafeCParser SafeCParser = new SafeCParser(commonTokenStream);
-        ParseTree parseTree = SafeCParser.aexpr();
+        ParseTree parseTree = SafeCParser.bexpr();
 
         //FROM CST TO AST
         CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
