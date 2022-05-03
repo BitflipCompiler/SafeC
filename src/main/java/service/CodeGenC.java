@@ -188,7 +188,6 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.isGlobal == true){
             if(ctx.vals.size() == 1){
                 visit(ctx.vals.get(0));
-                //main.append(ctx.vals.get(0));
             }else {
                 visit(ctx.vals.get(0));
                 for (int i = 1; i < ctx.vals.size();i++) {
@@ -472,7 +471,7 @@ public class CodeGenC extends ASTVisitor {
             codeGen.append(";");
         }
 
-        codeGen.append("}\n");
+        codeGen.append("\n}\n");
     }
 
     @Override
@@ -597,7 +596,7 @@ public class CodeGenC extends ASTVisitor {
     public void visit(ProgNode ctx) {
         for (Node node : ctx.nodes) {
             visit(node);
-            codeGen.append("\n");
+            //codeGen.append("\n");
         }
     }
 
@@ -684,7 +683,7 @@ public class CodeGenC extends ASTVisitor {
             visit(node);
         }
 
-        struct.append( "}" + ";");
+        struct.append( "}" + ";\n\n");
         areWeInStruct = false;
     }
 
