@@ -486,7 +486,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public IdBoolValNode visitBexprIDBoolval(SafeCParser.BexprIDBoolvalContext ctx) {
-        return new IdBoolValNode(ctx.ID().getText(), ctx.BOOLVAL().getText());
+        return new IdBoolValNode(new IdNode(ctx.ID().getText()), new BoolValNode(ctx.BOOLVAL().getText()));
     }
 
     @Override

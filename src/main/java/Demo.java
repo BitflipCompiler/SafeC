@@ -54,9 +54,13 @@ public class Demo {
             SymbolTable symbolTable = new SymbolTable();
             ASTTree.accept(new SymbolTableFill(symbolTable));
 
+
+            //CODE GENERATION
             CodeGenAssembler codeGen = new CodeGenAssembler();
             codeGen.setup();
             ASTTree.accept(codeGen);
+            codeGen.finalizeCode();
+            codeGen.printFinalCode();
 
             /*codeGen.setupMain(codeGen.main);
             System.out.println(codeGen.getlibs());

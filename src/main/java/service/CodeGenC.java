@@ -108,9 +108,9 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(IdBoolValNode ctx) {
-        codeGen.append(ctx.id);
+        visit(ctx.id);
         codeGen.append(" == ");
-        codeGen.append(ctx.boolVal);
+        visit(ctx.boolVal);
     }
 
     @Override
@@ -671,10 +671,6 @@ public class CodeGenC extends ASTVisitor {
             codeGen.append(ctx.value);
         }
 
-    }
-
-    
-    //TODO Structs (hard bc we dont know if what we visit is inside a struct
     @Override
     public void visit(StructBlockNode ctx) {
         areWeInStruct = true;
