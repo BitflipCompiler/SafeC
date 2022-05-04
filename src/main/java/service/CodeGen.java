@@ -568,7 +568,6 @@ public class CodeGen extends ASTVisitor {
         for (Node node : ctx.safeDclNodes) {
             visit(node);
         }
-
         codeGen.append("\n" + "}");
     }
 
