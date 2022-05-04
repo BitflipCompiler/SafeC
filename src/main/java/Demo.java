@@ -32,15 +32,17 @@ public class Demo {
         SymbolTable symbolTable = new SymbolTable();
         ASTTree.accept(new SymbolTableFill(symbolTable));
 
+        //CODE GENERATION
         CodeGenAssembler codeGen = new CodeGenAssembler();
         codeGen.setup();
         ASTTree.accept(codeGen);
+        codeGen.finalizeCode();
+        codeGen.printFinalCode();
 
         /*codeGen.setupMain(codeGen.main);
         System.out.println(codeGen.getlibs());
         System.out.println(codeGen.main.toString());
         System.out.println(codeGen.codeGen.toString());*/
-        codeGen.printFinalCode();
         //System.out.println(symbolTable.symbolTable);
 
     }

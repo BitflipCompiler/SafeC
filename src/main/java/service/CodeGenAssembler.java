@@ -6,12 +6,14 @@ import ast.abstracts.Numberval;
 import org.apache.commons.lang3.RandomStringUtils;
 import visitor.ASTVisitor;
 
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Random;
 
 //TODO: .global _start og _start: og _end
 public class CodeGenAssembler extends ASTVisitor {
     public StringBuilder codeGen = new StringBuilder();
-    public StringBuilder declarationLabels = new StringBuilder();
+    //public StringBuilder declarationLabels = new StringBuilder();
     public StringBuilder variableData = new StringBuilder();
     public boolean isAexpr;
 
@@ -23,9 +25,13 @@ public class CodeGenAssembler extends ASTVisitor {
         variableData.append(".data \n");
     }
 
+    public void finalizeCode(){
+        codeGen.append(".end \n");
+    }
+
     public void printFinalCode(){
         System.out.println(codeGen);
-        System.out.println(declarationLabels);
+        //System.out.println(declarationLabels);
         System.out.println(variableData);
     }
 
@@ -326,14 +332,13 @@ public class CodeGenAssembler extends ASTVisitor {
     @Override
     public void visit(NumvalNode ctx) {
         String generatedLabel = RandomStringUtils.randomAlphabetic(10);
-        codeGen.append("ldr r0, " + generatedLabel + "_address \n");
+        codeGen.append("ldr r0, =" + generatedLabel + "_address \n");
         codeGen.append("""
-                 vldr s14, [r0]
-                 vcvt.f64.f32 d0, s14
+                 vldr d0, [r0]
                  vpush {d0}
                   """);
-        declarationLabels.append(generatedLabel + "_address: \t .word " + generatedLabel + "\n");
-        variableData.append(generatedLabel + ": \t .float " + Float.parseFloat(ctx.value) + "\n");
+        //declarationLabels.append(generatedLabel + "_address: \t .word " + generatedLabel + "\n");
+        variableData.append(generatedLabel + ": \t .double \t 0e" + Float.parseFloat(ctx.value) + "\n");
     }
 
     @Override
@@ -344,7 +349,7 @@ public class CodeGenAssembler extends ASTVisitor {
                   vcvt.f64.f32 d0, s14
                   vpush {d0}
                 """);
-        declarationLabels.append("PI_address: \t .word PI \n");
+        //declarationLabels.append("PI_address: \t .word PI \n");
         variableData.append("PI: \t .float 3.141592 \n");
     }
 
@@ -437,12 +442,18 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
-
+        visit(ctx.bexpr);
+        codeGen.append("vpop {d0}");
+        visit(ctx.boolDcl);
+        codeGen.append("""
+                vstr d0, [r0]
+                vldr d3, [r0]
+                """);
     }
 
     @Override
     public void visit(BoolDclNode ctx) {
-
+        variableData.append(ctx.id + ": .space 8 \n");
     }
 
     @Override
@@ -457,12 +468,18 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(CharDclAssignNode ctx) {
-
+        visit(ctx.charval);
+        codeGen.append("vpop {d0}");
+        visit(ctx.charDcl);
+        codeGen.append("""
+                vstr d0, [r0]
+                vldr d3, [r0]
+                """);
     }
 
     @Override
     public void visit(CharDclNode ctx) {
-
+        variableData.append(ctx.id + ": .space 8 \n");
     }
 
     @Override
@@ -522,13 +539,20 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(NumDclAssignNode ctx) {
+        visit(ctx.aexpr);
+        codeGen.append("vpop {d0}");
+        visit(ctx.numdecl);
+        codeGen.append("""
+                vstr d0, [r0]
+                vldr d3, [r0]
+                """);
 
     }
 
     @Override
     public void visit(NumDclNode ctx) {
-        //TODO: something stinks...
-        variableData.append(ctx.id + ": .float ");
+        codeGen.append("ldr r0, =" + ctx.id + "\n");
+        variableData.append(ctx.id + ": .space 8 \n");
     }
 
     @Override
@@ -557,12 +581,18 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(StringDclAssignNode ctx) {
-
+        visit(ctx.stringval);
+        codeGen.append("vpop {d0}");
+        visit(ctx.stringdcl);
+        codeGen.append("""
+                vstr d0, [r0]
+                vldr d3, [r0]
+                """);
     }
 
     @Override
     public void visit(StringDclNode ctx) {
-
+        variableData.append(ctx.id + ": .space 8 \n");
     }
 
     @Override
