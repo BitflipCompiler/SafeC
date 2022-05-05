@@ -3,8 +3,13 @@ package service;
 import ast.*;
 import ast.abstracts.*;
 import gen.*;
-
 import java.util.*;
+
+/**
+ * This class {@link CSTToASTVisitor} is the class that converts the CST tree to an AST tree.
+ * Futhermore it fills the AST nodes with the data needed. This is done by useing the visitor {@link SafeCBaseVisitor}
+ * from the gen files.
+ */
 
 public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
@@ -149,7 +154,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public AssignNode visitVassign(SafeCParser.VassignContext ctx) {
-        return new AssignNode(ctx.ID().toString(), visit(ctx.atypes()));
+        return new AssignNode(new IdNode(ctx.ID().getText()), visit(ctx.atypes()));
     }
 
     @Override
@@ -486,7 +491,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public IdBoolValNode visitBexprIDBoolval(SafeCParser.BexprIDBoolvalContext ctx) {
-        return new IdBoolValNode(ctx.ID().getText(), ctx.BOOLVAL().getText());
+        return new IdBoolValNode(new IdNode(ctx.ID().getText()), new BoolValNode(ctx.BOOLVAL().getText()));
     }
 
     @Override

@@ -1,10 +1,12 @@
 package service;
 
 import ast.abstracts.Node;
-
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
+
+/**
+ * This class {@link FuncAttributes} exstends {@link Attributes}.
+ * It represents the Attributes in Functions, because different attributes are necesessary.
+ */
 
 public class FuncAttributes extends Attributes{
     Node block;
