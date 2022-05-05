@@ -172,6 +172,7 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(IdNode ctx) {
+
         if(ctx.isGlobal){
             mainCode.append(ctx.id);
         }else {
@@ -344,11 +345,11 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(AssignNode ctx) {
         if(ctx.atypes instanceof FuncCallsNode){
-            mainCode.append(ctx.id);
+            mainCode.append(ctx.id.getId());
             mainCode.append(" = ");
             visit(ctx.atypes);
         }else {
-            globalCode.append(ctx.id);
+            globalCode.append(ctx.id.getId());
             globalCode.append(" = ");
             visit(ctx.atypes);
             globalCode.append(";");
