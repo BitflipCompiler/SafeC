@@ -12,6 +12,7 @@ import visitor.ASTVisitor;
 public class SymbolTableFill extends ASTVisitor {
 
     SymbolTable symbolTable;
+    int lineNumber = 0;
 
     public SymbolTableFill(SymbolTable symbolTable) {
         this.symbolTable = symbolTable;
@@ -31,21 +32,24 @@ public class SymbolTableFill extends ASTVisitor {
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
-        //TODO: safety skal måske gemmes i SymbolTable somehow?
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.variable);
     }
 
     //STRUCT
     @Override
     public void visit(StructBlockNode ctx) {
+        ctx.setLineNumber(lineNumber);
         for (Node node: ctx.safeDclNodes) {
             visit(node);
         }
     }
 
     @Override
-
     public void visit(StructDclNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Struct,false));
         symbolTable.openScope();
         visit(ctx.structBlock);
@@ -55,14 +59,12 @@ public class SymbolTableFill extends ASTVisitor {
     //FUNCTIONS
     @Override
     public void visit(FuncDclNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
-        //ArrayList<String> stringFormalParams = ctx.getFormalParams();
-
         symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
-        /*if(ctx.params != null){
-            ctx.params.accept(new TypeChecker(symbolTable));
-        }*/
+
         symbolTable.openScope();
         symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
         visit(ctx.funcblock);
@@ -86,22 +88,23 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(FormalParamsNode ctx) {
-        System.out.println("blablabla");
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(FuncBlockNode ctx) {
+        ctx.setLineNumber(lineNumber);
         visit(ctx.dclAssignSemiCommand);
         //visit(ctx.returnValue);
     }
 
     @Override
     public void visit(FuncCallsNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
 
-        //TODO: skal slå op i symbol table og tjekke om id på func findes
         if(ctx.actualParamsNode != null){
             visit(ctx.actualParamsNode);
         }
@@ -109,6 +112,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ActualParamsNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -120,6 +124,8 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(IfStatementNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.iflogic);
         if(ctx.ifThenBlock != null){
             symbolTable.openScope();
@@ -133,10 +139,11 @@ public class SymbolTableFill extends ASTVisitor {
     }
 
     //SWITCH
-
     @Override
     public void visit(SwitchStatementNode ctx) {
-        //TODO: først slå op i symboltable om id eksisterer
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
+
         symbolTable.openScope();
         for (Node node: ctx.scases) {
             symbolTable.openScope();
@@ -144,6 +151,7 @@ public class SymbolTableFill extends ASTVisitor {
             symbolTable.closeScope();
         }
         symbolTable.openScope();
+
         visit(ctx.defcase);
         symbolTable.closeScope();
 
@@ -152,22 +160,29 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ScaseNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         //visit(ctx.vals);
         visit(ctx.caseblock);
     }
 
     @Override
     public void visit(CaseBlockNode ctx) {
+        ctx.setLineNumber(lineNumber);
         visit(ctx.dclAssignCommand);
     }
 
     @Override
     public void visit(DefCaseNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.caseblock);
     }
 
     @Override
     public void visit(WhileLoopNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         //visit(ctx.bexpr);
         symbolTable.openScope();
         visit(ctx.block);
@@ -177,6 +192,8 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ForLoopNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.forparams);
         symbolTable.openScope();
         visit(ctx.block);
@@ -185,6 +202,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(ForParamsNode ctx) {
+        ctx.setLineNumber(lineNumber);
         visit(ctx.numdclassign);
         //visit(ctx.bexpr);
         //symbolTable.enterSymbol(ctx.id, new Attributes(ctx.id, Type.Number));
@@ -193,6 +211,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(DclAssignSemiCommandNode ctx) {
+        ctx.setLineNumber(lineNumber);
         visit(ctx.actual);
         if(ctx.recursion != null){
             visit(ctx.recursion);
@@ -201,61 +220,69 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(AssignNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         ctx.accept(new TypeChecker(symbolTable));
-        //symbolTable.enterSymbol(ctx.id, new Attributes(ctx.id, null));
         visit(ctx.atypes);
     }
 
     //ARRAYS
     @Override
     public void visit(ArrayBoolNode ctx) {
+        ctx.setLineNumber(lineNumber);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.ArrayBool,false));
     }
 
     @Override
     public void visit(ArrayBoolValuesNode ctx) {
-
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(ArrayCharNode ctx) {
+        ctx.setLineNumber(lineNumber);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.ArrayChar,false));
     }
 
     @Override
     public void visit(ArrayCharValuesNode ctx) {
-
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(ArrayDeclNode ctx) {
+        lineNumber++;
+        ctx.setLineNumber(lineNumber);
         symbolTable.enterSymbol(new Attributes(ctx.id,null,false));
         visit(ctx.arrdcltype);
     }
 
     @Override
     public void visit(ArrayNumNode ctx) {
+        ctx.setLineNumber(lineNumber);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.ArrayNum,false));
     }
 
     @Override
     public void visit(ArrayNumValuesNode ctx) {
-
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(ArrayStringNode ctx) {
+        ctx.setLineNumber(lineNumber);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.ArrayStr,false));
     }
 
     @Override
     public void visit(ArrayStrValuesNode ctx) {
-
+        ctx.setLineNumber(lineNumber);
     }
 
     //DCLS and DCLASSIGNS
     @Override
     public void visit(CharDclAssignNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -265,6 +292,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(CharDclNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -273,6 +301,7 @@ public class SymbolTableFill extends ASTVisitor {
     }
     @Override
     public void visit(NumDclAssignNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -282,6 +311,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(NumDclNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -294,6 +324,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StringDclAssignNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -303,6 +334,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StringDclNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -317,26 +349,28 @@ public class SymbolTableFill extends ASTVisitor {
     //DATATYPES
     @Override
     public void visit(NumberLitteralNode ctx) {
+        ctx.setLineNumber(lineNumber);
 
     }
 
     @Override
     public void visit(StringLitteralNode ctx) {
+        ctx.setLineNumber(lineNumber);
 
     }
     @Override
     public void visit(BoolLitteralNode ctx) {
-
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(VoidLitteralNode ctx) {
-
+        ctx.setLineNumber(lineNumber);
     }
-
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -346,6 +380,7 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(BoolDclNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -355,67 +390,59 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(NotNode ctx) {
-        //visit(ctx.value);
-
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(AndNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
-
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(OrNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopEqualNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopNotEqualNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopLeqNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopGeqNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopLessNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopGreaterNode ctx) {
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
 
     @Override
     public void visit(IdBoolValNode ctx) {
+        ctx.setLineNumber(lineNumber);
 
     }
 
     @Override
     public void visit(BoolValNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -423,13 +450,12 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(DivisionNode ctx) {
-        //ctx.accept(new TypeChecker(symbolTable));
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(IdNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -438,65 +464,42 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(MinusNode ctx) {
-        //ctx.accept(new TypeChecker(symbolTable));
-        //TYPECHECK
-
-        //CHECK IF LEFTCHILD OR RIGHTCHILD ID IS AN AEXPR
-        // IF NOT THROW AN ERROR ("YOU ARE IN A MINUS NODE YOU CAN ONLY BE AN AEXPR")
-
-/*        if(ctx.leftchild.getClass.getSuperclass.equals(ctx.rightchild.getClass.getSuperclass){
-
-            //Begge children har den samme type
-        }else if ((ctx.leftchild.getClass.getSuperclass == IdNode || ctx.rightchild.getClass.getSuperclass == IdNode)
-            && (ctx.leftchild.getClass.getSuperclass == numberval || ctx.rightchild.getClass.getSuperclass == numberval) ){
-                // its maybe cool.
-            }else{
-
-            //En af children er anderledes.
-        }
-*/
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(ModNode ctx) {
-        //ctx.accept(new TypeChecker(symbolTable));
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
-
 
     @Override
     public void visit(NumvalNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
-
-
     }
 
     @Override
     public void visit(PiNode ctx) {
-
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(PlusNode ctx) {
-        //ctx.accept(new TypeChecker(symbolTable));
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(TimesNode ctx) {
-        //ctx.accept(new TypeChecker(symbolTable));
-        //visit(ctx.leftChild);
-        //visit(ctx.rightChild);
+        ctx.setLineNumber(lineNumber);
     }
 
 
     //VALS
     @Override
     public void visit(CharValNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -505,9 +508,9 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(StringValNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
-
     }
 }
