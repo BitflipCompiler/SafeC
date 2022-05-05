@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class SymbolTable {
     public final Hashtable<String, Attributes> symbolTable = new Hashtable<>();
-    private final ArrayList<Scope> scopes = new ArrayList<>();
+    public final ArrayList<Scope> scopes = new ArrayList<>();
     int depth = -1;
     int scopeCount = -1;
 
@@ -69,7 +69,7 @@ public class SymbolTable {
     public boolean isDeclaredLocally(String name){
         for (Attributes symbol: this.scopes.get(this.scopes.size()-1).attributes) {
             if (name.equals(symbol.name)){
-                System.out.println("id alrdy in scope: " + name);
+                //System.out.println("id alrdy in scope: " + name);
                 return true;
             }
         }
