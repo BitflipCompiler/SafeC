@@ -1,5 +1,8 @@
 package service;
 
+/**
+ * This enum {@link Type} covers the Types needed in {@link SymbolTable} and {@link TypeChecker}  .
+ */
 public enum Type {
     Number,
     Boolean,
