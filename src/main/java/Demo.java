@@ -41,7 +41,7 @@ public class Demo {
 
             //PARSER
             SafeCParser SafeCParser = new SafeCParser(commonTokenStream);
-            ParseTree parseTree = SafeCParser.aexpr();
+            ParseTree parseTree = SafeCParser.prog();
 
             //FROM CST TO AST
             CSTToASTVisitor cstToASTVisitor = new CSTToASTVisitor();
@@ -60,12 +60,6 @@ public class Demo {
             codeGen.setup();
             ASTTree.accept(codeGen);
             codeGen.finalizeCode();
-            codeGen.printFinalCode();
-
-            /*codeGen.setupMain(codeGen.main);
-            System.out.println(codeGen.getlibs());
-            System.out.println(codeGen.main.toString());
-            System.out.println(codeGen.codeGen.toString());*/
             codeGen.printFinalCode();
 
         //C Generator

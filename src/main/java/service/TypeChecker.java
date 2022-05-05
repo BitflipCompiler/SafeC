@@ -127,8 +127,8 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(AssignNode ctx) {
-        Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
-        Map.Entry<String, Type> formalparms = symbolTable.checkFormalParams(ctx.id);
+        Attributes foundId = symbolTable.retrieveSymbol(ctx.id.getId());
+        Map.Entry<String, Type> formalparms = symbolTable.checkFormalParams(ctx.id.getId());
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
 
 

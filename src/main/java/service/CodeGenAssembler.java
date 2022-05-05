@@ -1,7 +1,9 @@
 package service;
 
 import ast.*;
+import ast.abstracts.Aexpr;
 import ast.abstracts.Bexpr;
+import ast.abstracts.Node;
 import ast.abstracts.Numberval;
 import org.apache.commons.lang3.RandomStringUtils;
 import visitor.ASTVisitor;
@@ -16,6 +18,7 @@ public class CodeGenAssembler extends ASTVisitor {
     //public StringBuilder declarationLabels = new StringBuilder();
     public StringBuilder variableData = new StringBuilder();
     public boolean isAexpr;
+    public boolean isAtype;
 
     public void setup(){
         codeGen.append("""
@@ -282,14 +285,16 @@ public class CodeGenAssembler extends ASTVisitor {
     @Override
     public void visit(IdNode ctx) {
         if(isAexpr){
-            codeGen.append("ldr r0, " + ctx.id + "\n");
-            codeGen.append("""
-                vldr s14, [r0]
-                vcvt.f64.f32 d0, s14
+            codeGen.append("ldr r0, =" + ctx.id + "\n");
+            codeGen.append("mov r1, r0 \n");
+            if(isAtype){
+                codeGen.append("""
+                vldr d0, [r0]
                 vpush {d0}
                 """);
+            }
         } else {
-            codeGen.append("mov r0, " +ctx.id + "\n");
+            codeGen.append("mov r0, =" +ctx.id + "\n");
         }
 
     }
@@ -328,7 +333,7 @@ public class CodeGenAssembler extends ASTVisitor {
     @Override
     public void visit(NumvalNode ctx) {
         String generatedLabel = RandomStringUtils.randomAlphabetic(10);
-        codeGen.append("ldr r0, =" + generatedLabel + "_address \n");
+        codeGen.append("ldr r0, =" + generatedLabel + "\n");
         codeGen.append("""
                  vldr d0, [r0]
                  vpush {d0}
@@ -428,6 +433,20 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(AssignNode ctx) {
+        isAtype = true;
+        visit(ctx.atypes);
+        isAtype = false;
+        if(ctx.atypes instanceof Aexpr){
+            isAexpr = true;
+            codeGen.append("vpop {d1} \n");
+            visit(ctx.id);
+            codeGen.append("""
+                vstr d1, [r1]
+                """);
+        } else if( ctx.atypes instanceof Bexpr){
+            isAexpr = false;
+
+        }
 
     }
 
@@ -439,7 +458,6 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.boolDcl);
         codeGen.append("""
                 vstr d0, [r0]
-                vldr d3, [r0]
                 """);
     }
 
@@ -465,7 +483,6 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.charDcl);
         codeGen.append("""
                 vstr d0, [r0]
-                vldr d3, [r0]
                 """);
     }
 
@@ -536,14 +553,12 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.numdecl);
         codeGen.append("""
                 vstr d0, [r0]
-                vldr d3, [r0]
                 """);
 
     }
 
     @Override
     public void visit(NumDclNode ctx) {
-        codeGen.append("ldr r0, =" + ctx.id + "\n");
         variableData.append(ctx.id + ": .space 8 \n");
     }
 
@@ -558,12 +573,14 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(ProgNode ctx) {
-
+        for (Node node: ctx.nodes) {
+            visit(node);
+        }
     }
 
     @Override
     public void visit(SafeDclNode ctx) {
-
+        visit(ctx.variable);
     }
 
     @Override
@@ -578,7 +595,6 @@ public class CodeGenAssembler extends ASTVisitor {
         visit(ctx.stringdcl);
         codeGen.append("""
                 vstr d0, [r0]
-                vldr d3, [r0]
                 """);
     }
 

@@ -149,7 +149,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public AssignNode visitVassign(SafeCParser.VassignContext ctx) {
-        return new AssignNode(ctx.ID().toString(), visit(ctx.atypes()));
+        return new AssignNode(new IdNode(ctx.ID().getText()), visit(ctx.atypes()));
     }
 
     @Override

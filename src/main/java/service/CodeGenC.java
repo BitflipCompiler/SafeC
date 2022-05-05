@@ -308,8 +308,6 @@ public class CodeGenC extends ASTVisitor {
             codeGen.append(";");
             //codeGen.appendln();
         }
-
-
     }
 
 
@@ -665,11 +663,12 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(StringValNode ctx) {
-        if(ctx.isGlobal){
+        if (ctx.isGlobal) {
             main.append(ctx.value);
-        }else{
+        } else {
             codeGen.append(ctx.value);
         }
+    }
 
     @Override
     public void visit(StructBlockNode ctx) {
