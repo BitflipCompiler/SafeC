@@ -78,30 +78,12 @@ public class Demo {
             SymbolTable symbolTable = new SymbolTable();
             ASTTree.accept(new SymbolTableFill(symbolTable));
 
-            StringBuilder gatherAllBuilds = new StringBuilder();
+            //CODE GEN (C)
             CodeGenC codeGen = new CodeGenC();
-
             ASTTree.accept(codeGen);
-            codeGen.setupMain(codeGen.main);
+            StringBuilder gatherAllBuilds = codeGen.gatherAllBuilds(codeGen);
+            codeGen.printBuilderToFile(gatherAllBuilds);
 
-            //Combine all builds
-            gatherAllBuilds.append(codeGen.getlibs());
-            gatherAllBuilds.append(codeGen.globalVars);
-            gatherAllBuilds.append(codeGen.struct);
-            gatherAllBuilds.append(codeGen.codeGen);
-            gatherAllBuilds.append(codeGen.main);
-
-            //Write to file
-            try {
-                FileWriter myWriter = new FileWriter("output/output.c");
-                myWriter.write(String.valueOf(gatherAllBuilds));
-                myWriter.close();
-                System.out.println("Successfully wrote to the file.");
-            } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
-            System.out.println("C file can be found in output folder");
         }else {
             System.out.println("incorrect input");
         }

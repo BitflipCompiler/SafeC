@@ -2,6 +2,8 @@ package service;
 
 import ast.*;
 import ast.abstracts.*;
+import exeptions.WrongTypeException;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -160,15 +162,18 @@ public class TypeChecker extends SymbolTableFill {
             }
 
         }else {
-            if (formalparms == null) {
-                evalAssign(ctx, foundId.type);
-            } else {
-                evalAssign(ctx, formalparms.getValue());
+            try {
+                if (formalparms == null) {
+                    evalAssign(ctx, foundId.type);
+                } else {
+                    evalAssign(ctx, formalparms.getValue());
+                }
+            }catch (WrongTypeException e){
             }
         }
     }
 
-    private void evalAssign(AssignNode ctx, Type type ){
+    private void evalAssign(AssignNode ctx, Type type ) throws WrongTypeException {
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
         //TODO there is something that is not working with all results, (IdNode)
@@ -179,7 +184,7 @@ public class TypeChecker extends SymbolTableFill {
             if (type == Type.Number) {
                 visit(ctx.atypes);
             } else {
-                throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
+                throw new WrongTypeException(type,getDataType(atypesSuper));
             }
         } else if (ctx.atypes instanceof Bexpr) {
             if (type == Type.Boolean) {

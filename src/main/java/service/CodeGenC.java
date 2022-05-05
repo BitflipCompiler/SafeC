@@ -4,6 +4,9 @@ import ast.*;
 import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 /** This {@link CodeGenC} is responsible for the C code gen.
  * The code exstends {@link ASTVisitor}, as it uses the visitor pattern to gen the
  * C code.
@@ -11,20 +14,48 @@ import visitor.ASTVisitor;
 
 public class CodeGenC extends ASTVisitor {
 
-    public StringBuilder codeGen = new StringBuilder();
-    public StringBuilder main = new StringBuilder();
-    public StringBuilder struct = new StringBuilder();
-
+    public StringBuilder globalCode = new StringBuilder();
+    public StringBuilder mainCode = new StringBuilder();
+    public StringBuilder structCode = new StringBuilder();
     public StringBuilder globalVars = new StringBuilder();
 
-    public boolean areWeInStruct = false;
+    public boolean inStruct = false;
+    boolean inFuncCall;
 
     boolean hasBool = false;
     boolean isVoid;
 
-    boolean areWeInFuncCall;
+
 
     StringBuilder libs = new StringBuilder();
+
+    public StringBuilder gatherAllBuilds(CodeGenC codeGen){
+
+        codeGen.setupMain(codeGen.mainCode);
+
+        StringBuilder gatherAllBuilds = new StringBuilder();
+        gatherAllBuilds.append(codeGen.getlibs());
+        gatherAllBuilds.append(codeGen.globalVars);
+        gatherAllBuilds.append(codeGen.structCode);
+        gatherAllBuilds.append(codeGen.globalCode);
+        gatherAllBuilds.append(codeGen.mainCode);
+
+        return gatherAllBuilds;
+    }
+
+    public void printBuilderToFile(StringBuilder builder){
+        //Write to file
+        try {
+            FileWriter myWriter = new FileWriter("output/output.c");
+            myWriter.write(String.valueOf(builder));
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        System.out.println("C file can be found in output folder");
+    }
 
     public Type getDataType(String datatype) {
         if (datatype.startsWith("Num")){
@@ -58,142 +89,142 @@ public class CodeGenC extends ASTVisitor {
     //Visitor start--
     @Override
     public void visit(NotNode ctx) {
-        codeGen.append("!");
+        globalCode.append("!");
         visit(ctx.value);
     }
 
     @Override
     public void visit(AndNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" && ");
+        globalCode.append(" && ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(RelopEqualNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" == ");
+        globalCode.append(" == ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(RelopNotEqualNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" != ");
+        globalCode.append(" != ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(RelopLeqNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" <= ");
+        globalCode.append(" <= ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(RelopGeqNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" >= ");
+        globalCode.append(" >= ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(RelopLessNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" < ");
+        globalCode.append(" < ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(RelopGreaterNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" > ");
+        globalCode.append(" > ");
         visit(ctx.rightChild);
 
     }
 
     @Override
     public void visit(IdBoolValNode ctx) {
-        codeGen.append(ctx.id);
-        codeGen.append(" == ");
-        codeGen.append(ctx.boolVal);
+        globalCode.append(ctx.id);
+        globalCode.append(" == ");
+        globalCode.append(ctx.boolVal);
     }
 
     @Override
     public void visit(BoolValNode ctx) {
-        if(ctx.isGlobal && !areWeInFuncCall){
+        if(ctx.isGlobal && !inFuncCall){
             globalVars.append(ctx.value);
-        }else if(areWeInFuncCall) {
-            main.append(ctx.value);
-        }else if(areWeInStruct) {
-            struct.append(ctx.value);
+        }else if(inFuncCall) {
+            mainCode.append(ctx.value);
+        }else if(inStruct) {
+            structCode.append(ctx.value);
         }else{
-            codeGen.append(ctx.value);
+            globalCode.append(ctx.value);
         }
     }
 
     @Override
     public void visit(DivisionNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" / ");
+        globalCode.append(" / ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(IdNode ctx) {
         if(ctx.isGlobal){
-            main.append(ctx.id);
+            mainCode.append(ctx.id);
         }else {
-            codeGen.append(ctx.id);
+            globalCode.append(ctx.id);
         }
     }
 
     @Override
     public void visit(MinusNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" - ");
+        globalCode.append(" - ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(ModNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" % ");
+        globalCode.append(" % ");
         visit(ctx.rightChild);
     }
 
 
     @Override
     public void visit(NumvalNode ctx) {
-        if(ctx.isGlobal && !areWeInFuncCall){
+        if(ctx.isGlobal && !inFuncCall){
             globalVars.append(ctx.value);
-        }else if(areWeInFuncCall) {
-            main.append(ctx.value);
-        }else if(areWeInStruct) {
-            struct.append(ctx.value);
+        }else if(inFuncCall) {
+            mainCode.append(ctx.value);
+        }else if(inStruct) {
+            structCode.append(ctx.value);
         }else{
-            codeGen.append(ctx.value);
+            globalCode.append(ctx.value);
         }
 
     }
 
     @Override
     public void visit(PiNode ctx) {
-        codeGen.append("3.1415926535");
+        globalCode.append("3.1415926535");
 
     }
 
     @Override
     public void visit(PlusNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" + ");
+        globalCode.append(" + ");
         visit(ctx.rightChild);
     }
 
     @Override
     public void visit(TimesNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" * ");
+        globalCode.append(" * ");
         visit(ctx.rightChild);
     }
 
@@ -205,7 +236,7 @@ public class CodeGenC extends ASTVisitor {
             }else {
                 visit(ctx.vals.get(0));
                 for (int i = 1; i < ctx.vals.size();i++) {
-                    main.append(", ");
+                    mainCode.append(", ");
                     visit(ctx.vals.get(i));
                 }
             }
@@ -215,7 +246,7 @@ public class CodeGenC extends ASTVisitor {
             }else {
                 visit(ctx.vals.get(0));
                 for (int i = 1; i < ctx.vals.size();i++) {
-                    codeGen.append(", ");
+                    globalCode.append(", ");
                     visit(ctx.vals.get(i));
                 }
             }
@@ -225,14 +256,14 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(ArrayBoolNode ctx) {
-        codeGen.append("[ ");
-        codeGen.append("bool ");
-        codeGen.append("] ");
-        codeGen.append(ctx.id);
-        codeGen.append(" = ");
-        codeGen.append("[ ");
+        globalCode.append("[ ");
+        globalCode.append("bool ");
+        globalCode.append("] ");
+        globalCode.append(ctx.id);
+        globalCode.append(" = ");
+        globalCode.append("[ ");
         visit(ctx.boolArray);
-        codeGen.append(" ]");
+        globalCode.append(" ]");
     }
 
     @Override
@@ -241,45 +272,46 @@ public class CodeGenC extends ASTVisitor {
             visit(node);
         }
     }
-
+    //Denne skal laves om til c syntax.
     @Override
     public void visit(ArrayCharNode ctx) {
-        codeGen.append("[ ");
-        codeGen.append("char ");
-        codeGen.append("] ");
-        codeGen.append(ctx.id);
-        codeGen.append(" = ");
-        codeGen.append("[ ");
+        globalCode.append("[ ");
+        globalCode.append("char ");
+        globalCode.append("] ");
+        globalCode.append(ctx.id);
+        globalCode.append(" = ");
+        globalCode.append("[ ");
         visit(ctx.charArray);
-        codeGen.append(" ]");
+        globalCode.append(" ]");
     }
 
     @Override
     public void visit(ArrayCharValuesNode ctx) {
         for (Node node : ctx.charvalues) {
             visit(node);
+            //der skal printes komma'er her.
         }
     }
 
     @Override
     public void visit(ArrayDeclNode ctx) {
-        codeGen.append("[ ");
+        globalCode.append("[ ");
         visit(ctx.arrdcltype);
-        codeGen.append(" ] ");
-        codeGen.append(ctx.id);
+        globalCode.append(" ] ");
+        globalCode.append(ctx.id);
         //[number] x
     }
 
     @Override
     public void visit(ArrayNumNode ctx) {
-        codeGen.append("[ ");
-        codeGen.append("number ");
-        codeGen.append(" ]");
-        codeGen.append(ctx.id);
-        codeGen.append(" = ");
-        codeGen.append("[ ");
+        globalCode.append("[ ");
+        globalCode.append("number ");
+        globalCode.append(" ]");
+        globalCode.append(ctx.id);
+        globalCode.append(" = ");
+        globalCode.append("[ ");
         visit(ctx.numArray);
-        codeGen.append(" ]");
+        globalCode.append(" ]");
 
     }
 
@@ -292,14 +324,14 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(ArrayStringNode ctx) {
-        codeGen.append("[ ");
-        codeGen.append("string ");
-        codeGen.append("] ");
-        codeGen.append(ctx.id);
-        codeGen.append(" = ");
-        codeGen.append("[ ");
+        globalCode.append("[ ");
+        globalCode.append("string ");
+        globalCode.append("] ");
+        globalCode.append(ctx.id);
+        globalCode.append(" = ");
+        globalCode.append("[ ");
         visit(ctx.stringArray);
-        codeGen.append(" ] ");
+        globalCode.append(" ] ");
     }
 
     @Override
@@ -309,19 +341,19 @@ public class CodeGenC extends ASTVisitor {
         }
     }
 
-    //If atypes is a function then we dont want to append id and assign
     @Override
     public void visit(AssignNode ctx) {
-        if(ctx.atypes.getClass().getSimpleName().equals("FuncCallsNode")){
+        if(ctx.atypes instanceof FuncCallsNode){
+            mainCode.append(ctx.id);
+            mainCode.append(" = ");
             visit(ctx.atypes);
         }else {
-            codeGen.append(ctx.id);
-            codeGen.append(" = ");
+            globalCode.append(ctx.id);
+            globalCode.append(" = ");
             visit(ctx.atypes);
-            codeGen.append(";");
+            globalCode.append(";");
             //codeGen.appendln();
         }
-
 
     }
 
@@ -332,13 +364,13 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.isGlobal){
             globalVars.append(" = ");
         }else {
-            if(areWeInStruct){
-                struct.append(" = ");
+            if(inStruct){
+                structCode.append(" = ");
             }else {
-                codeGen.append(" = ");
+                globalCode.append(" = ");
             }
         }
-            visit(ctx.bexpr);
+        visit(ctx.bexpr);
     }
 
     @Override
@@ -354,28 +386,28 @@ public class CodeGenC extends ASTVisitor {
             globalVars.append(ctx.id);
 
         }else {
-            if(areWeInStruct){
-                struct.append("bool ");
-                struct.append(ctx.id);
+            if(inStruct){
+                structCode.append("bool ");
+                structCode.append(ctx.id);
             }else {
-                codeGen.append("bool ");
-                codeGen.append(ctx.id);
+                globalCode.append("bool ");
+                globalCode.append(ctx.id);
             }
         }
     }
 
     @Override
     public void visit(BoolLitteralNode ctx) {
-        codeGen.append("bool ");
+        globalCode.append("bool ");
     }
 
     @Override
     public void visit(CaseBlockNode ctx) {
         visit(ctx.dclAssignCommand);
         if(ctx.optbreak != null){
-            codeGen.append(ctx.optbreak);
+            globalCode.append(ctx.optbreak);
         }
-        codeGen.append("\n");
+        globalCode.append("\n");
     }
 
     @Override
@@ -384,10 +416,10 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.isGlobal){
             globalVars.append(" = ");
         }else {
-            if(areWeInStruct){
-                struct.append(" = ");
+            if(inStruct){
+                structCode.append(" = ");
             }else {
-                codeGen.append(" = ");
+                globalCode.append(" = ");
             }
         }
 
@@ -401,54 +433,54 @@ public class CodeGenC extends ASTVisitor {
             globalVars.append(ctx.id);
 
         }else {
-            if(areWeInStruct){
-                struct.append("char  ");
-                struct.append(ctx.id);
+            if(inStruct){
+                structCode.append("char  ");
+                structCode.append(ctx.id);
             }else {
-                codeGen.append("char  ");
-                codeGen.append(ctx.id);
+                globalCode.append("char  ");
+                globalCode.append(ctx.id);
             }
         }
     }
 
     @Override
     public void visit(CharValNode ctx) {
-        if(ctx.isGlobal && !areWeInFuncCall){
+        if(ctx.isGlobal && !inFuncCall){
             globalVars.append(ctx.value);
-        }else if(areWeInFuncCall) {
-            main.append(ctx.value);
-        }else if(areWeInStruct) {
-            struct.append(ctx.value);
+        }else if(inFuncCall) {
+            mainCode.append(ctx.value);
+        }else if(inStruct) {
+            structCode.append(ctx.value);
         }else{
-            codeGen.append(ctx.value);
+            globalCode.append(ctx.value);
         }
     }
 
     @Override
     public void visit(DclAssignSemiCommandNode ctx) {
-        codeGen.append("\n");
+        globalCode.append("\n");
         visit(ctx.actual);
         visit(ctx.recursion);
     }
 
     @Override
     public void visit(DefCaseNode ctx) {
-        codeGen.append("default: ");
+        globalCode.append("default: ");
         visit(ctx.caseblock);
     }
 
     @Override
     public void visit(ForLoopNode ctx) {
-        codeGen.append("for ");
-        codeGen.append("(");
+        globalCode.append("for ");
+        globalCode.append("(");
         visit(ctx.forparams);
-        codeGen.append(")");
-        codeGen.append("{");
+        globalCode.append(")");
+        globalCode.append("{");
 
         visit(ctx.block);
-        codeGen.append("\n");
+        globalCode.append("\n");
 
-        codeGen.append("}\n");
+        globalCode.append("}\n");
     }
 
     @Override
@@ -458,7 +490,7 @@ public class CodeGenC extends ASTVisitor {
         }else {
             visit(ctx.vdcls.get(0));
             for (int i = 1; i < ctx.vdcls.size();i++) {
-                codeGen.append(", ");
+                globalCode.append(", ");
                 visit(ctx.vdcls.get(i));
             }
         }
@@ -467,50 +499,50 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(ForParamsNode ctx) {
         visit(ctx.numdclassign);
-        codeGen.append(";");
+        globalCode.append(";");
         visit(ctx.bexpr);
-        codeGen.append(";");
-        codeGen.append(ctx.id);
-        codeGen.append(" = ");
+        globalCode.append(";");
+        globalCode.append(ctx.id);
+        globalCode.append(" = ");
         visit(ctx.aexpr);
     }
 
     @Override
     public void visit(FuncBlockNode ctx) {
-        codeGen.append("{");
+        globalCode.append("{");
         visit(ctx.dclAssignSemiCommand);
-        codeGen.append("\n");
+        globalCode.append("\n");
         if(isVoid == false){
-            codeGen.append("return ");
+            globalCode.append("return ");
             visit(ctx.returnValue);
-            codeGen.append(";");
+            globalCode.append(";");
         }
-        codeGen.append("\n}\n");
+        globalCode.append("\n}\n");
     }
 
     @Override
     public void visit(FuncCallsNode ctx) {
-        areWeInFuncCall = true;
+        inFuncCall = true;
         if (ctx.isGlobal == true){
-            main.append(ctx.id);
-            main.append("(");
+            mainCode.append(ctx.id);
+            mainCode.append("(");
             if(ctx.actualParamsNode != null){
                 visit(ctx.actualParamsNode);
             }
-            main.append(")");
-            main.append(";\n");
+            mainCode.append(")");
+            mainCode.append(";\n");
 
         }else{
-            codeGen.append(ctx.id);
-            codeGen.append("(");
+            globalCode.append(ctx.id);
+            globalCode.append("(");
             if(ctx.actualParamsNode != null){
                 visit(ctx.actualParamsNode);
             }
-            codeGen.append(")");
-            codeGen.append(";");
+            globalCode.append(")");
+            globalCode.append(";");
 
         }
-        areWeInFuncCall = false;
+        inFuncCall = false;
     }
 
     @Override
@@ -521,12 +553,12 @@ public class CodeGenC extends ASTVisitor {
         }else{
             isVoid = false;
         }
-        codeGen.append(ctx.id);
-        codeGen.append("(");
+        globalCode.append(ctx.id);
+        globalCode.append("(");
         if(ctx.params != null){
             visit(ctx.params);
         }
-        codeGen.append(")");
+        globalCode.append(")");
         visit(ctx.funcblock);
 
     }
@@ -534,31 +566,31 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(IfStatementNode ctx) {
-        codeGen.append("if ");
-        codeGen.append("(");
+        globalCode.append("if ");
+        globalCode.append("(");
         visit(ctx.iflogic);
-        codeGen.append(")");
-        codeGen.append("{");
+        globalCode.append(")");
+        globalCode.append("{");
 
         visit(ctx.ifThenBlock);
-        codeGen.append("\n");
+        globalCode.append("\n");
 
-        codeGen.append("}\n");
+        globalCode.append("}\n");
 
         if(ctx.elseBlock != null){
-            codeGen.append("else ");
-            codeGen.append("{");
+            globalCode.append("else ");
+            globalCode.append("{");
 
             visit(ctx.elseBlock);
-            codeGen.append("\n");
-            codeGen.append("}");
+            globalCode.append("\n");
+            globalCode.append("}");
 
         }
     }
 
     @Override
     public void visit(NumberLitteralNode ctx) {
-        codeGen.append("float ");
+        globalCode.append("float ");
     }
 
     @Override
@@ -567,10 +599,10 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.isGlobal){
             globalVars.append(" = ");
         }else {
-            if(areWeInStruct){
-                struct.append(" = ");
+            if(inStruct){
+                structCode.append(" = ");
             }else {
-                codeGen.append(" = ");
+                globalCode.append(" = ");
             }
         }
         visit(ctx.aexpr);
@@ -583,12 +615,12 @@ public class CodeGenC extends ASTVisitor {
             globalVars.append(ctx.id);
 
         }else {
-            if(areWeInStruct){
-                struct.append("float ");
-                struct.append(ctx.id);
+            if(inStruct){
+                structCode.append("float ");
+                structCode.append(ctx.id);
             }else {
-                codeGen.append("float ");
-                codeGen.append(ctx.id);
+                globalCode.append("float ");
+                globalCode.append(ctx.id);
             }
         }
     }
@@ -596,7 +628,7 @@ public class CodeGenC extends ASTVisitor {
     @Override
     public void visit(OrNode ctx) {
         visit(ctx.leftChild);
-        codeGen.append(" || ");
+        globalCode.append(" || ");
         visit(ctx.rightChild);
     }
 
@@ -614,10 +646,10 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.isGlobal){
             globalVars.append(";\n");
         }else {
-            if(areWeInStruct){
-                struct.append(";\n");
+            if(inStruct){
+                structCode.append(";\n");
             }else {
-                codeGen.append(";\n");
+                globalCode.append(";\n");
             }
         }
 
@@ -625,9 +657,9 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(ScaseNode ctx) {
-        codeGen.append("case ");
+        globalCode.append("case ");
         visit(ctx.vals);
-        codeGen.append(":");
+        globalCode.append(":");
         visit(ctx.caseblock);
     }
 
@@ -637,10 +669,10 @@ public class CodeGenC extends ASTVisitor {
         if(ctx.isGlobal){
             globalVars.append(" = ");
         }else {
-            if(areWeInStruct){
-                struct.append(" = ");
+            if(inStruct){
+                structCode.append(" = ");
             }else {
-                codeGen.append(" = ");
+                globalCode.append(" = ");
             }
         }
 
@@ -654,32 +686,32 @@ public class CodeGenC extends ASTVisitor {
             globalVars.append(ctx.id);
 
         }else {
-            if(areWeInStruct){
-                struct.append("char * ");
-                struct.append(ctx.id);
+            if(inStruct){
+                structCode.append("char * ");
+                structCode.append(ctx.id);
             }else {
-                codeGen.append("char * ");
-                codeGen.append(ctx.id);
+                globalCode.append("char * ");
+                globalCode.append(ctx.id);
             }
         }
     }
 
     @Override
     public void visit(StringLitteralNode ctx) {
-        codeGen.append("string ");
+        globalCode.append("string ");
 
     }
 
     @Override
     public void visit(StringValNode ctx) {
-        if(ctx.isGlobal && !areWeInFuncCall){
+        if(ctx.isGlobal && !inFuncCall){
             globalVars.append(ctx.value);
-        }else if(areWeInFuncCall) {
-            main.append(ctx.value);
-        }else if(areWeInStruct) {
-            struct.append(ctx.value);
+        }else if(inFuncCall) {
+            mainCode.append(ctx.value);
+        }else if(inStruct) {
+            structCode.append(ctx.value);
         }else{
-            codeGen.append(ctx.value);
+            globalCode.append(ctx.value);
         }
 
     }
@@ -688,54 +720,54 @@ public class CodeGenC extends ASTVisitor {
     //TODO Structs (hard bc we dont know if what we visit is inside a struct
     @Override
     public void visit(StructBlockNode ctx) {
-        areWeInStruct = true;
-        struct.append("{ \n");
+        inStruct = true;
+        structCode.append("{ \n");
 
         for (Node node : ctx.safeDclNodes) {
             visit(node);
         }
 
-        struct.append( "}" + ";\n\n");
-        areWeInStruct = false;
+        structCode.append( "}" + ";\n\n");
+        inStruct = false;
     }
 
     @Override
     public void visit(StructDclNode ctx) {
-        struct.append("struct ");
-        struct.append(ctx.id);
+        structCode.append("struct ");
+        structCode.append(ctx.id);
         visit(ctx.structBlock);
     }
 
     @Override
     public void visit(SwitchStatementNode ctx) {
-        codeGen.append("switch ");
-        codeGen.append("((int)");
-        codeGen.append(ctx.id);
-        codeGen.append(")");
-        codeGen.append("{ \n");
+        globalCode.append("switch ");
+        globalCode.append("((int)");
+        globalCode.append(ctx.id);
+        globalCode.append(")");
+        globalCode.append("{ \n");
         if(ctx.scases != null){
             for (Node node : ctx.scases) {
                 visit(node);
             }
         }
         visit(ctx.defcase);
-        codeGen.append("} ");
+        globalCode.append("} ");
     }
 
     @Override
     public void visit(VoidLitteralNode ctx) {
-        codeGen.append("void ");
+        globalCode.append("void ");
     }
 
     @Override
     public void visit(WhileLoopNode ctx) {
-        codeGen.append("while ");
-        codeGen.append("(");
+        globalCode.append("while ");
+        globalCode.append("(");
         visit(ctx.bexpr);
-        codeGen.append(")");
-        codeGen.append("{");
+        globalCode.append(")");
+        globalCode.append("{");
         visit(ctx.block);
-        codeGen.append("}\n");
+        globalCode.append("}\n");
 
     }
 }

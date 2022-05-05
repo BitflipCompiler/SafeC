@@ -85,9 +85,7 @@ public class SymbolTable {
                 FuncAttributes funcsymbol = (FuncAttributes) symbol;
                 if(funcsymbol.formalParams != null){
                     for (Map.Entry<String, Type> formalparam : funcsymbol.formalParams.entrySet()) {
-                        if(id.equals(formalparam.getKey())){ //Der er noget der lugter her.
-                            return formalparam;
-                        }else{
+                        if(id.equals(formalparam.getKey())){
                             return formalparam;
                         }
                     }
