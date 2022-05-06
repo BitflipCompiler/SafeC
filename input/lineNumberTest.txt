@@ -1,0 +1,4 @@
+#7 string x;
+#7 number y;
+#6 boolean z;
+x = true;

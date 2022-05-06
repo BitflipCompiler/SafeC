@@ -2,7 +2,10 @@ package service;
 
 import ast.*;
 import ast.abstracts.*;
-import exeptions.WrongTypeException;
+import exceptions.AssignTypeCheckException;
+import exceptions.IdTypeCheckException;
+import exceptions.IllegalTypeException;
+import exceptions.ParamSizeException;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,7 +31,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(SafeDclNode ctx) {
-        System.out.println("SafeDclNode");
     }
 
     @Override
@@ -46,12 +48,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(FormalParamsNode ctx) {
-        /*for (Node node : ctx.vdcls) {
-            visit(node);
-        }*/
-        //List<Node> paramnodes = new ArrayList<>(ctx.vdcls);
-        //System.out.println(paramnodes.get(0).getClass().getSimpleName());
-
     }
 
     @Override
@@ -64,18 +60,23 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(FuncCallsNode ctx) {
         FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(ctx.id);
         Map<String, Type> formalParams = foundFunc.getFormalParams();
-        if (ctx.actualParamsNode != null) { //Hvis der ikke er nogle actual params skal vi ikke visit.
+        //Hvis der ikke er nogle actual params skal vi ikke visit.
+        if (ctx.actualParamsNode != null) {
             visit(ctx.actualParamsNode);
             int i = 0;
             if(actualParams.size() == formalParams.size()){
                 for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
                     if (formalparam.getValue() != actualParams.get(i)) {
-                        throw new RuntimeException("actual param: " + actualParams.get(i) + " different than: " + formalparam.getValue());
+                        throw new IllegalTypeException("actual param: " + actualParams.get(i) +
+                                " different than: " + formalparam.getValue() +
+                                "at line: " + ctx.getLineNumber(), ctx.getLineNumber(), actualParams.get(i), formalparam.getValue());
                     }
                     i++;
                 }
             }else{
-                throw new RuntimeException("Actual params size: "  + actualParams.size() + " Formal params size: " + " " + formalParams.size());
+                throw new ParamSizeException("Actual params size: "  + actualParams.size() +
+                        " Formal params size: " + " " + formalParams.size() +
+                        "at line: " + lineNumber, lineNumber, actualParams.size(), formalParams.size());
             }
         }
 
@@ -134,46 +135,45 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(AssignNode ctx) {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id.getId());
-        Map.Entry<String, Type> formalparms = symbolTable.checkFormalParams(ctx.id.getId());
+        Map.Entry<String, Type> formalparams = symbolTable.checkFormalParams(ctx.id.getId());
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
 
 
         if (ctx.atypes instanceof FuncCallsNode) {
             FuncCallsNode funcDcl = (FuncCallsNode) ctx.atypes;
             FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
-            //System.out.println("type is: " + foundId.type);
-            //System.out.println("foundFunc type is: " + foundFunc.type);
 
             if (foundId.type.equals(foundFunc.type)) {
                 visit(ctx.atypes);
             } else {
-                throw new RuntimeException("BLABLA");
+                throw new IllegalTypeException("Function call error: Type: " + foundId.type +
+                        "different from type: " + foundFunc.type +
+                        " at line: " + ctx.getLineNumber(), lineNumber, foundId.type, foundFunc.type);
             }
 
         }else if(ctx.atypes instanceof IdNode){
-            if(formalparms == null){
+            if(formalparams == null){
 
             }
-            else if(foundId.type == formalparms.getValue()){
+            else if(foundId.type == formalparams.getValue()){
                 //visit(ctx.atypes);
 
             }else{
-                throw new RuntimeException("Type : "+ foundId.type + ", does not match with type " + formalparms.getValue());
+                throw new IdTypeCheckException("Type : "+ foundId.type +
+                        " does not match with type " + formalparams.getValue() +
+                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.name);
             }
 
         }else {
-            try {
-                if (formalparms == null) {
-                    evalAssign(ctx, foundId.type);
-                } else {
-                    evalAssign(ctx, formalparms.getValue());
-                }
-            }catch (WrongTypeException e){
+            if (formalparams == null) {
+                evalAssign(ctx, foundId.type);
+            } else {
+                evalAssign(ctx, formalparams.getValue());
             }
         }
     }
 
-    private void evalAssign(AssignNode ctx, Type type ) throws WrongTypeException {
+    private void evalAssign(AssignNode ctx, Type type ) {
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
         //TODO there is something that is not working with all results, (IdNode)
@@ -184,37 +184,31 @@ public class TypeChecker extends SymbolTableFill {
             if (type == Type.Number) {
                 visit(ctx.atypes);
             } else {
-                throw new WrongTypeException(type,getDataType(atypesSuper));
+                throw new IllegalTypeException("Illegal assignment type: " + type +
+                        " and Number at line: " + ctx.getLineNumber(), ctx.getLineNumber(), type, Type.Number);
             }
         } else if (ctx.atypes instanceof Bexpr) {
             if (type == Type.Boolean) {
                 visit(ctx.atypes);
             } else {
-                throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
+                throw new IllegalTypeException("Illegal assignment type: " + type +
+                        " and {Number, Boolean} at line: " + ctx.getLineNumber(), ctx.getLineNumber(), type,Type.Boolean);
             }
         } else if (ctx.atypes instanceof ArrayData) {
             if (type == Type.Number || type == Type.Char || type == Type.String || type == Type.Boolean) {
                 visit(ctx.atypes);
             } else {
-                throw new RuntimeException("Type " + type + " does not match with type " + atypesSuper);
+                throw new IllegalTypeException("Illegal assignment type: " + type +
+                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), type, Type.Void);
             }
         } else if (type == Type.Char && ctx.atypes instanceof CharValNode) {
-            System.out.println("Char");
-        } else if (type == Type.String && ctx.atypes instanceof StringValNode) {
-            System.out.println("String");
-        } /*else if (atypesNormal.equals("FuncCalls")) {
-            FuncCalls funcDcl = (FuncCalls) ctx.atypes;
-            FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
-            System.out.println("type is: " + type);
-            System.out.println("foundFunc type is: "+ foundFunc.type);
 
-            if(type.equals(foundFunc.type)){
-                visit(ctx.atypes);
-            }else {
-                throw new RuntimeException("BLABLA");
-            }
-        }*/ else {
-            throw new RuntimeException("Her: Type " + type.getClass().getSimpleName() + " does not match with normal type " + atypesNormal + " or super: " + atypesSuper);
+        } else if (type == Type.String && ctx.atypes instanceof StringValNode) {
+
+        } else {
+            throw new AssignTypeCheckException("Type " + type +
+                    " does not match with normal type " + getDataType(atypesNormal).toString() +
+                    " at line :" + ctx.getLineNumber(), ctx.getLineNumber(), type.toString(), atypesNormal, atypesSuper);
         }
     }
 
