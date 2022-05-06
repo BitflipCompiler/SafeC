@@ -207,7 +207,7 @@ public class TypeChecker extends SymbolTableFill {
 
         } else {
             throw new AssignTypeCheckException("Type " + type +
-                    " does not match with normal type " + getDataType(atypesNormal).toString() +
+                    " does not match with type " + getDataType(atypesNormal).toString() +
                     " at line :" + ctx.getLineNumber(), ctx.getLineNumber(), type.toString(), atypesNormal, atypesSuper);
         }
     }
