@@ -2,6 +2,8 @@ package service;
 
 import ast.*;
 import ast.abstracts.*;
+import exceptions.InvalidTypeDeclarationException;
+import exceptions.MultipleLocalDeclarationException;
 import visitor.ASTVisitor;
 
 /**
@@ -83,7 +85,8 @@ public class SymbolTableFill extends ASTVisitor {
         } else if (datatype.startsWith("Char")){
             return Type.Char;
         }
-        throw new RuntimeException("Datatype not viable.");
+        throw new InvalidTypeDeclarationException("Datatype not viable: " +
+                datatype, lineNumber, datatype);
     }
 
     @Override
@@ -316,7 +319,8 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         if (symbolTable.isDeclaredLocally(ctx.id)){
-            throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
+            throw new MultipleLocalDeclarationException("Number declaration multiple times in local scope: " +
+                    ctx.id + " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), ctx.id);
         } else {
             symbolTable.enterSymbol(new Attributes(ctx.id, Type.Number,false));
         }
@@ -339,7 +343,8 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         if (symbolTable.isDeclaredLocally(ctx.id)){
-            throw new RuntimeException("declarition multiple times in local scope: " + ctx.id);
+            throw new MultipleLocalDeclarationException("String declaration multiple times in local scope: " +
+                    ctx.id + " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), ctx.id);
         } else {
             //System.out.println("goes here string:" + ctx.id);
             symbolTable.enterSymbol(new Attributes(ctx.id, Type.String,false));
