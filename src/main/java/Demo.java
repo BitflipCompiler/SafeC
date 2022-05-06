@@ -31,7 +31,7 @@ public class Demo {
         //Assembler Generator
         if(choice == 1){
             //LEXER
-            CharStream charStream = CharStreams.fromFileName("input/lineNumberTest.txt");
+            CharStream charStream = CharStreams.fromFileName("input/assemblertest.txt");
             SafeCLexer SafeCLexer = new SafeCLexer(charStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(SafeCLexer);
 
