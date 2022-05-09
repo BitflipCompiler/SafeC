@@ -69,7 +69,7 @@ public class TypeChecker extends SymbolTableFill {
                     if (formalparam.getValue() != actualParams.get(i)) {
                         throw new IllegalTypeException("actual param: " + actualParams.get(i) +
                                 " different than: " + formalparam.getValue() +
-                                "at line: " + ctx.getLineNumber(), ctx.getLineNumber(), actualParams.get(i), formalparam.getValue());
+                                " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), actualParams.get(i), formalparam.getValue());
                     }
                     i++;
                 }

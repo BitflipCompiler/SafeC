@@ -1,6 +1,6 @@
 package exceptions;
 
-public class SymbolTableException extends RuntimeException{
+public abstract class SymbolTableException extends RuntimeException{
     int lineNumber;
 
     public SymbolTableException(String message, int lineNumber) {
