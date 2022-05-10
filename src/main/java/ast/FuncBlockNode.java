@@ -15,7 +15,7 @@ public class FuncBlockNode extends Node {
             isEmpty = true;
             this.returnValue = returnValue;
         }else{
-            this.dclAssignSemiCommand = (DclAssignSemiCommandNode) dclAssignSemiCommand;
+            this.dclAssignSemiCommand = dclAssignSemiCommand;
             this.returnValue = returnValue;
         }
     }
