@@ -21,10 +21,9 @@ public class CodeGenC extends ASTVisitor {
     public StringBuilder globalVars = new StringBuilder();
 
     public boolean inStruct = false;
-    boolean inFuncCall;
-
+    boolean inFuncCall = false;
     boolean hasBool = false;
-    boolean isVoid;
+    boolean isVoid = false;
 
     StringBuilder libs = new StringBuilder();
 
@@ -258,9 +257,7 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(ArrayBoolNode ctx) {
-        globalCode.append("[ ");
         globalCode.append("bool ");
-        globalCode.append("] ");
         globalCode.append(ctx.id);
         globalCode.append(" = ");
         globalCode.append("[ ");
@@ -278,9 +275,7 @@ public class CodeGenC extends ASTVisitor {
     //Denne skal laves om til c syntax.
     @Override
     public void visit(ArrayCharNode ctx) {
-        globalCode.append("[ ");
         globalCode.append("char ");
-        globalCode.append("] ");
         globalCode.append(ctx.id);
         globalCode.append(" = ");
         globalCode.append("[ ");
@@ -305,9 +300,7 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(ArrayNumNode ctx) {
-        globalCode.append("[ ");
-        globalCode.append("number ");
-        globalCode.append(" ]");
+        globalCode.append("float ");
         globalCode.append(ctx.id);
         globalCode.append(" = ");
         globalCode.append("[ ");
@@ -325,9 +318,7 @@ public class CodeGenC extends ASTVisitor {
 
     @Override
     public void visit(ArrayStringNode ctx) {
-        globalCode.append("[ ");
         globalCode.append("string ");
-        globalCode.append("] ");
         globalCode.append(ctx.id);
         globalCode.append(" = ");
         globalCode.append("[ ");
@@ -354,9 +345,7 @@ public class CodeGenC extends ASTVisitor {
             visit(ctx.atypes);
             globalCode.append(";");
         }
-
     }
-
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
