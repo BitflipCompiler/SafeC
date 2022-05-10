@@ -2,16 +2,18 @@ package service;
 
 
 import java.util.Objects;
-/** This Class is a part of the {@link SymbolTable}
- *   Every element in the
- *   {@link SymbolTable} is an {@link Attributes}.<br><br>
- *
- *   Each element has a prevSymbol which means that the varible has been
- *   declared once allready. Futhermore it has a depth and a level, which dicides,
- *   wheater the varible can be declared or not.<br><br>
- *
- *   Also the element has a (String,Int) and a name (x).
-*/
+
+/**
+ * This Class is a part of the {@link SymbolTable}
+ * Every element in the
+ * {@link SymbolTable} is an {@link Attributes}.<br><br>
+ * <p>
+ * Each element has a prevSymbol which means that the varible has been
+ * declared once allready. Futhermore it has a depth and a level, which dicides,
+ * wheater the varible can be declared or not.<br><br>
+ * <p>
+ * Also the element has a (String,Int) and a name (x).
+ */
 public class Attributes {
     String name;
     Type type;
@@ -21,19 +23,16 @@ public class Attributes {
     int safelvl;
     boolean isformalparam;
 
-    public Attributes(String name, Type type,Boolean isformalparam) {
+    public Attributes(String name, Type type, Boolean isformalparam) {
         this.name = name;
         this.type = type;
         this.isformalparam = isformalparam;
     }
 
-
-
     public Type getType() {
         return type;
     }
-
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,7 +54,7 @@ public class Attributes {
                 ", level=" + level +
                 ", depth=" + depth +
                 ", isparam=" + isformalparam +
-                ", prevSymbol="  + prevSymbol +
+                ", prevSymbol=" + prevSymbol +
                 "}\n";
     }
 }

@@ -10,7 +10,6 @@ import visitor.ASTVisitor;
  */
 public class PrettyPrint extends ASTVisitor {
     private int indentation = 0;
-
     StringBuilder printIndentation(int indentation){
         StringBuilder str = new StringBuilder(" ");
         for(int i = 0; i < indentation; i++){
@@ -244,7 +243,6 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print(ctx.id);
         System.out.print(" = ");
         visit(ctx.atypes);
-        //System.out.println();
     }
 
     @Override
@@ -252,7 +250,6 @@ public class PrettyPrint extends ASTVisitor {
         visit(ctx.boolDcl);
         System.out.print(" = ");
         visit(ctx.bexpr);
-        //System.out.println(";");
     }
 
     @Override
@@ -343,9 +340,6 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print(ctx.id);
         System.out.print(" = ");
         visit(ctx.aexpr);
-
-        //for(number i = 0; bexpr; i = i + 1)
-
     }
 
     @Override
@@ -448,7 +442,6 @@ public class PrettyPrint extends ASTVisitor {
         System.out.print(ctx.safety);
         System.out.print(" ");
         visit(ctx.variable);
-        //System.out.println();
     }
 
     @Override
@@ -541,6 +534,5 @@ public class PrettyPrint extends ASTVisitor {
         indentation--;
         System.out.print(printIndentation(indentation));
         System.out.println("}");
-
     }
 }

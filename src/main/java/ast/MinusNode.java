@@ -8,7 +8,6 @@ public class MinusNode extends Aexpr {
     public Node leftChild;
     public Node rightChild;
 
-
     public MinusNode(Node leftChild, Node rightChild) {
         this.leftChild = leftChild;
         this.rightChild = rightChild;

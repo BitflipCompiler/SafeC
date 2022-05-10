@@ -18,12 +18,10 @@ public class SymbolTable {
     public void openScope(){
         depth++;
         scopeCount++;
-        //System.out.println("opening scope at depth: " +depth);
         this.scopes.add(new Scope());
     }
 
     public void closeScope(){
-        //System.out.println("symbolTable is now: " + symbolTable);
         for (Attributes attribute: this.scopes.get(this.scopes.size()-1).attributes) {
             Attributes prevSymbol = attribute.prevSymbol;
             this.symbolTable.remove(attribute.name);
@@ -31,7 +29,6 @@ public class SymbolTable {
                 symbolTable.put(prevSymbol.name, prevSymbol);
             }
         }
-        //System.out.println("closing scope at depth: " + depth);
         this.scopes.remove(this.scopes.size()-1);
         depth--;
     }
@@ -40,36 +37,24 @@ public class SymbolTable {
         return this.symbolTable.get(name);
     }
 
-
     public void enterSymbol(Attributes newAttribute){
         Attributes oldAttribute = this.retrieveSymbol(newAttribute.name);
         if(oldAttribute != null && oldAttribute.depth == depth && !newAttribute.isformalparam
                 //This might be wrong, done to fix funccals id in globalscope
                 && newAttribute.depth != 0){
-
             throw new RuntimeException("Duplicate definition of: " + newAttribute.name);
         }
-
         //Add to scope display
         newAttribute.level = scopeCount;
         newAttribute.depth = depth;
         this.scopes.get(this.scopes.size()-1).addAttribute(newAttribute);
-        //Add to symbol table
-        /*if(oldAttribute == null){
-            this.symbolTable.put(newAttribute.name, newAttribute);
-        } else {
-            this.symbolTable.remove(oldAttribute);
-            this.symbolTable.put(newAttribute.name, newAttribute);
-        }*/
         this.symbolTable.put(newAttribute.name, newAttribute);
         newAttribute.prevSymbol = oldAttribute;
-
     }
 
     public boolean isDeclaredLocally(String name){
         for (Attributes symbol: this.scopes.get(this.scopes.size()-1).attributes) {
             if (name.equals(symbol.name)){
-                //System.out.println("id alrdy in scope: " + name);
                 return true;
             }
         }
@@ -91,9 +76,7 @@ public class SymbolTable {
                     }
                 }
             }
-
         }
-
         return null;
     }
     @Override

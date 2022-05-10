@@ -3,6 +3,7 @@ package service;
 import ast.*;
 import ast.abstracts.*;
 import gen.*;
+
 import java.util.*;
 
 /**
@@ -16,7 +17,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public ProgNode visitProg(SafeCParser.ProgContext ctx) {
         ProgNode progNode = new ProgNode();
-        for(int i = 0; i < ctx.declaration().size(); i++){
+        for (int i = 0; i < ctx.declaration().size(); i++) {
             progNode.nodes.add(visit(ctx.declaration().get(i)));
         }
         return progNode;
@@ -24,11 +25,11 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Node visitDeclaration(SafeCParser.DeclarationContext ctx) {
-        if(ctx.dclassignsemi() != null){
+        if (ctx.dclassignsemi() != null) {
             return visit(ctx.dclassignsemi());
-        } else if(ctx.structdcl() != null){
+        } else if (ctx.structdcl() != null) {
             return visit(ctx.structdcl());
-        } else if (ctx.funcdcl() != null){
+        } else if (ctx.funcdcl() != null) {
             return visit(ctx.funcdcl());
         }
         throw new RuntimeException("declaration not valid.");
@@ -42,39 +43,36 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public StructBlockNode visitStructblock(SafeCParser.StructblockContext ctx) {
         StructBlockNode structBlocknode = new StructBlockNode();
-        for(int i = 0; i < ctx.safedeclaration().size(); i++){
+        for (int i = 0; i < ctx.safedeclaration().size(); i++) {
             structBlocknode.safeDclNodes.add((SafeDclNode) visit(ctx.safedeclaration().get(i)));
         }
         return structBlocknode;
     }
 
-
     @Override
     public DclAssign visitDclassignsemi(SafeCParser.DclassignsemiContext ctx) {
-        if(ctx.vassign() != null){
+        if (ctx.vassign() != null) {
             return (DclAssign) visit(ctx.vassign());
-        } else if ( ctx.safedeclaration() != null){
+        } else if (ctx.safedeclaration() != null) {
             return (DclAssign) visit(ctx.safedeclaration());
         }
         throw new RuntimeException("Dclassignsemi not valid.");
     }
 
-    //Has to be Node since DclAssignSemiCommandNode and EmptyNode is not the same
     @Override
     public Node visitDclassignsemicommand(SafeCParser.DclassignsemicommandContext ctx) {
-        if(ctx.dclassignsemicommand() != null){
-            if(ctx.dclassignsemi() != null){
+        if (ctx.dclassignsemicommand() != null) {
+            if (ctx.dclassignsemi() != null) {
                 return new DclAssignSemiCommandNode(visit(ctx.dclassignsemi()), visit(ctx.dclassignsemicommand()));
-            } else if(ctx.command() != null){
+            } else if (ctx.command() != null) {
                 return new DclAssignSemiCommandNode(visit(ctx.command()), visit(ctx.dclassignsemicommand()));
             }
-        } else if(ctx.dclassignsemicommand() == null){
-            if (ctx.dclassignsemi() != null){
+        } else if (ctx.dclassignsemicommand() == null) {
+            if (ctx.dclassignsemi() != null) {
                 return new DclAssignSemiCommandNode(visit(ctx.dclassignsemi()), null);
-            } else if(ctx.command() != null){
+            } else if (ctx.command() != null) {
                 return new DclAssignSemiCommandNode(visit(ctx.command()), null);
-            } else if(ctx.dclassignsemi() == null && ctx.command() == null) {
-                //Returns a node that is empty/null
+            } else if (ctx.dclassignsemi() == null && ctx.command() == null) {
                 return new EmptyNode();
             }
         }
@@ -83,9 +81,9 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public SafeDclNode visitSafedeclaration(SafeCParser.SafedeclarationContext ctx) {
-        if(ctx.vdclassign() != null){
+        if (ctx.vdclassign() != null) {
             return new SafeDclNode(ctx.SAFETY().toString(), visit(ctx.vdclassign()));
-        } else if(ctx.vdcl() != null){
+        } else if (ctx.vdcl() != null) {
             return new SafeDclNode(ctx.SAFETY().toString(), visit(ctx.vdcl()));
         }
         throw new RuntimeException("safedeclaration not valid.");
@@ -94,7 +92,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public FormalParamsNode visitParams(SafeCParser.ParamsContext ctx) {
         FormalParamsNode astFormalParamsNode = new FormalParamsNode();
-        for(int i = 0; i < ctx.vdcl().size();i++){
+        for (int i = 0; i < ctx.vdcl().size(); i++) {
             astFormalParamsNode.vdcls.add((VDcl) visit(ctx.vdcl().get(i)));
         }
         return astFormalParamsNode;
@@ -108,7 +106,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public CaseBlockNode visitCaseblock(SafeCParser.CaseblockContext ctx) {
-        if(ctx.BREAK() != null){
+        if (ctx.BREAK() != null) {
             return new CaseBlockNode(visit(ctx.dclassignsemicommand()), ctx.BREAK().toString());
         } else {
             return new CaseBlockNode(visit(ctx.dclassignsemicommand()));
@@ -117,35 +115,35 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public VDcl visitVdcl(SafeCParser.VdclContext ctx) {
-      if(ctx.numdecl() != null){
-          return (VDcl) visit(ctx.numdecl());
-      }else if(ctx.chardecl() != null){
-          return (VDcl) visit(ctx.chardecl());
-      }else if(ctx.stringdecl() != null){
-          return (VDcl) visit(ctx.stringdecl());
-      }else if(ctx.booldecl() != null){
-          return (VDcl) visit(ctx.booldecl());
-      }else if (ctx.arraydecl() != null){
-          return (VDcl) visit(ctx.arraydecl());
-      }else{
-          throw new RuntimeException("Something went wrong in visitVdcl");
-      }
+        if (ctx.numdecl() != null) {
+            return (VDcl) visit(ctx.numdecl());
+        } else if (ctx.chardecl() != null) {
+            return (VDcl) visit(ctx.chardecl());
+        } else if (ctx.stringdecl() != null) {
+            return (VDcl) visit(ctx.stringdecl());
+        } else if (ctx.booldecl() != null) {
+            return (VDcl) visit(ctx.booldecl());
+        } else if (ctx.arraydecl() != null) {
+            return (VDcl) visit(ctx.arraydecl());
+        } else {
+            throw new RuntimeException("Something went wrong in visitVdcl");
+        }
     }
 
     @Override
     public ArrayDeclNode visitArraydecl(SafeCParser.ArraydeclContext ctx) {
-        return new ArrayDeclNode(visit(ctx.arrdcltype()),ctx.ID().toString());
+        return new ArrayDeclNode(visit(ctx.arrdcltype()), ctx.ID().toString());
     }
 
     @Override
     public Datatype visitArrdcltype(SafeCParser.ArrdcltypeContext ctx) {
-        if(ctx.NUMDCL() != null){
+        if (ctx.NUMDCL() != null) {
             return new NumberLitteralNode();
-        } else if (ctx.CHARDCL() != null){
+        } else if (ctx.CHARDCL() != null) {
             return new CharLitteralNode();
-        } else if(ctx.STRDCL() != null){
+        } else if (ctx.STRDCL() != null) {
             return new StringLitteralNode();
-        } else if (ctx.BOOLDCL() != null){
+        } else if (ctx.BOOLDCL() != null) {
             return new BoolLitteralNode();
         }
         throw new RuntimeException("Datatype not valid exception.");
@@ -159,15 +157,15 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public DclAssign visitVdclassign(SafeCParser.VdclassignContext ctx) {
-        if(ctx.numdclassign() != null){
+        if (ctx.numdclassign() != null) {
             return (DclAssign) visit(ctx.numdclassign());
-        }else if(ctx.chardclassign() != null){
+        } else if (ctx.chardclassign() != null) {
             return (DclAssign) visit(ctx.chardclassign());
-        }else if(ctx.stringdclassign() != null){
+        } else if (ctx.stringdclassign() != null) {
             return (DclAssign) visit(ctx.stringdclassign());
-        }else if(ctx.booldclassign() != null){
+        } else if (ctx.booldclassign() != null) {
             return (DclAssign) visit(ctx.booldclassign());
-        }else if(ctx.arraydclassign() != null){
+        } else if (ctx.arraydclassign() != null) {
             return (DclAssign) visit(ctx.arraydclassign());
         }
         throw new RuntimeException("Something went wrong in VisitVdeclAssign");
@@ -175,13 +173,13 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public ArrayDclAssign visitArraydclassign(SafeCParser.ArraydclassignContext ctx) {
-        if(ctx.numarraydclassign() != null){
+        if (ctx.numarraydclassign() != null) {
             return (ArrayDclAssign) visit(ctx.numarraydclassign());
-        }else if(ctx.chararraydclassign() != null){
+        } else if (ctx.chararraydclassign() != null) {
             return (ArrayDclAssign) visit(ctx.chararraydclassign());
-        }else if(ctx.stringarraydclassign() != null){
+        } else if (ctx.stringarraydclassign() != null) {
             return (ArrayDclAssign) visit(ctx.stringarraydclassign());
-        }else if (ctx.boolarraydclassign() != null){
+        } else if (ctx.boolarraydclassign() != null) {
             return (ArrayDclAssign) visit(ctx.boolarraydclassign());
         }
         throw new RuntimeException("Something went wrong in visitArrayDclAssign");
@@ -209,15 +207,15 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Datatype visitDatatype(SafeCParser.DatatypeContext ctx) {
-        if(ctx.NUMDCL() != null){
+        if (ctx.NUMDCL() != null) {
             return new NumberLitteralNode();
-        } else if (ctx.CHARDCL() != null){
+        } else if (ctx.CHARDCL() != null) {
             return new CharLitteralNode();
-        } else if(ctx.STRDCL() != null){
+        } else if (ctx.STRDCL() != null) {
             return new StringLitteralNode();
-        } else if (ctx.BOOLDCL() != null){
+        } else if (ctx.BOOLDCL() != null) {
             return new BoolLitteralNode();
-        } else if (ctx.VOIDDCL() != null){
+        } else if (ctx.VOIDDCL() != null) {
             return new VoidLitteralNode();
         }
         throw new RuntimeException("Datatype not valid exception.");
@@ -226,15 +224,15 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Node visitAtypes(SafeCParser.AtypesContext ctx) {
-        if(ctx.CHARVAL() != null){
+        if (ctx.CHARVAL() != null) {
             return new CharValNode(ctx.CHARVAL().toString());
-        } else if(ctx.STRVAL() != null){
+        } else if (ctx.STRVAL() != null) {
             return new StringValNode(ctx.STRVAL().toString());
-        } else if(ctx.aexpr() != null){
+        } else if (ctx.aexpr() != null) {
             return visit(ctx.aexpr());
-        } else if(ctx.bexpr() != null){
+        } else if (ctx.bexpr() != null) {
             return visit(ctx.bexpr());
-        } else if (ctx.funccalls() != null){
+        } else if (ctx.funccalls() != null) {
             return visit(ctx.funccalls());
         } else {
             throw new RuntimeException("Atypes not valid.");
@@ -250,13 +248,13 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public ArrayAssign visitArraydata(SafeCParser.ArraydataContext ctx) {
-        if(ctx.numarray() != null){
+        if (ctx.numarray() != null) {
             return (ArrayAssign) visit(ctx.numarray());
-        } else if(ctx.chararray() != null){
+        } else if (ctx.chararray() != null) {
             return (ArrayAssign) visit(ctx.chararray());
-        } else if(ctx.strarray() != null){
+        } else if (ctx.strarray() != null) {
             return (ArrayAssign) visit(ctx.strarray());
-        } else if(ctx.boolarray() != null){
+        } else if (ctx.boolarray() != null) {
             return (ArrayAssign) visit(ctx.boolarray());
         }
         throw new RuntimeException("arraydata not valid.");
@@ -265,7 +263,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public ArrayNumValuesNode visitNumarray(SafeCParser.NumarrayContext ctx) {
         ArrayNumValuesNode astArrayNumValuesNode = new ArrayNumValuesNode();
-        for(int i = 0; i < ctx.numberval().size();i++){
+        for (int i = 0; i < ctx.numberval().size(); i++) {
             astArrayNumValuesNode.numValues.add((NumvalNode) visit(ctx.numberval().get(i)));
         }
         return astArrayNumValuesNode;
@@ -274,7 +272,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public ArrayCharValuesNode visitChararray(SafeCParser.ChararrayContext ctx) {
         ArrayCharValuesNode astArrayCharValuesNode = new ArrayCharValuesNode();
-        for(int i = 0; i < ctx.CHARVAL().size();i++){
+        for (int i = 0; i < ctx.CHARVAL().size(); i++) {
             astArrayCharValuesNode.charvalues.add((CharValNode) visit(ctx.CHARVAL().get(i)));
         }
         return astArrayCharValuesNode;
@@ -283,7 +281,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public ArrayStrValuesNode visitStrarray(SafeCParser.StrarrayContext ctx) {
         ArrayStrValuesNode astArrayStrValuesNode = new ArrayStrValuesNode();
-        for(int i = 0; i < ctx.STRVAL().size();i++){
+        for (int i = 0; i < ctx.STRVAL().size(); i++) {
             astArrayStrValuesNode.strValues.add((StringValNode) visit(ctx.STRVAL().get(i)));
         }
         return astArrayStrValuesNode;
@@ -292,7 +290,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public ArrayBoolValuesNode visitBoolarray(SafeCParser.BoolarrayContext ctx) {
         ArrayBoolValuesNode astArrayBoolValuesNode = new ArrayBoolValuesNode();
-        for(int i = 0; i < ctx.BOOLVAL().size();i++){
+        for (int i = 0; i < ctx.BOOLVAL().size(); i++) {
             astArrayBoolValuesNode.boolValues.add((BoolValNode) visit(ctx.BOOLVAL().get(i)));
         }
         return astArrayBoolValuesNode;
@@ -301,9 +299,9 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Node visitCommand(SafeCParser.CommandContext ctx) {
-        if(ctx.ctrlstruct() != null){
+        if (ctx.ctrlstruct() != null) {
             return visit(ctx.ctrlstruct());
-        }else if(ctx.funccalls() != null){
+        } else if (ctx.funccalls() != null) {
             return visit(ctx.funccalls());
         }
         throw new RuntimeException("Something went wrong in visitCommand");
@@ -313,23 +311,24 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public FuncCallsNode visitFunccalls(SafeCParser.FunccallsContext ctx) {
 
-        if(ctx.callparams() != null){
-            return new FuncCallsNode(ctx.ID().toString(),visit(ctx.callparams()));
-        }else if(ctx.callparams() == null){
+        if (ctx.callparams() != null) {
+            return new FuncCallsNode(ctx.ID().toString(), visit(ctx.callparams()));
+        } else if (ctx.callparams() == null) {
             return new FuncCallsNode(ctx.ID().toString());
         }
         throw new RuntimeException("Something went wrong in VisitFuncCalls");
     }
+
     public Type getDataType(String datatype) {
-        if (datatype.startsWith("num")){
+        if (datatype.startsWith("num")) {
             return Type.Number;
-        } else if (datatype.startsWith("void")){
+        } else if (datatype.startsWith("void")) {
             return Type.Void;
-        } else if (datatype.startsWith("string")){
+        } else if (datatype.startsWith("string")) {
             return Type.String;
-        } else if (datatype.startsWith("bool")){
+        } else if (datatype.startsWith("bool")) {
             return Type.Boolean;
-        } else if (datatype.startsWith("char")){
+        } else if (datatype.startsWith("char")) {
             return Type.Char;
         }
         throw new RuntimeException("Datatype not viable.");
@@ -338,14 +337,14 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public FuncDclNode visitFuncdcl(SafeCParser.FuncdclContext ctx) {
-        if(ctx.params() != null){
-            LinkedHashMap<String,Type> formalParams = new LinkedHashMap<>();
-            for(int i = 0; i < ctx.params().vdcl().size(); i++){
+        if (ctx.params() != null) {
+            LinkedHashMap<String, Type> formalParams = new LinkedHashMap<>();
+            for (int i = 0; i < ctx.params().vdcl().size(); i++) {
                 formalParams.put(ctx.params().vdcl().get(i).children.get(0).getChild(1).getText(), getDataType(ctx.params().vdcl().get(i).children.get(0).getChild(0).getText()));
             }
-            return new FuncDclNode((Datatype) visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),(FuncBlockNode) visit(ctx.funcblock()),ctx.funcblock().children.get(3).getText(), formalParams);
-        }else if(ctx.params() == null){
-            return new FuncDclNode((Datatype) visit(ctx.datatype()),ctx.ID().toString(),(FuncBlockNode) visit(ctx.funcblock()), ctx.funcblock().children.get(3).getText());
+            return new FuncDclNode((Datatype) visit(ctx.datatype()), ctx.ID().toString(), visit(ctx.params()), (FuncBlockNode) visit(ctx.funcblock()), ctx.funcblock().children.get(3).getText(), formalParams);
+        } else if (ctx.params() == null) {
+            return new FuncDclNode((Datatype) visit(ctx.datatype()), ctx.ID().toString(), (FuncBlockNode) visit(ctx.funcblock()), ctx.funcblock().children.get(3).getText());
         }
         throw new RuntimeException("Something went wrong in visitFuncDcl");
     }
@@ -359,17 +358,17 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     @Override
     public ActualParamsNode visitCallparams(SafeCParser.CallparamsContext ctx) {
         ActualParamsNode astActualParamsNode = new ActualParamsNode();
-        for(int i = 0; i < ctx.vals().size();i++){
-            astActualParamsNode.vals.add( visit(ctx.vals().get(i)));
+        for (int i = 0; i < ctx.vals().size(); i++) {
+            astActualParamsNode.vals.add(visit(ctx.vals().get(i)));
         }
         return astActualParamsNode;
     }
 
     @Override
     public Command visitCtrlstruct(SafeCParser.CtrlstructContext ctx) {
-        if(ctx.iterative() != null){
+        if (ctx.iterative() != null) {
             return (Command) visit(ctx.iterative());
-        }else if(ctx.selective() != null){
+        } else if (ctx.selective() != null) {
             return (Command) visit(ctx.selective());
         }
         throw new RuntimeException("Something went wrong in visitCtrlStruct");
@@ -383,15 +382,15 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public WhileLoopNode visitWhileLoop(SafeCParser.WhileLoopContext ctx) {
-        return new WhileLoopNode(visit(ctx.bexpr()),visit(ctx.block()));
+        return new WhileLoopNode(visit(ctx.bexpr()), visit(ctx.block()));
     }
 
     @Override
     public IfStatementNode visitIfStatement(SafeCParser.IfStatementContext ctx) {
-        if(ctx.block().size() == 2){
-            return new IfStatementNode(visit(ctx.iflogic()),visit(ctx.block(0)),visit(ctx.block(1)));
-        }else{
-            return new IfStatementNode(visit(ctx.iflogic()),visit(ctx.block(0)),null);
+        if (ctx.block().size() == 2) {
+            return new IfStatementNode(visit(ctx.iflogic()), visit(ctx.block(0)), visit(ctx.block(1)));
+        } else {
+            return new IfStatementNode(visit(ctx.iflogic()), visit(ctx.block(0)), null);
         }
     }
 
@@ -399,10 +398,10 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     public SwitchStatementNode visitSwitchStatement(SafeCParser.SwitchStatementContext ctx) {
         List<ScaseNode> scases = new ArrayList<>();
 
-        for(int i = 0; i < ctx.scase().size(); i++){
+        for (int i = 0; i < ctx.scase().size(); i++) {
             scases.add((ScaseNode) visit(ctx.scase().get(i)));
         }
-        return new SwitchStatementNode(ctx.ID().toString(),scases,visit(ctx.defcase()));
+        return new SwitchStatementNode(ctx.ID().toString(), scases, visit(ctx.defcase()));
     }
 
     @Override
@@ -467,17 +466,17 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Bexpr visitBexprRelop(SafeCParser.BexprRelopContext ctx) {
-        if(ctx.relop().EQ() != null){
+        if (ctx.relop().EQ() != null) {
             return new RelopEqualNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
-        } else if(ctx.relop().NEQ() != null){
+        } else if (ctx.relop().NEQ() != null) {
             return new RelopNotEqualNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
-        } else if(ctx.relop().LEQ() != null){
+        } else if (ctx.relop().LEQ() != null) {
             return new RelopLeqNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
-        } else if(ctx.relop().GEQ() != null){
+        } else if (ctx.relop().GEQ() != null) {
             return new RelopGeqNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
-        } else if(ctx.relop().LESS() != null){
+        } else if (ctx.relop().LESS() != null) {
             return new RelopLessNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
-        } else if(ctx.relop().GREATER() != null){
+        } else if (ctx.relop().GREATER() != null) {
             return new RelopGreaterNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
         } else {
             throw new RuntimeException("BexprBop bop not valid.");
@@ -496,9 +495,9 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Bexpr visitBexprBop(SafeCParser.BexprBopContext ctx) {
-        if(ctx.bop().AND() != null){
+        if (ctx.bop().AND() != null) {
             return new AndNode(visit(ctx.bexpr(0)), visit(ctx.bexpr(1)));
-        } else if(ctx.bop().OR() != null){
+        } else if (ctx.bop().OR() != null) {
             return new OrNode(visit(ctx.bexpr(0)), visit(ctx.bexpr(1)));
         } else {
             throw new RuntimeException("BexprBop bop not valid.");
@@ -512,7 +511,7 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public BoolValNode visitBexprBoolval(SafeCParser.BexprBoolvalContext ctx) {
-        if(ctx.BOOLVAL().getSymbol().getType() == SafeCParser.BOOLVAL){
+        if (ctx.BOOLVAL().getSymbol().getType() == SafeCParser.BOOLVAL) {
             return new BoolValNode(ctx.BOOLVAL().toString());
         } else {
             throw new RuntimeException("BexprBoolVal not valid input.");
@@ -526,15 +525,15 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Node visitVals(SafeCParser.ValsContext ctx) {
-        if(ctx.CHARVAL() != null){
+        if (ctx.CHARVAL() != null) {
             return new CharValNode(ctx.CHARVAL().toString());
-        } else if (ctx.STRVAL() != null){
+        } else if (ctx.STRVAL() != null) {
             return new StringValNode(ctx.STRVAL().toString());
-        } else if (ctx.BOOLVAL() != null){
+        } else if (ctx.BOOLVAL() != null) {
             return new BoolValNode(ctx.BOOLVAL().toString());
-        } else if (ctx.ID() != null){
+        } else if (ctx.ID() != null) {
             return new IdNode(ctx.ID().toString());
-        } else if(visit(ctx.numberval()) != null) {
+        } else if (visit(ctx.numberval()) != null) {
             return visit(ctx.numberval());
         }
         throw new RuntimeException("Vals undefined.");
@@ -542,9 +541,9 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Aexpr visitAexprTimesDivNode(SafeCParser.AexprTimesDivNodeContext ctx) {
-        if(ctx.op.getType() == SafeCParser.TIMES){
+        if (ctx.op.getType() == SafeCParser.TIMES) {
             return new TimesNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
-        } else if(ctx.op.getType() == SafeCParser.DIVISION){
+        } else if (ctx.op.getType() == SafeCParser.DIVISION) {
             return new DivisionNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
         } else {
             return new ModNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
@@ -553,24 +552,24 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
 
     @Override
     public Aexpr visitAexprAddSubNode(SafeCParser.AexprAddSubNodeContext ctx) {
-        if(ctx.op.getType() == SafeCParser.PLUS){
+        if (ctx.op.getType() == SafeCParser.PLUS) {
             return new PlusNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
         } else {
             return new MinusNode(visit(ctx.aexpr(0)), visit(ctx.aexpr(1)));
         }
     }
 
-    @Override 
+    @Override
     public Aexpr visitAexprParensNode(SafeCParser.AexprParensNodeContext ctx) {
         return (Aexpr) visit(ctx.aexpr());
     }
-    
-    @Override 
+
+    @Override
     public Node visitAexprIdNode(SafeCParser.AexprIdNodeContext ctx) {
         return new IdNode(ctx.ID().getText());
     }
-    
-    @Override 
+
+    @Override
     public Numberval visitAexprNumbervalNode(SafeCParser.AexprNumbervalNodeContext ctx) {
         return (Numberval) visitChildren(ctx);
     }
@@ -584,5 +583,4 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
     public PiNode visitAexprPiNode(SafeCParser.AexprPiNodeContext ctx) {
         return new PiNode();
     }
-   
 }
