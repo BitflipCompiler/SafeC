@@ -74,7 +74,9 @@ public class SymbolTableFill extends ASTVisitor {
         //System.out.println(symbolTable);
 
         //type checking has to be done as late as possible, while still having access to the local variables
-        ctx.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
         symbolTable.closeScope();
 
     }
@@ -125,7 +127,9 @@ public class SymbolTableFill extends ASTVisitor {
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
-        ctx.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
         for (Node node: ctx.vals) {
             visit(node);
         }
@@ -136,7 +140,9 @@ public class SymbolTableFill extends ASTVisitor {
         lineNumber++;
         ctx.setLineNumber(lineNumber);
         //visit(ctx.iflogic);
-        ctx.iflogic.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.iflogic.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
         if(ctx.ifThenBlock != null){
             symbolTable.openScope();
             visit(ctx.ifThenBlock);
@@ -232,7 +238,9 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(AssignNode ctx) {
         lineNumber++;
         ctx.setLineNumber(lineNumber);
-        ctx.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
         visit(ctx.atypes);
     }
 
@@ -297,7 +305,9 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.charDcl);
-        ctx.charval.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.charval.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
     }
 
     @Override
@@ -316,7 +326,9 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.numdecl);
-        ctx.aexpr.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.aexpr.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
     }
 
     @Override
@@ -340,7 +352,9 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.stringdcl);
-        ctx.stringval.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.stringval.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
     }
 
     @Override
@@ -382,17 +396,17 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
-        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
         visit(ctx.boolDcl);
-        ctx.bexpr.accept(new TypeChecker(symbolTable));
+        TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
+        ctx.bexpr.accept(typeChecker);
+        lineNumber = typeChecker.lineNumber;
     }
 
     @Override
     public void visit(BoolDclNode ctx) {
-        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -402,59 +416,47 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(NotNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(AndNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(OrNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopEqualNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopNotEqualNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopLeqNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopGeqNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopLessNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(RelopGreaterNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
 
     @Override
     public void visit(IdBoolValNode ctx) {
-        ctx.setLineNumber(lineNumber);
-
     }
 
     @Override
     public void visit(BoolValNode ctx) {
-        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -462,12 +464,10 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(DivisionNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(IdNode ctx) {
-        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -476,17 +476,14 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(MinusNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(ModNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(NumvalNode ctx) {
-        ctx.setLineNumber(lineNumber);
         if(symbolTable.depth == 0){
             ctx.isGlobal = true;
         }
@@ -494,17 +491,15 @@ public class SymbolTableFill extends ASTVisitor {
 
     @Override
     public void visit(PiNode ctx) {
-        ctx.setLineNumber(lineNumber);
+
     }
 
     @Override
     public void visit(PlusNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
     @Override
     public void visit(TimesNode ctx) {
-        ctx.setLineNumber(lineNumber);
     }
 
 

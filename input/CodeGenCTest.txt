@@ -9,7 +9,7 @@
 
 number setAge(number agen){
     age = agen;
-    age = 10 + 10;
+    age = 10 + x;
     return age;
 }
 

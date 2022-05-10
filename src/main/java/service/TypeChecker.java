@@ -20,8 +20,9 @@ public class TypeChecker extends SymbolTableFill {
     public boolean isFuncCall = false;
     public boolean isBexpr = false;
 
-    public TypeChecker(SymbolTable symbolTable) {
+    public TypeChecker(SymbolTable symbolTable, int lineNumber) {
         super(symbolTable);
+        this.lineNumber = lineNumber;
     }
 
     public Type getDataType(String datatype) {
@@ -417,11 +418,13 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
+        ctx.setLineNumber(lineNumber);
         visit(ctx.bexpr);
     }
 
     @Override
     public void visit(BoolDclNode ctx) {
+        ctx.setLineNumber(lineNumber);
         formalParams.add(Type.Boolean);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Boolean, true));
     }
@@ -429,6 +432,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(NotNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.value);
         isBexpr = false;
     }
@@ -436,6 +440,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(AndNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -444,6 +449,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(OrNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -452,6 +458,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(RelopEqualNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -460,6 +467,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(RelopNotEqualNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -468,6 +476,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(RelopLeqNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -476,6 +485,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(RelopGeqNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -484,6 +494,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(RelopLessNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -492,6 +503,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(RelopGreaterNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         isBexpr =false;
@@ -500,6 +512,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(IdBoolValNode ctx) {
         isBexpr = true;
+        ctx.setLineNumber(lineNumber);
         Attributes foundid = symbolTable.retrieveSymbol(ctx.id.getId());
         if (foundid.type != Type.Boolean){
             throw new RuntimeException("Id is not of type boolean at line " + ctx.getLineNumber());
@@ -510,6 +523,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(BoolValNode ctx) {
+        ctx.setLineNumber(lineNumber);
         if (isFuncCall){
             actualParams.add(Type.Boolean);
         }
@@ -523,6 +537,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(DivisionNode ctx) {
         isAexpr = true;
+        ctx.setLineNumber(lineNumber);
         if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
                 (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
             visit(ctx.leftChild);
@@ -536,6 +551,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(IdNode ctx) {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
+        ctx.setLineNumber(lineNumber);
         if (isFuncCall) {
             actualParams.add(foundId.type);
         }
@@ -554,6 +570,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(MinusNode ctx) {
         isAexpr = true;
+        ctx.setLineNumber(lineNumber);
         if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
            (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
             visit(ctx.leftChild);
@@ -567,6 +584,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(ModNode ctx) {
         isAexpr = true;
+        ctx.setLineNumber(lineNumber);
         if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
             (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
         visit(ctx.leftChild);
@@ -580,17 +598,20 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(NumvalNode ctx) {
+        ctx.setLineNumber(lineNumber);
         actualParams.add(Type.Number);
     }
 
     @Override
     public void visit(PiNode ctx) {
+        ctx.setLineNumber(lineNumber);
         actualParams.add(Type.Number);
     }
 
     @Override
     public void visit(PlusNode ctx) {
         isAexpr = true;
+        ctx.setLineNumber(lineNumber);
         if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
                 (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
             visit(ctx.leftChild);
@@ -604,6 +625,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(TimesNode ctx) {
         isAexpr = true;
+        ctx.setLineNumber(lineNumber);
         if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
                 (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
             visit(ctx.leftChild);
