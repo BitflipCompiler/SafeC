@@ -239,18 +239,43 @@ public class TypeChecker extends SymbolTableFill {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id.getId());
         Map.Entry<String, Type> formalparams = symbolTable.checkFormalParams(ctx.id.getId());
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
-
-
-        if (ctx.atypes instanceof FuncCallsNode) {
-            FuncCallsNode funcDcl = (FuncCallsNode) ctx.atypes;
-            FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcDcl.id);
-
+        /*if(ctx.atypes instanceof Aexpr){
+            if(foundId.type.equals(Type.Number)){
+                visit(ctx.atypes);
+            } else{
+                throw new IllegalTypeException("Aexpr assignment error: Type: " + foundId.type +
+                        " different from type: " + Type.Number +
+                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.type, Type.Number);
+            }
+        } else if (ctx.atypes instanceof Bexpr){
+            if(foundId.type.equals(Type.Boolean)){
+                visit(ctx.atypes);
+            } else {
+                throw new IllegalTypeException("Bexpr assignment error: Type: " + foundId.type +
+                        " different from type: " + Type.Boolean +
+                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.type, Type.Boolean);
+            }
+        } else if(ctx.atypes instanceof CharValNode){
+            if(!foundId.type.equals(Type.Char)){
+                throw new IllegalTypeException("Char assignment error: Type: " + foundId.type +
+                        " different from type: " + Type.Char +
+                        " at line: " + ctx.getLineNumber(), lineNumber, foundId.type, Type.Char);
+            }
+        } else if(ctx.atypes instanceof StringValNode){
+            if(!foundId.type.equals(Type.String)){
+                throw new IllegalTypeException("String assignment error: Type: " + foundId.type +
+                        " different from type: " + Type.String +
+                        " at line: " + ctx.getLineNumber(), lineNumber, foundId.type, Type.String);
+            }
+        } else*/ if(ctx.atypes instanceof FuncCallsNode) {
+            FuncCallsNode funcCall = (FuncCallsNode) ctx.atypes;
+            FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcCall.id);
             if (foundId.type.equals(foundFunc.type)) {
                 visit(ctx.atypes);
             } else {
                 throw new IllegalTypeException("Function call error: Type: " + foundId.type +
-                        "different from type: " + foundFunc.type +
-                        " at line: " + ctx.getLineNumber(), lineNumber, foundId.type, foundFunc.type);
+                        " different from type: " + foundFunc.type +
+                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.type, foundFunc.type);
             }
 
         }else if(ctx.atypes instanceof IdNode){
@@ -266,7 +291,7 @@ public class TypeChecker extends SymbolTableFill {
                         " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.name);
             }
 
-        }else {
+        } else {
             if (formalparams == null) {
                 evalAssign(ctx, foundId.type);
             } else {
@@ -515,7 +540,8 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         Attributes foundid = symbolTable.retrieveSymbol(ctx.id.getId());
         if (foundid.type != Type.Boolean){
-            throw new RuntimeException("Id is not of type boolean at line " + ctx.getLineNumber());
+            throw new TypeCheckException("Id is not of type boolean at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+            };
         }
         visit(ctx.boolVal);
         isBexpr = false;
@@ -529,7 +555,7 @@ public class TypeChecker extends SymbolTableFill {
         }
         if (isBexpr){
             if (!(ctx.value.equals("true") || ctx.value.equals("false"))){
-                throw new RuntimeException("Boolean value not valid at line " + ctx.getLineNumber());
+                throw new TypeCheckException("Boolean value not valid at line " + ctx.getLineNumber(), ctx.getLineNumber());
             }
         }
     }
@@ -543,7 +569,8 @@ public class TypeChecker extends SymbolTableFill {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {
-            throw new RuntimeException("Division expression not valid at line " + ctx.getLineNumber());
+            throw new TypeCheckException("Division expression not valid at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+            };
         }
         isAexpr = false;
     }
@@ -557,12 +584,14 @@ public class TypeChecker extends SymbolTableFill {
         }
         if (isAexpr){
             if (!(foundId.type.equals(Type.Number))){
-                throw new RuntimeException("Id is not a number at line " + ctx.getLineNumber());
+                throw new TypeCheckException("Id is not a number at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+                };
             }
         }
         if (isBexpr){
             if (!(foundId.type.equals(Type.Boolean) || foundId.type.equals(Type.Number))){
-                throw new RuntimeException("Id is not a boolean at line " + ctx.getLineNumber());
+                throw new TypeCheckException("Id is not a boolean at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+                };
             }
         }
     }
@@ -576,7 +605,8 @@ public class TypeChecker extends SymbolTableFill {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {
-            throw new RuntimeException("Minus expression not valid at line " + ctx.getLineNumber());
+            throw new TypeCheckException("Minus expression not valid at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+            };
         }
         isAexpr = false;
     }
@@ -590,7 +620,8 @@ public class TypeChecker extends SymbolTableFill {
         visit(ctx.leftChild);
         visit(ctx.rightChild);
         } else {
-            throw new RuntimeException("Modulo expression not valid at line " + ctx.getLineNumber());
+            throw new TypeCheckException("Modulo expression not valid at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+            };
         }
         isAexpr = false;
     }
@@ -617,7 +648,8 @@ public class TypeChecker extends SymbolTableFill {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {
-            throw new RuntimeException("Plus expression not valid at line " + ctx.getLineNumber());
+            throw new TypeCheckException("Plus expression not valid at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+            };
         }
         isAexpr = false;
     }
@@ -631,7 +663,8 @@ public class TypeChecker extends SymbolTableFill {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {
-            throw new RuntimeException("Times expression not valid at line " + ctx.getLineNumber());
+            throw new TypeCheckException("Times expression not valid at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
+            };
         }
         isAexpr = false;
     }
