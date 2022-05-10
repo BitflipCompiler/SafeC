@@ -71,6 +71,7 @@ public class SymbolTableFill extends ASTVisitor {
         symbolTable.openScope();
         symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
         visit(ctx.funcblock);
+        //System.out.println(symbolTable);
 
         //type checking has to be done as late as possible, while still having access to the local variables
         ctx.accept(new TypeChecker(symbolTable));
@@ -296,7 +297,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.charDcl);
-        visit(ctx.charval);
+        ctx.charval.accept(new TypeChecker(symbolTable));
     }
 
     @Override
@@ -315,7 +316,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.numdecl);
-        visit(ctx.aexpr);
+        ctx.aexpr.accept(new TypeChecker(symbolTable));
     }
 
     @Override
@@ -339,7 +340,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.stringdcl);
-        visit(ctx.stringval);
+        ctx.stringval.accept(new TypeChecker(symbolTable));
     }
 
     @Override
@@ -386,7 +387,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.boolDcl);
-        visit(ctx.bexpr);
+        ctx.bexpr.accept(new TypeChecker(symbolTable));
     }
 
     @Override

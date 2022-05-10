@@ -18,6 +18,7 @@ public class TypeChecker extends SymbolTableFill {
     public ArrayList<Type> formalParams = new ArrayList<>();
     public boolean isAexpr = false;
     public boolean isFuncCall = false;
+    public boolean isBexpr = false;
 
     public TypeChecker(SymbolTable symbolTable) {
         super(symbolTable);
@@ -416,7 +417,7 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(BoolDclAssignNode ctx) {
-
+        visit(ctx.bexpr);
     }
 
     @Override
@@ -427,57 +428,96 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(NotNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.value);
+        isBexpr = false;
     }
 
     @Override
     public void visit(AndNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(OrNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(RelopEqualNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(RelopNotEqualNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(RelopLeqNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(RelopGeqNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(RelopLessNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(RelopGreaterNode ctx) {
-
+        isBexpr = true;
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        isBexpr =false;
     }
 
     @Override
     public void visit(IdBoolValNode ctx) {
-
+        isBexpr = true;
+        Attributes foundid = symbolTable.retrieveSymbol(ctx.id.getId());
+        if (foundid.type != Type.Boolean){
+            throw new RuntimeException("Id is not of type boolean at line " + ctx.getLineNumber());
+        }
+        visit(ctx.boolVal);
+        isBexpr = false;
     }
 
     @Override
     public void visit(BoolValNode ctx) {
-        actualParams.add(Type.Boolean);
+        if (isFuncCall){
+            actualParams.add(Type.Boolean);
+        }
+        if (isBexpr){
+            if (!(ctx.value.equals("true") || ctx.value.equals("false"))){
+                throw new RuntimeException("Boolean value not valid at line " + ctx.getLineNumber());
+            }
+        }
     }
 
     @Override
@@ -502,6 +542,11 @@ public class TypeChecker extends SymbolTableFill {
         if (isAexpr){
             if (!(foundId.type.equals(Type.Number))){
                 throw new RuntimeException("Id is not a number at line " + ctx.getLineNumber());
+            }
+        }
+        if (isBexpr){
+            if (!(foundId.type.equals(Type.Boolean) || foundId.type.equals(Type.Number))){
+                throw new RuntimeException("Id is not a boolean at line " + ctx.getLineNumber());
             }
         }
     }
