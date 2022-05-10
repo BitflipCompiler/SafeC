@@ -59,7 +59,7 @@ number whileInAtmosphere(number a, boolean on){
     }
 return 0;
 }
-abekat = whileInAtmosphere(x, on, false);
+abekat = whileInAtmosphere(x, on);
 void sendMessageToEarth(number power){
        switch(power){
             case 1:

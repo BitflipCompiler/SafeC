@@ -3,7 +3,7 @@ $ poopx {
 }
 
 #10 boolean on = true;
-#7 string x;
+#7 number x;
 #7 number y;
 #7 number z;
 #7 string power;
@@ -18,7 +18,7 @@ number stop(boolean on){
 	return 0;
 }
 
-void pitch(number a, number x){
+void pitch(number a, string x){
     x = x - a;
     if(x<0){
         #7 number x;

@@ -19,7 +19,7 @@ number stop(boolean on){
 }
 
 void pitch(number a, number x){
-    x = x - a;
+    x = x - 10;
     if(x<0){
         #7 number x;
         x = 360 - x;

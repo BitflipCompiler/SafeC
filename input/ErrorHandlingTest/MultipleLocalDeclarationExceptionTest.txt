@@ -6,6 +6,7 @@ $ poopx {
 #7 number x;
 #7 number y;
 #7 number z;
+#7 number z;
 #7 string power;
 #7 number abekat;
 
@@ -22,7 +23,6 @@ void pitch(number a, number x){
     x = x - a;
     if(x<0){
         #7 number x;
-        #2 number x;
         x = 360 - x;
     }
     #7 number x;

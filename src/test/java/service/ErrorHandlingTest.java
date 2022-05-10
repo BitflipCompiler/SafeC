@@ -59,7 +59,7 @@ public class ErrorHandlingTest {
             ASTTree.accept(new SymbolTableFill(symbolTable));
         });
 
-        Assertions.assertEquals("actual param: String different than: Number at line: 0", thrown.getMessage());
+        Assertions.assertEquals("Illegal assignment type: String and Number at line: 14", thrown.getMessage());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class ErrorHandlingTest {
             ASTTree.accept(new SymbolTableFill(symbolTable));
         });
 
-        Assertions.assertEquals("Number declaration multiple times in local scope: x at line: 17", thrown.getMessage());
+        Assertions.assertEquals("Number declaration multiple times in local scope: z at line: 7", thrown.getMessage());
     }
 
     @Test
