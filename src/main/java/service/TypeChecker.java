@@ -16,7 +16,8 @@ public class TypeChecker extends SymbolTableFill {
 
     public ArrayList<Type> actualParams = new ArrayList<>();
     public ArrayList<Type> formalParams = new ArrayList<>();
-
+    public boolean isAexpr = false;
+    public boolean isFuncCall = false;
 
     public TypeChecker(SymbolTable symbolTable) {
         super(symbolTable);
@@ -156,6 +157,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
 
     public void visit(FuncCallsNode ctx) {
+        isFuncCall = true;
         FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(ctx.id);
         Map<String, Type> formalParams = foundFunc.getFormalParams();
         //Hvis der ikke er nogle actual params skal vi ikke visit.
@@ -177,7 +179,7 @@ public class TypeChecker extends SymbolTableFill {
                         "at line: " + lineNumber, lineNumber, actualParams.size(), formalParams.size());
             }
         }
-
+        isFuncCall = false;
     }
 
     @Override
@@ -480,68 +482,54 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(DivisionNode ctx) {
- /*       String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
-        String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
-
-        try {
-            if (leftchildSuper.equals("Numberval")) {
-                leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (rightchildSuper.equals("Numberval")) {
-                rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (leftchildSuper.equals("Aexpr") && rightchildSuper.equals("Aexpr")) {
-                System.out.println("Division");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }*/
+        isAexpr = true;
+        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+            visit(ctx.leftChild);
+            visit(ctx.rightChild);
+        } else {
+            throw new RuntimeException("Division expression not valid at line " + ctx.getLineNumber());
+        }
+        isAexpr = false;
     }
 
     @Override
     public void visit(IdNode ctx) {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id);
-        actualParams.add(foundId.type);
+        if (isFuncCall) {
+            actualParams.add(foundId.type);
+        }
+        if (isAexpr){
+            if (!(foundId.type.equals(Type.Number))){
+                throw new RuntimeException("Id is not a number at line " + ctx.getLineNumber());
+            }
+        }
     }
 
     @Override
     public void visit(MinusNode ctx) {
-/*        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
-        String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
-
-        try {
-            if (leftchildSuper.equals("Numberval")) {
-                leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (rightchildSuper.equals("Numberval")) {
-                rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (leftchildSuper.equals("Aexpr") && rightchildSuper.equals("Aexpr")) {
-                System.out.println("Minus");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }*/
+        isAexpr = true;
+        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+           (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+            visit(ctx.leftChild);
+            visit(ctx.rightChild);
+        } else {
+            throw new RuntimeException("Minus expression not valid at line " + ctx.getLineNumber());
+        }
+        isAexpr = false;
     }
 
     @Override
     public void visit(ModNode ctx) {
-   /*     String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
-        String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
-
-        try {
-            if (leftchildSuper.equals("Numberval")) {
-                leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (rightchildSuper.equals("Numberval")) {
-                rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (leftchildSuper.equals("Aexpr") && rightchildSuper.equals("Aexpr")) {
-                System.out.println("Mod");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }*/
+        isAexpr = true;
+        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+            (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+        visit(ctx.leftChild);
+        visit(ctx.rightChild);
+        } else {
+            throw new RuntimeException("Modulo expression not valid at line " + ctx.getLineNumber());
+        }
+        isAexpr = false;
     }
 
 
@@ -557,47 +545,28 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(PlusNode ctx) {
-
-/*
-        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
-        String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
-
-        try {
-            if (leftchildSuper.equals("Numberval")) {
-                leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (rightchildSuper.equals("Numberval")) {
-                rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (leftchildSuper.equals("Aexpr") && rightchildSuper.equals("Aexpr")) {
-                System.out.println("PLus");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        isAexpr = true;
+        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+            visit(ctx.leftChild);
+            visit(ctx.rightChild);
+        } else {
+            throw new RuntimeException("Plus expression not valid at line " + ctx.getLineNumber());
         }
-*/
-
-
+        isAexpr = false;
     }
 
     @Override
     public void visit(TimesNode ctx) {
-/*        String leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSimpleName();
-        String rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSimpleName();
-
-        try {
-            if (leftchildSuper.equals("Numberval")) {
-                leftchildSuper = ctx.leftChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (rightchildSuper.equals("Numberval")) {
-                rightchildSuper = ctx.rightChild.getClass().getSuperclass().getSuperclass().getSimpleName();
-            }
-            if (leftchildSuper.equals("Aexpr") && rightchildSuper.equals("Aexpr")) {
-                System.out.println("Times");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }*/
+        isAexpr = true;
+        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+            visit(ctx.leftChild);
+            visit(ctx.rightChild);
+        } else {
+            throw new RuntimeException("Times expression not valid at line " + ctx.getLineNumber());
+        }
+        isAexpr = false;
     }
 
     @Override
