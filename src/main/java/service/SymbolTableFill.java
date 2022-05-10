@@ -238,10 +238,10 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(AssignNode ctx) {
         lineNumber++;
         ctx.setLineNumber(lineNumber);
+        visit(ctx.atypes);
         TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
         ctx.accept(typeChecker);
         lineNumber = typeChecker.lineNumber;
-        visit(ctx.atypes);
     }
 
     //ARRAYS
@@ -305,6 +305,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.charDcl);
+        visit(ctx.charval);
         TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
         ctx.charval.accept(typeChecker);
         lineNumber = typeChecker.lineNumber;
@@ -326,6 +327,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.numdecl);
+        visit(ctx.aexpr);
         TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
         ctx.aexpr.accept(typeChecker);
         lineNumber = typeChecker.lineNumber;
@@ -352,6 +354,7 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.stringdcl);
+        visit(ctx.stringval);
         TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
         ctx.stringval.accept(typeChecker);
         lineNumber = typeChecker.lineNumber;
@@ -400,8 +403,9 @@ public class SymbolTableFill extends ASTVisitor {
             ctx.isGlobal = true;
         }
         visit(ctx.boolDcl);
+        visit(ctx.bexpr);
         TypeChecker typeChecker = new TypeChecker(symbolTable, lineNumber);
-        ctx.bexpr.accept(typeChecker);
+        ctx.accept(typeChecker);
         lineNumber = typeChecker.lineNumber;
     }
 

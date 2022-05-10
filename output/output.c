@@ -1,11 +1,11 @@
 #include <stdbool.h>
-float age = ;
-char * name = ;
-bool binary = ;
-char  favChar = ;
+float age = 19;
+char * name = "KarlEmil";
+bool binary = true;
+char  favChar = 'n';
 float newAge;
-bool x = ;
-19"KarlEmil"true'n'truefloat setAge(float agen){
+bool x = true;
+float setAge(float agen){
 age = agen;
 age = 10 + 10;
 return age;

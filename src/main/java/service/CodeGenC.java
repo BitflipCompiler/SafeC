@@ -20,7 +20,7 @@ public class CodeGenC extends ASTVisitor {
     public StringBuilder globalVars = new StringBuilder();
 
     public boolean inStruct = false;
-    boolean inFuncCall;
+    boolean inFuncCall =false;
 
     boolean hasBool = false;
     boolean isVoid;
