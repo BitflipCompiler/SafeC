@@ -1,20 +1,22 @@
 package ast;
 
+import ast.abstracts.Datatype;
 import ast.abstracts.Node;
 import service.Type;
 import visitor.ASTVisitor;
 
+import javax.xml.crypto.Data;
 import java.util.LinkedHashMap;
 
 public class FuncDclNode extends Node {
-    public Node datatype;
+    public Datatype datatype;
     public String id;
     public Node params;
-    public Node funcblock;
+    public FuncBlockNode funcblock;
     public LinkedHashMap<String, Type> formalParams;
     public String returnValue;
 
-    public FuncDclNode(Node datatype, String id, Node params, Node funcblock, String returnValue, LinkedHashMap<String,Type> formalParams) {
+    public FuncDclNode(Datatype datatype, String id, Node params, FuncBlockNode funcblock, String returnValue, LinkedHashMap<String,Type> formalParams) {
         this.datatype = datatype;
         this.id = id;
         this.params = params;
@@ -23,7 +25,7 @@ public class FuncDclNode extends Node {
         this.returnValue = returnValue;
     }
 
-    public FuncDclNode(Node datatype, String id, Node funcblock, String returnValue) {
+    public FuncDclNode(Datatype datatype, String id, FuncBlockNode funcblock, String returnValue) {
         this.datatype = datatype;
         this.id = id;
         this.funcblock = funcblock;

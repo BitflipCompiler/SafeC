@@ -2,10 +2,7 @@ package service;
 
 import ast.*;
 import ast.abstracts.*;
-import exceptions.AssignTypeCheckException;
-import exceptions.IdTypeCheckException;
-import exceptions.IllegalTypeException;
-import exceptions.ParamSizeException;
+import exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,6 +20,26 @@ public class TypeChecker extends SymbolTableFill {
 
     public TypeChecker(SymbolTable symbolTable) {
         super(symbolTable);
+    }
+
+    public Type getDataType(String datatype) {
+        if (datatype.startsWith("Num")){
+            return Type.Number;
+        } else if (datatype.startsWith("Void")){
+            return Type.Void;
+        } else if (datatype.startsWith("String")){
+            return Type.String;
+        } else if (datatype.startsWith("Bool")){
+            return Type.Boolean;
+        } else if (datatype.startsWith("Char")){
+            return Type.Char;
+        } else if (datatype.startsWith("Id")){
+
+        } else{
+            throw new InvalidTypeDeclarationException("Datatype not viable: " +
+                    datatype, lineNumber, datatype);
+        }
+        return null;
     }
 
     @Override
@@ -44,6 +61,87 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(FuncDclNode ctx) {
+        //if return value is a variable
+        if(ctx.funcblock.getReturnValue() instanceof IdNode){
+            IdNode id = (IdNode) ctx.funcblock.getReturnValue();
+            Attributes foundId = symbolTable.retrieveSymbol(id.getId());
+            if(ctx.datatype instanceof NumberLitteralNode){
+                if(foundId.type != Type.Number){
+                    throw new IllegalTypeException("func datatype: Number" +
+                            " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof CharLitteralNode){
+                if(foundId.type != Type.Char){
+                    throw new IllegalTypeException("func datatype: Char" +
+                            " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof StringLitteralNode){
+                if(foundId.type != Type.String){
+                    throw new IllegalTypeException("func datatype: String" +
+                            " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof BoolLitteralNode){
+                if(foundId.type != Type.Boolean){
+                    throw new IllegalTypeException("func datatype: Boolean" +
+                            " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof VoidLitteralNode){
+                //do nothing because of void return type
+            } else {
+                throw new IllegalTypeException("func datatype: " + ctx.datatype.getClass().getSimpleName() +
+                        " not valid." +
+                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                        Type.FuncVoid, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+            }
+            //if return value is not a variable
+        } else{
+            if(ctx.datatype instanceof NumberLitteralNode){
+                if(!(ctx.funcblock.getReturnValue() instanceof Numberval)){
+                    throw new IllegalTypeException("func datatype: Number" +
+                            " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof CharLitteralNode){
+                if(!(ctx.funcblock.getReturnValue() instanceof CharValNode)){
+                    throw new IllegalTypeException("func datatype: Char not equal to return type: " +
+                            ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.Char, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof StringLitteralNode){
+                if(!(ctx.funcblock.getReturnValue() instanceof StringValNode)){
+                    throw new IllegalTypeException("func datatype: String not equal to return type: " +
+                            ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.String, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof BoolLitteralNode){
+                if(!(ctx.funcblock.getReturnValue() instanceof BoolValNode)){
+                    throw new IllegalTypeException("func datatype: Boolean not equal to return type: "
+                            + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
+                            " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                            Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+                }
+            } else if(ctx.datatype instanceof VoidLitteralNode){
+                //do nothing because of void
+            } else {
+                throw new IllegalTypeException("func datatype: " + ctx.datatype.getClass().getSimpleName() +
+                        " not valid." +
+                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
+                        Type.FuncVoid, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
+            }
+        }
+
+
     }
 
     @Override

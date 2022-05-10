@@ -63,6 +63,7 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(FuncDclNode ctx) {
         lineNumber++;
         ctx.setLineNumber(lineNumber);
+
         String datatype = ctx.datatype.getClass().getSimpleName();
         Type funcType = this.getDataType(datatype);
         symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
@@ -70,7 +71,11 @@ public class SymbolTableFill extends ASTVisitor {
         symbolTable.openScope();
         symbolTable.enterSymbol(new FuncAttributes(ctx.id, funcType,false, ctx.funcblock,ctx.formalParams, ctx.returnValue));
         visit(ctx.funcblock);
+
+        //type checking has to be done as late as possible, while still having access to the local variables
+        ctx.accept(new TypeChecker(symbolTable));
         symbolTable.closeScope();
+
     }
 
     public Type getDataType(String datatype) {
@@ -129,7 +134,8 @@ public class SymbolTableFill extends ASTVisitor {
     public void visit(IfStatementNode ctx) {
         lineNumber++;
         ctx.setLineNumber(lineNumber);
-        visit(ctx.iflogic);
+        //visit(ctx.iflogic);
+        ctx.iflogic.accept(new TypeChecker(symbolTable));
         if(ctx.ifThenBlock != null){
             symbolTable.openScope();
             visit(ctx.ifThenBlock);

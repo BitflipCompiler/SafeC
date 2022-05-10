@@ -343,9 +343,9 @@ public class CSTToASTVisitor extends SafeCBaseVisitor<Node> {
             for(int i = 0; i < ctx.params().vdcl().size(); i++){
                 formalParams.put(ctx.params().vdcl().get(i).children.get(0).getChild(1).getText(), getDataType(ctx.params().vdcl().get(i).children.get(0).getChild(0).getText()));
             }
-            return new FuncDclNode(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),visit(ctx.funcblock()),ctx.funcblock().children.get(3).getText(), formalParams);
+            return new FuncDclNode((Datatype) visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.params()),(FuncBlockNode) visit(ctx.funcblock()),ctx.funcblock().children.get(3).getText(), formalParams);
         }else if(ctx.params() == null){
-            return new FuncDclNode(visit(ctx.datatype()),ctx.ID().toString(),visit(ctx.funcblock()), ctx.funcblock().children.get(3).getText());
+            return new FuncDclNode((Datatype) visit(ctx.datatype()),ctx.ID().toString(),(FuncBlockNode) visit(ctx.funcblock()), ctx.funcblock().children.get(3).getText());
         }
         throw new RuntimeException("Something went wrong in visitFuncDcl");
     }
