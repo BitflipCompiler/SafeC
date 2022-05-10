@@ -13,7 +13,6 @@ public class ArrayStringNode extends ArrayDclAssign {
         this.stringArray = (ArrayStrValuesNode) stringArray;
     }
 
-
     @Override
     public void accept(ASTVisitor v) {
         v.visit(this);

@@ -7,17 +7,17 @@ import ast.abstracts.Node;
 import ast.abstracts.Numberval;
 import org.apache.commons.lang3.RandomStringUtils;
 import visitor.ASTVisitor;
+
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Random;
 
-/** This {@code CodeGenAssembler} is responsible for the Assembly code gen.
+/**
+ * This {@code CodeGenAssembler} is responsible for the Assembly code gen.
  * The code exstends {@link ASTVisitor}, as it uses the visitor pattern to gen the
  * assembly code.
  */
 
-
-//TODO: .global _start og _start: og _end
 public class CodeGenAssembler extends ASTVisitor {
     public StringBuilder codeGen = new StringBuilder();
     //public StringBuilder declarationLabels = new StringBuilder();
@@ -25,7 +25,7 @@ public class CodeGenAssembler extends ASTVisitor {
     public boolean isAexpr;
     public boolean isAtype;
 
-    public void setup(){
+    public void setup() {
         codeGen.append("""
                 .global _start
                 _start:
@@ -33,13 +33,12 @@ public class CodeGenAssembler extends ASTVisitor {
         variableData.append(".data \n");
     }
 
-    public void finalizeCode(){
+    public void finalizeCode() {
         codeGen.append(".end \n");
     }
 
-    public void printFinalCode(){
+    public void printFinalCode() {
         System.out.println(codeGen);
-        //System.out.println(declarationLabels);
         System.out.println(variableData);
     }
 
@@ -263,9 +262,9 @@ public class CodeGenAssembler extends ASTVisitor {
     @Override
     public void visit(BoolValNode ctx) {
         String boolVal = ctx.value;
-        if(boolVal.equals("true")){
+        if (boolVal.equals("true")) {
             boolVal = "1";
-        } else if (boolVal.equals("false")){
+        } else if (boolVal.equals("false")) {
             boolVal = "0";
         } else {
             throw new RuntimeException("Boolean value not valid.");
@@ -289,17 +288,17 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(IdNode ctx) {
-        if(isAexpr){
+        if (isAexpr) {
             codeGen.append("ldr r0, =" + ctx.id + "\n");
             codeGen.append("mov r1, r0 \n");
-            if(isAtype){
+            if (isAtype) {
                 codeGen.append("""
-                vldr d0, [r0]
-                vpush {d0}
-                """);
+                        vldr d0, [r0]
+                        vpush {d0}
+                        """);
             }
         } else {
-            codeGen.append("mov r0, =" +ctx.id + "\n");
+            codeGen.append("mov r0, =" + ctx.id + "\n");
         }
 
     }
@@ -340,10 +339,9 @@ public class CodeGenAssembler extends ASTVisitor {
         String generatedLabel = RandomStringUtils.randomAlphabetic(10);
         codeGen.append("ldr r0, =" + generatedLabel + "\n");
         codeGen.append("""
-                 vldr d0, [r0]
-                 vpush {d0}
-                  """);
-        //declarationLabels.append(generatedLabel + "_address: \t .word " + generatedLabel + "\n");
+                vldr d0, [r0]
+                vpush {d0}
+                 """);
         variableData.append(generatedLabel + ": \t .double \t 0e" + Float.parseFloat(ctx.value) + "\n");
     }
 
@@ -355,7 +353,6 @@ public class CodeGenAssembler extends ASTVisitor {
                   vcvt.f64.f32 d0, s14
                   vpush {d0}
                 """);
-        //declarationLabels.append("PI_address: \t .word PI \n");
         variableData.append("PI: \t .float 3.141592 \n");
     }
 
@@ -441,14 +438,14 @@ public class CodeGenAssembler extends ASTVisitor {
         isAtype = true;
         visit(ctx.atypes);
         isAtype = false;
-        if(ctx.atypes instanceof Aexpr){
+        if (ctx.atypes instanceof Aexpr) {
             isAexpr = true;
             codeGen.append("vpop {d1} \n");
             visit(ctx.id);
             codeGen.append("""
-                vstr d1, [r1]
-                """);
-        } else if( ctx.atypes instanceof Bexpr){
+                    vstr d1, [r1]
+                    """);
+        } else if (ctx.atypes instanceof Bexpr) {
             isAexpr = false;
 
         }
@@ -578,7 +575,7 @@ public class CodeGenAssembler extends ASTVisitor {
 
     @Override
     public void visit(ProgNode ctx) {
-        for (Node node: ctx.nodes) {
+        for (Node node : ctx.nodes) {
             visit(node);
         }
     }

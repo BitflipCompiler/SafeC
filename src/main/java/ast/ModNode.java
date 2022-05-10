@@ -5,10 +5,8 @@ import ast.abstracts.Node;
 import visitor.ASTVisitor;
 
 public class ModNode extends Aexpr {
-
     public Node leftChild;
     public Node rightChild;
-
 
     public ModNode(Node leftChild, Node rightChild) {
         this.leftChild = leftChild;

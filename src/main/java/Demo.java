@@ -23,7 +23,6 @@ public class Demo {
                 "|_______/    /__/     \\__\\ |__|     |_______| \\______|\n");
 
 
-
         System.out.println("Do you want to Generate Assembler(1) or Generate C (2)?");
         System.out.print("> ");
         int choice = scanner.nextInt();

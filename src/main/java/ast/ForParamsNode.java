@@ -1,6 +1,5 @@
 package ast;
 
-import ast.NumDclAssignNode;
 import ast.abstracts.Aexpr;
 import ast.abstracts.Bexpr;
 import ast.abstracts.Node;

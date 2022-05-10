@@ -1,6 +1,5 @@
 package ast;
 
-
 import ast.abstracts.Datatype;
 import visitor.ASTVisitor;
 

@@ -14,7 +14,6 @@ public class WhileLoopNode extends Selective {
         this.block = block;
     }
 
-
     @Override
     public void accept(ASTVisitor v) {
         v.visit(this);

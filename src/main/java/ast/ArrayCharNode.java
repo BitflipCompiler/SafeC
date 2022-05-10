@@ -13,7 +13,6 @@ public class ArrayCharNode extends ArrayDclAssign {
         this.charArray = (ArrayCharValuesNode) charArray;
     }
 
-
     @Override
     public void accept(ASTVisitor v) {
         v.visit(this);

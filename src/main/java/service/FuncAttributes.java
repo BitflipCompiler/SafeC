@@ -13,7 +13,6 @@ public class FuncAttributes extends Attributes{
     LinkedHashMap<String,Type> formalParams;
     String returnValue;
 
-
     public FuncAttributes(String name, Type type, Boolean isformalparam, Node block, LinkedHashMap<String,Type> formalParams, String returnValue) {
         super(name, type, isformalparam);
         this.block = block;

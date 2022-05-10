@@ -26,19 +26,19 @@ public class TypeChecker extends SymbolTableFill {
     }
 
     public Type getDataType(String datatype) {
-        if (datatype.startsWith("Num")){
+        if (datatype.startsWith("Num")) {
             return Type.Number;
-        } else if (datatype.startsWith("Void")){
+        } else if (datatype.startsWith("Void")) {
             return Type.Void;
-        } else if (datatype.startsWith("String")){
+        } else if (datatype.startsWith("String")) {
             return Type.String;
-        } else if (datatype.startsWith("Bool")){
+        } else if (datatype.startsWith("Bool")) {
             return Type.Boolean;
-        } else if (datatype.startsWith("Char")){
+        } else if (datatype.startsWith("Char")) {
             return Type.Char;
-        } else if (datatype.startsWith("Id")){
+        } else if (datatype.startsWith("Id")) {
 
-        } else{
+        } else {
             throw new InvalidTypeDeclarationException("Datatype not viable: " +
                     datatype, lineNumber, datatype);
         }
@@ -65,38 +65,38 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(FuncDclNode ctx) {
         //if return value is a variable
-        if(ctx.funcblock.getReturnValue() instanceof IdNode){
+        if (ctx.funcblock.getReturnValue() instanceof IdNode) {
             IdNode id = (IdNode) ctx.funcblock.getReturnValue();
             Attributes foundId = symbolTable.retrieveSymbol(id.getId());
-            if(ctx.datatype instanceof NumberLitteralNode){
-                if(foundId.type != Type.Number){
+            if (ctx.datatype instanceof NumberLitteralNode) {
+                if (foundId.type != Type.Number) {
                     throw new IllegalTypeException("func datatype: Number" +
                             " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof CharLitteralNode){
-                if(foundId.type != Type.Char){
+            } else if (ctx.datatype instanceof CharLitteralNode) {
+                if (foundId.type != Type.Char) {
                     throw new IllegalTypeException("func datatype: Char" +
                             " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof StringLitteralNode){
-                if(foundId.type != Type.String){
+            } else if (ctx.datatype instanceof StringLitteralNode) {
+                if (foundId.type != Type.String) {
                     throw new IllegalTypeException("func datatype: String" +
                             " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof BoolLitteralNode){
-                if(foundId.type != Type.Boolean){
+            } else if (ctx.datatype instanceof BoolLitteralNode) {
+                if (foundId.type != Type.Boolean) {
                     throw new IllegalTypeException("func datatype: Boolean" +
                             " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof VoidLitteralNode){
+            } else if (ctx.datatype instanceof VoidLitteralNode) {
                 //do nothing because of void return type
             } else {
                 throw new IllegalTypeException("func datatype: " + ctx.datatype.getClass().getSimpleName() +
@@ -105,36 +105,36 @@ public class TypeChecker extends SymbolTableFill {
                         Type.FuncVoid, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
             }
             //if return value is not a variable
-        } else{
-            if(ctx.datatype instanceof NumberLitteralNode){
-                if(!(ctx.funcblock.getReturnValue() instanceof Numberval)){
+        } else {
+            if (ctx.datatype instanceof NumberLitteralNode) {
+                if (!(ctx.funcblock.getReturnValue() instanceof Numberval)) {
                     throw new IllegalTypeException("func datatype: Number" +
                             " not equal to return type: " + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof CharLitteralNode){
-                if(!(ctx.funcblock.getReturnValue() instanceof CharValNode)){
+            } else if (ctx.datatype instanceof CharLitteralNode) {
+                if (!(ctx.funcblock.getReturnValue() instanceof CharValNode)) {
                     throw new IllegalTypeException("func datatype: Char not equal to return type: " +
                             ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.Char, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof StringLitteralNode){
-                if(!(ctx.funcblock.getReturnValue() instanceof StringValNode)){
+            } else if (ctx.datatype instanceof StringLitteralNode) {
+                if (!(ctx.funcblock.getReturnValue() instanceof StringValNode)) {
                     throw new IllegalTypeException("func datatype: String not equal to return type: " +
                             ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.String, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof BoolLitteralNode){
-                if(!(ctx.funcblock.getReturnValue() instanceof BoolValNode)){
+            } else if (ctx.datatype instanceof BoolLitteralNode) {
+                if (!(ctx.funcblock.getReturnValue() instanceof BoolValNode)) {
                     throw new IllegalTypeException("func datatype: Boolean not equal to return type: "
                             + ctx.funcblock.getReturnValue().getClass().getSimpleName() +
                             " at line: " + ctx.getLineNumber(), ctx.getLineNumber(),
                             Type.Number, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
                 }
-            } else if(ctx.datatype instanceof VoidLitteralNode){
+            } else if (ctx.datatype instanceof VoidLitteralNode) {
                 //do nothing because of void
             } else {
                 throw new IllegalTypeException("func datatype: " + ctx.datatype.getClass().getSimpleName() +
@@ -143,8 +143,6 @@ public class TypeChecker extends SymbolTableFill {
                         Type.FuncVoid, getDataType(ctx.funcblock.getReturnValue().getClass().getSimpleName()));
             }
         }
-
-
     }
 
     @Override
@@ -157,7 +155,6 @@ public class TypeChecker extends SymbolTableFill {
     }
 
     @Override
-
     public void visit(FuncCallsNode ctx) {
         isFuncCall = true;
         FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(ctx.id);
@@ -166,7 +163,7 @@ public class TypeChecker extends SymbolTableFill {
         if (ctx.actualParamsNode != null) {
             visit(ctx.actualParamsNode);
             int i = 0;
-            if(actualParams.size() == formalParams.size()){
+            if (actualParams.size() == formalParams.size()) {
                 for (Map.Entry<String, Type> formalparam : formalParams.entrySet()) {
                     if (formalparam.getValue() != actualParams.get(i)) {
                         throw new IllegalTypeException("actual param: " + actualParams.get(i) +
@@ -175,8 +172,8 @@ public class TypeChecker extends SymbolTableFill {
                     }
                     i++;
                 }
-            }else{
-                throw new ParamSizeException("Actual params size: "  + actualParams.size() +
+            } else {
+                throw new ParamSizeException("Actual params size: " + actualParams.size() +
                         " Formal params size: " + " " + formalParams.size() +
                         "at line: " + lineNumber, lineNumber, actualParams.size(), formalParams.size());
             }
@@ -278,15 +275,14 @@ public class TypeChecker extends SymbolTableFill {
                         " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.type, foundFunc.type);
             }
 
-        }else if(ctx.atypes instanceof IdNode){
-            if(formalparams == null){
+        } else if (ctx.atypes instanceof IdNode) {
+            if (formalparams == null) {
 
-            }
-            else if(foundId.type == formalparams.getValue()){
+            } else if (foundId.type == formalparams.getValue()) {
                 //visit(ctx.atypes);
 
-            }else{
-                throw new IdTypeCheckException("Type : "+ foundId.type +
+            } else {
+                throw new IdTypeCheckException("Type : " + foundId.type +
                         " does not match with type " + formalparams.getValue() +
                         " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.name);
             }
@@ -300,13 +296,9 @@ public class TypeChecker extends SymbolTableFill {
         }
     }
 
-    private void evalAssign(AssignNode ctx, Type type ) {
+    private void evalAssign(AssignNode ctx, Type type) {
         String atypesNormal = ctx.atypes.getClass().getSimpleName();
         String atypesSuper = ctx.atypes.getClass().getSuperclass().getSimpleName();
-        //TODO there is something that is not working with all results, (IdNode)
-        /*if(atypesNormal.equals("IdNode")){
-            visit(ctx.atypes);
-        }*/
         if (ctx.atypes instanceof Aexpr) {
             if (type == Type.Number) {
                 visit(ctx.atypes);
@@ -319,7 +311,7 @@ public class TypeChecker extends SymbolTableFill {
                 visit(ctx.atypes);
             } else {
                 throw new IllegalTypeException("Illegal assignment type: " + type +
-                        " and {Number, Boolean} at line: " + ctx.getLineNumber(), ctx.getLineNumber(), type,Type.Boolean);
+                        " and {Number, Boolean} at line: " + ctx.getLineNumber(), ctx.getLineNumber(), type, Type.Boolean);
             }
         } else if (ctx.atypes instanceof ArrayData) {
             if (type == Type.Number || type == Type.Char || type == Type.String || type == Type.Boolean) {
@@ -468,7 +460,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -477,7 +469,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -486,7 +478,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -495,7 +487,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -504,7 +496,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -513,7 +505,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -522,7 +514,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -531,7 +523,7 @@ public class TypeChecker extends SymbolTableFill {
         ctx.setLineNumber(lineNumber);
         visit(ctx.leftChild);
         visit(ctx.rightChild);
-        isBexpr =false;
+        isBexpr = false;
     }
 
     @Override
@@ -550,7 +542,7 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(BoolValNode ctx) {
         ctx.setLineNumber(lineNumber);
-        if (isFuncCall){
+        if (isFuncCall) {
             actualParams.add(Type.Boolean);
         }
         if (isBexpr){
@@ -564,8 +556,8 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(DivisionNode ctx) {
         isAexpr = true;
         ctx.setLineNumber(lineNumber);
-        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
-                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+        if ((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)) {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {
@@ -600,8 +592,8 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(MinusNode ctx) {
         isAexpr = true;
         ctx.setLineNumber(lineNumber);
-        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
-           (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+        if ((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)) {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {
@@ -615,10 +607,10 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(ModNode ctx) {
         isAexpr = true;
         ctx.setLineNumber(lineNumber);
-        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
-            (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
-        visit(ctx.leftChild);
-        visit(ctx.rightChild);
+        if ((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)) {
+            visit(ctx.leftChild);
+            visit(ctx.rightChild);
         } else {
             throw new TypeCheckException("Modulo expression not valid at line " + ctx.getLineNumber(), ctx.getLineNumber()) {
             };
@@ -643,8 +635,8 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(PlusNode ctx) {
         isAexpr = true;
         ctx.setLineNumber(lineNumber);
-        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
-                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+        if ((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)) {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {
@@ -658,8 +650,8 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(TimesNode ctx) {
         isAexpr = true;
         ctx.setLineNumber(lineNumber);
-        if((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
-                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)){
+        if ((ctx.leftChild instanceof Aexpr || ctx.leftChild instanceof Numberval) &&
+                (ctx.rightChild instanceof Aexpr || ctx.rightChild instanceof Numberval)) {
             visit(ctx.leftChild);
             visit(ctx.rightChild);
         } else {

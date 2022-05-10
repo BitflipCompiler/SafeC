@@ -1,6 +1,5 @@
 package ast;
 
-import ast.abstracts.DclAssign;
 import ast.abstracts.Node;
 import ast.abstracts.VDclAssign;
 import visitor.ASTVisitor;
