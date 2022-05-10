@@ -34,7 +34,7 @@ public class CodeGenAssembler extends ASTVisitor {
     }
 
     public void finalizeCode() {
-        codeGen.append(".end \n");
+        variableData.append(".end \n");
     }
 
     public void printFinalCode() {
