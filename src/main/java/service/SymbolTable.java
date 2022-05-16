@@ -40,7 +40,6 @@ public class SymbolTable {
     public void enterSymbol(Attributes newAttribute){
         Attributes oldAttribute = this.retrieveSymbol(newAttribute.name);
         if(oldAttribute != null && oldAttribute.depth == depth && !newAttribute.isformalparam
-                //This might be wrong, done to fix funccals id in globalscope
                 && newAttribute.depth != 0){
             throw new RuntimeException("Duplicate definition of: " + newAttribute.name);
         }
