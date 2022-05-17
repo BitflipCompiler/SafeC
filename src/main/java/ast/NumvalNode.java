@@ -13,4 +13,9 @@ public class NumvalNode extends Numberval {
     public void accept(ASTVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return  value;
+    }
 }
