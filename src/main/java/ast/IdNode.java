@@ -22,8 +22,6 @@ public class IdNode extends Node {
 
     @Override
     public String toString() {
-        return "IdNode{" +
-                "id='" + id + '\'' +
-                '}';
+        return id;
     }
 }
