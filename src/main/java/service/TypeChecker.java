@@ -396,7 +396,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(NumDclNode ctx) {
-        //TODO: Få Id til at være en del af formalParams.
         formalParams.add(Type.Number);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Number, true));
     }
