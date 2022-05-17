@@ -15,7 +15,6 @@ import java.util.Map;
 public class TypeChecker extends SymbolTableFill {
 
     public ArrayList<Type> actualParams = new ArrayList<>();
-    public ArrayList<Type> formalParams = new ArrayList<>();
     public boolean isAexpr = false;
     public boolean isFuncCall = false;
     public boolean isBexpr = false;
@@ -235,36 +234,7 @@ public class TypeChecker extends SymbolTableFill {
     public void visit(AssignNode ctx) {
         Attributes foundId = symbolTable.retrieveSymbol(ctx.id.getId());
         Map.Entry<String, Type> formalparams = symbolTable.checkFormalParams(ctx.id.getId());
-        String atypesNormal = ctx.atypes.getClass().getSimpleName();
-        /*if(ctx.atypes instanceof Aexpr){
-            if(foundId.type.equals(Type.Number)){
-                visit(ctx.atypes);
-            } else{
-                throw new IllegalTypeException("Aexpr assignment error: Type: " + foundId.type +
-                        " different from type: " + Type.Number +
-                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.type, Type.Number);
-            }
-        } else if (ctx.atypes instanceof Bexpr){
-            if(foundId.type.equals(Type.Boolean)){
-                visit(ctx.atypes);
-            } else {
-                throw new IllegalTypeException("Bexpr assignment error: Type: " + foundId.type +
-                        " different from type: " + Type.Boolean +
-                        " at line: " + ctx.getLineNumber(), ctx.getLineNumber(), foundId.type, Type.Boolean);
-            }
-        } else if(ctx.atypes instanceof CharValNode){
-            if(!foundId.type.equals(Type.Char)){
-                throw new IllegalTypeException("Char assignment error: Type: " + foundId.type +
-                        " different from type: " + Type.Char +
-                        " at line: " + ctx.getLineNumber(), lineNumber, foundId.type, Type.Char);
-            }
-        } else if(ctx.atypes instanceof StringValNode){
-            if(!foundId.type.equals(Type.String)){
-                throw new IllegalTypeException("String assignment error: Type: " + foundId.type +
-                        " different from type: " + Type.String +
-                        " at line: " + ctx.getLineNumber(), lineNumber, foundId.type, Type.String);
-            }
-        } else*/ if(ctx.atypes instanceof FuncCallsNode) {
+        if(ctx.atypes instanceof FuncCallsNode) {
             FuncCallsNode funcCall = (FuncCallsNode) ctx.atypes;
             FuncAttributes foundFunc = (FuncAttributes) symbolTable.retrieveSymbol(funcCall.id);
             if (foundId.type.equals(foundFunc.type)) {
@@ -279,7 +249,6 @@ public class TypeChecker extends SymbolTableFill {
             if (formalparams == null) {
 
             } else if (foundId.type == formalparams.getValue()) {
-                //visit(ctx.atypes);
 
             } else {
                 throw new IdTypeCheckException("Type : " + foundId.type +
@@ -354,7 +323,6 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(ArrayDeclNode ctx) {
         Type arrayType = getDataType(ctx.arrdcltype.toString());
-        formalParams.add(arrayType);
         symbolTable.enterSymbol(new Attributes(ctx.id, arrayType, true));
     }
 
@@ -385,7 +353,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(CharDclNode ctx) {
-        formalParams.add(Type.Char);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Char, true));
     }
 
@@ -396,7 +363,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(NumDclNode ctx) {
-        formalParams.add(Type.Number);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Number, true));
     }
 
@@ -407,7 +373,6 @@ public class TypeChecker extends SymbolTableFill {
 
     @Override
     public void visit(StringDclNode ctx) {
-        formalParams.add(Type.String);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.String, true));
     }
 
@@ -441,7 +406,6 @@ public class TypeChecker extends SymbolTableFill {
     @Override
     public void visit(BoolDclNode ctx) {
         ctx.setLineNumber(lineNumber);
-        formalParams.add(Type.Boolean);
         symbolTable.enterSymbol(new Attributes(ctx.id, Type.Boolean, true));
     }
 
