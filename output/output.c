@@ -19,8 +19,8 @@ is18 = true;
 
 return is18;
 }
-void main(){
+int main(){
 newAge = setAge(20);
 x = isOver18();
-
+return 0;
 }

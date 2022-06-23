@@ -83,7 +83,8 @@ public class CodeGenC extends ASTVisitor {
 
     //Setup C main
     public void setupMain(StringBuilder main) {
-        main.insert(0, "void main(){\n");
+        main.insert(0, "int main(){\n");
+        main.append("return 0;");
         main.append("\n}\n");
     }
 
